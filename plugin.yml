@@ -1,0 +1,10 @@
+name: TChat
+version: 1.0
+main: minealex.tchat.TChat
+author: Mine_Alex
+description: Chat format plugin
+api-version: 1.8
+
+commands:
+  chat:
+    description: TChat command

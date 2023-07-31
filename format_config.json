@@ -1,0 +1,20 @@
+{
+  "defaultPrefix": "&a[TChat] ",
+  "defaultSuffix": "",
+  "format": "<prefix> <player><suffix> &e>> &f",
+  "groups": {
+    "admin": {
+      "prefix": "&c[Admin] ",
+      "suffix": ""
+    },
+    "mod": {
+      "prefix": "&9[Mod] ",
+      "suffix": "&r"
+    }
+  },
+  "messages": {
+    "noPermission": "&5TChat &e> &cYou do not have permission to execute this command.",
+    "reloadSuccess": "&5TChat &e> &aThe TChat configuration has been successfully reloaded.",
+    "reloadError": "&5TChat &e> &cError reloading TChat configuration. Check the format_config.json file."
+  }
+}
