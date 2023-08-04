@@ -1,5 +1,5 @@
 name: TChat
-version: 1.0
+version: 1.1
 main: minealex.tchat.TChat
 author: Mine_Alex
 description: Chat format plugin
@@ -8,3 +8,5 @@ api-version: 1.8
 commands:
   chat:
     description: TChat command
+  chatclear:
+    description: Clear the chat

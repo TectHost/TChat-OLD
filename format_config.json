@@ -15,6 +15,9 @@
   "messages": {
     "noPermission": "&5TChat &e> &cYou do not have permission to execute this command.",
     "reloadSuccess": "&5TChat &e> &aThe TChat configuration has been successfully reloaded.",
-    "reloadError": "&5TChat &e> &cError reloading TChat configuration. Check the format_config.json file."
+    "reloadError": "&5TChat &e> &cError reloading TChat configuration. Check the format_config.json file.",
+    "clearChatMessage": "&5TChat &e> &cChat has been cleared.",
+    "clearChatSuccess": "&5TChat &e> &aChat cleared successfully!",
+    "onlyPlayer": "&5TChat &e> &cThis command can only be executed by a player."
   }
 }

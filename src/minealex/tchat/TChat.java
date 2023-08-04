@@ -6,6 +6,11 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
+
+import minealex.tchat.blocked.BannedWords;
+import minealex.tchat.commands.ClearChatCommand;
+import minealex.tchat.commands.TChatReloadCommand;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,14 +38,21 @@ public class TChat extends JavaPlugin implements CommandExecutor {
     private ChatListener chatListener;
     private String customFormat;
     private Map<String, String> messages;
+    private BannedWords bannedWords;
 
     @Override
     public void onEnable() {
         // Registrar el comando /chat reload
         getCommand("chat").setExecutor(new TChatReloadCommand(this));
 
+        // Registrar el comando /chat clear
+        getCommand("chatclear").setExecutor(new ClearChatCommand(this));
+
         // Cargar la configuración
         loadConfigFile();
+
+        // Load the banned words list
+        loadBannedWordsList();
 
         // Registrar el evento del chat
         registerChatListener();
@@ -108,6 +120,10 @@ public class TChat extends JavaPlugin implements CommandExecutor {
             groups = new HashMap<>();
             messages = new HashMap<>();
         }
+    }
+
+    private void loadBannedWordsList() {
+        bannedWords = new BannedWords(this);
     }
 
     public String formatMessage(String message, CommandSender sender) {
@@ -223,4 +239,8 @@ public class TChat extends JavaPlugin implements CommandExecutor {
 
     // Clase ChatListener
     // (El código para esta clase se mantiene igual)
+
+    public BannedWords getBannedWords() {
+        return bannedWords;
+    }
 }

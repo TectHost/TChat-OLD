@@ -1,0 +1,8 @@
+{
+  "bannedWords": [
+    "word1",
+    "word2",
+    "word3"
+  ],
+  "blockedMessage": "&5TChat &e> &cYou are not allowed to use that word. Please refrain from using inappropriate language."
+}
