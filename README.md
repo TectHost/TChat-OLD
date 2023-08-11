@@ -1,11 +1,13 @@
 # TChat
-Simple chat plugin | JSON
+Advanced chat plugin | JSON
 
 # Features
 - JSON config
 - Multiple formats
 - Chat clear command
 - Ban words
+- PlaceholderAPI support
+- PlaceholderAPI expansion
 
 # Commands
 - /chat reload
@@ -17,4 +19,8 @@ Simple chat plugin | JSON
 - tchat.admin.chatclear
 
 # Dependencies
-- None
+- PlaceholderAPI
+
+# Placeholders
+- %tchat_prefix%
+- %tchat_suffix%
