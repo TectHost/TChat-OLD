@@ -7,15 +7,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.TChatReloadCommand;
+import minealex.tchat.placeholders.Placeholders;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -29,6 +33,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
+
+import me.clip.placeholderapi.PlaceholderAPI;
 
 @SuppressWarnings("unused")
 public class TChat extends JavaPlugin implements CommandExecutor {
@@ -56,6 +62,10 @@ public class TChat extends JavaPlugin implements CommandExecutor {
 
         // Registrar el evento del chat
         registerChatListener();
+        
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new Placeholders(this).register();
+        }
     }
 
     @Override
@@ -150,6 +160,12 @@ public class TChat extends JavaPlugin implements CommandExecutor {
             format = "<prefix><player><suffix>";
         }
 
+        // SetPlaceholders utilizando PlaceholderAPI
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            format = PlaceholderAPI.setPlaceholders(player, format);
+        }
+
         format = format.replace("<prefix>", prefix).replace("<player>", "%1$s").replace("<suffix>", suffix);
         return ChatColor.translateAlternateColorCodes('&', format) + message;
     }
@@ -216,7 +232,7 @@ public class TChat extends JavaPlugin implements CommandExecutor {
     }
 
     // Clase ChatGroup
-    private static class ChatGroup {
+    public static class ChatGroup {
         private String prefix;
         private String suffix;
 
@@ -242,5 +258,13 @@ public class TChat extends JavaPlugin implements CommandExecutor {
 
     public BannedWords getBannedWords() {
         return bannedWords;
+    }
+
+    public ChatGroup getDefaultChatGroup() {
+        return new ChatGroup(defaultPrefix, defaultSuffix);
+    }
+
+    public Map<String, ChatGroup> getGroups() {
+        return groups;
     }
 }

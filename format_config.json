@@ -1,5 +1,5 @@
 {
-  "defaultPrefix": "&a[TChat] ",
+  "defaultPrefix": "&a[Tect.host] ",
   "defaultSuffix": "",
   "format": "<prefix> <player><suffix> &e>> &f",
   "groups": {
