@@ -19,5 +19,6 @@
     "clearChatMessage": "&5TChat &e> &cChat has been cleared.",
     "clearChatSuccess": "&5TChat &e> &aChat cleared successfully!",
     "onlyPlayer": "&5TChat &e> &cThis command can only be executed by a player."
-  }
+  },
+  "antibotEnabled": true
 }

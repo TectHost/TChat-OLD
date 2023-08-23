@@ -11,18 +11,23 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.TChatReloadCommand;
+import minealex.tchat.listener.PlayerMoveListener;
 import minealex.tchat.placeholders.Placeholders;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -30,14 +35,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
 @SuppressWarnings("unused")
-public class TChat extends JavaPlugin implements CommandExecutor {
+public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     private String defaultPrefix;
     private String defaultSuffix;
     private Map<String, ChatGroup> groups;
@@ -45,6 +53,40 @@ public class TChat extends JavaPlugin implements CommandExecutor {
     private String customFormat;
     private Map<String, String> messages;
     private BannedWords bannedWords;
+    private Map<UUID, Location> lastKnownLocations = new HashMap<>();
+    private Set<UUID> playersWhoMoved = new HashSet<>();
+    private Map<UUID, Boolean> playerMovementStatus = new HashMap<>();
+
+    public Location getLastPlayerLocation(Player player) {
+        return lastKnownLocations.get(player.getUniqueId());
+    }
+
+    public void setLastPlayerLocation(Player player, Location location) {
+        lastKnownLocations.put(player.getUniqueId(), location);
+    }
+    
+    public void markPlayerAsMoved(UUID playerId) {
+        playerMovementStatus.put(playerId, true);
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        // Cuando un jugador se une, marca su estado de movimiento como falso.
+        UUID playerId = event.getPlayer().getUniqueId();
+        playerMovementStatus.put(playerId, false);
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        // Marcar al jugador como que se ha movido cuando se mueve.
+        UUID playerId = event.getPlayer().getUniqueId();
+        playerMovementStatus.put(playerId, true);
+    }
+
+    // Agrega este método para verificar si un jugador se ha movido.
+    public boolean hasPlayerMoved(UUID playerId) {
+        return playerMovementStatus.getOrDefault(playerId, false);
+    }
 
     @Override
     public void onEnable() {
@@ -60,12 +102,39 @@ public class TChat extends JavaPlugin implements CommandExecutor {
         // Load the banned words list
         loadBannedWordsList();
 
+        // Habilitar la función antibot si está habilitada en la configuración
+        if (isAntibotEnabled()) {
+            getLogger().info("Antibot is enabled. Players will need to move to chat.");
+        }
+
         // Registrar el evento del chat
         registerChatListener();
-        
+
+        // Registrar el evento de movimiento
+        getServer().getPluginManager().registerEvents(this, this);
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholders(this).register();
         }
+    }
+
+    // Agrega un método para verificar si la función antibot está habilitada
+    boolean isAntibotEnabled() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false; // Si el archivo no existe, la función está deshabilitada por defecto.
+        }
+
+        try {
+            Gson gson = new Gson();
+            JsonObject jsonObject = (JsonObject) new JsonParser().parse(new FileReader(configFile));
+
+            return jsonObject.get("antibotEnabled").getAsBoolean();
+        } catch (IOException | JsonSyntaxException e) {
+            getLogger().log(Level.WARNING, "Error reading antibotEnabled from format_config.json.", e);
+        }
+
+        return false; // En caso de error, asumimos que la función está deshabilitada.
     }
 
     @Override
