@@ -8,6 +8,7 @@ Advanced chat plugin | JSON
 - Ban words
 - PlaceholderAPI support
 - PlaceholderAPI expansion
+- AntiBot
 
 # Commands
 - /chat reload
