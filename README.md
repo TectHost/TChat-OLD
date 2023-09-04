@@ -9,6 +9,7 @@ Advanced chat plugin | JSON
 - PlaceholderAPI support
 - PlaceholderAPI expansion
 - AntiBot
+- AntiCap
 
 # Commands
 - /chat reload
