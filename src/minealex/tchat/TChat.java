@@ -29,8 +29,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.simple.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -56,6 +58,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     private Map<UUID, Location> lastKnownLocations = new HashMap<>();
     private Set<UUID> playersWhoMoved = new HashSet<>();
     private Map<UUID, Boolean> playerMovementStatus = new HashMap<>();
+    private boolean anticapEnabled;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -101,6 +104,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
         // Load the banned words list
         loadBannedWordsList();
+        
+        anticapEnabled = isAnticapEnabled();
 
         // Habilitar la función antibot si está habilitada en la configuración
         if (isAntibotEnabled()) {
@@ -132,6 +137,25 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             return jsonObject.get("antibotEnabled").getAsBoolean();
         } catch (IOException | JsonSyntaxException e) {
             getLogger().log(Level.WARNING, "Error reading antibotEnabled from format_config.json.", e);
+        }
+
+        return false; // En caso de error, asumimos que la función está deshabilitada.
+    }
+    
+    private boolean isAnticapEnabled() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false; // Si el archivo no existe, la función está deshabilitada por defecto.
+        }
+
+        try {
+            Gson gson = new Gson();
+            JsonObject jsonObject = (JsonObject) new JsonParser().parse(new FileReader(configFile));
+            JsonObject anticapSettings = jsonObject.getAsJsonObject("anticap_settings");
+
+            return anticapSettings != null && anticapSettings.get("anticap_enabled").getAsBoolean();
+        } catch (IOException | JsonSyntaxException e) {
+            getLogger().log(Level.WARNING, "Error reading anticap_enabled from format_config.json.", e);
         }
 
         return false; // En caso de error, asumimos que la función está deshabilitada.

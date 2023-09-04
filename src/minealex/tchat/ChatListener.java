@@ -2,11 +2,21 @@ package minealex.tchat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import minealex.tchat.blocked.AntiCap;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +33,20 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
+        
+        if (isAnticapEnabled()) {
+            // Aplicar anticap solo si está habilitado
+            String correctedMessage = AntiCap.fixCaps(message);
+
+            // Formatear el mensaje y establecer el formato del chat
+            String format = plugin.formatMessage(correctedMessage, event.getPlayer());
+            event.setFormat(format);
+            event.setMessage(correctedMessage);
+        } else {
+            // El anticap está deshabilitado, no se hace nada especial
+            String format = plugin.formatMessage(message, event.getPlayer());
+            event.setFormat(format);
+        }
 
         // Check if the message contains any banned words
         if (plugin.getBannedWords().isWordBanned(message.toLowerCase()) && !plugin.getBannedWords().canBypassBannedWords(player)) {
@@ -39,9 +63,40 @@ public class ChatListener implements Listener {
         // Format the message and set the chat format
         String format = plugin.formatMessage(event.getMessage(), event.getPlayer());
         event.setFormat(format);
+        
+        if (isAnticapEnabled()) {
+            // Aplicar anticap solo si está habilitado
+            String correctedMessage = AntiCap.fixCaps(message);
+
+            // Format the message and set the chat format
+            String format1 = plugin.formatMessage(correctedMessage, event.getPlayer());
+            event.setFormat(format1);
+            event.setMessage(correctedMessage);
+        }
     }
 
-    // Agrega un método para verificar si el jugador se ha movido
+    private boolean isAnticapEnabled() {
+        File configFile = new File(plugin.getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false; // Si el archivo no existe, la función está deshabilitada por defecto.
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+
+            JsonObject anticapSettings = jsonObject.getAsJsonObject("anticap_settings");
+            return anticapSettings.get("anticap_enabled").getAsBoolean(); // Leer anticap_enabled del JSON
+        } catch (IOException e) {
+            plugin.getLogger().warning("Error reading format_config.json: " + e.getMessage());
+        } catch (Exception e) {
+            plugin.getLogger().warning("Error reading anticap_enabled from format_config.json: " + e.getMessage());
+        }
+
+        return false; // En caso de error, asumimos que la función está deshabilitada.
+    }
+
+	// Agrega un método para verificar si el jugador se ha movido
     private boolean hasPlayerMoved(Player player) {
         Location lastLocation = plugin.getLastPlayerLocation(player);
 
