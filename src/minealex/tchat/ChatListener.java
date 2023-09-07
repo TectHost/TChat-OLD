@@ -13,6 +13,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import minealex.tchat.blocked.AntiCap;
+import minealex.tchat.blocked.AntiFlood;
 
 import java.io.File;
 import java.io.FileReader;
@@ -24,15 +25,50 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class ChatListener implements Listener {
     private TChat plugin;
+    private AntiFlood antiFlood;
+    private Map<UUID, Long> lastChatTime = new HashMap<>();
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
+        this.antiFlood = new AntiFlood(plugin.getChatCooldownSeconds());
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
+        
+        if (!antiFlood.canPlayerChat(player)) {
+            event.setCancelled(true);
+            int remainingTime = antiFlood.getRemainingTime(player);
+            String message1 = plugin.getMessage("chatCooldownMessage");
+
+            // Reemplaza el marcador de posición %time% con el tiempo restante
+            message1 = message1.replace("%time%", String.valueOf(remainingTime));
+
+            // Aplica colores y establece el mensaje personalizado
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message1));
+            return;
+        }
+
+        // Restricción del tiempo entre mensajes
+        long currentTimeMillis = System.currentTimeMillis();
+        long lastChatMillis = lastChatTime.getOrDefault(player.getUniqueId(), 0L);
+        int chatCooldownSeconds = plugin.getChatCooldownSeconds();
+        String chatCooldownMessage = plugin.getMessage("chatCooldownMessage"); 
+
+        if (currentTimeMillis - lastChatMillis < chatCooldownSeconds * 1000) {
+            event.setCancelled(true);
+            int remainingTime = (int) (chatCooldownSeconds - (currentTimeMillis - lastChatMillis) / 1000);
+            String message1 = chatCooldownMessage.replace("%time%", String.valueOf(remainingTime));
+
+            // Aplicar colores y enviar el mensaje personalizado
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message1));
+            return;
+        }
+
+        // Actualizar el tiempo del último mensaje
+        lastChatTime.put(player.getUniqueId(), currentTimeMillis);
         
         if (isAnticapEnabled()) {
             // Aplicar anticap solo si está habilitado
@@ -75,7 +111,12 @@ public class ChatListener implements Listener {
         }
     }
 
-    private boolean isAnticapEnabled() {
+    private int getChatCooldownSeconds() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	private boolean isAnticapEnabled() {
         File configFile = new File(plugin.getDataFolder(), "format_config.json");
         if (!configFile.exists()) {
             return false; // Si el archivo no existe, la función está deshabilitada por defecto.

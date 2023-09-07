@@ -59,6 +59,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     private Set<UUID> playersWhoMoved = new HashSet<>();
     private Map<UUID, Boolean> playerMovementStatus = new HashMap<>();
     private boolean anticapEnabled;
+	private int chatCooldownSeconds;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -117,13 +118,38 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
         // Registrar el evento de movimiento
         getServer().getPluginManager().registerEvents(this, this);
+        
+        loadAndSetChatCooldownSeconds();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholders(this).register();
         }
     }
+    
+    private void loadAndSetChatCooldownSeconds() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            getLogger().warning("The format_config.json file does not exist.");
+            return;
+        }
 
-    // Agrega un método para verificar si la función antibot está habilitada
+        try {
+            Gson gson = new Gson();
+            JsonObject jsonObject = (JsonObject) new JsonParser().parse(new FileReader(configFile));
+
+            chatCooldownSeconds = jsonObject.get("chatCooldownSeconds").getAsInt();
+            getLogger().info("chatCooldownSeconds set to " + chatCooldownSeconds + " seconds.");
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Error loading format_config.json: " + e.getMessage());
+        }
+    }
+
+    // Agrega un método para establecer chatCooldownSeconds en tu plugin
+    public int getChatCooldownSeconds() {
+        return chatCooldownSeconds;
+    }
+
+	// Agrega un método para verificar si la función antibot está habilitada
     boolean isAntibotEnabled() {
         File configFile = new File(getDataFolder(), "format_config.json");
         if (!configFile.exists()) {

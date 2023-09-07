@@ -18,10 +18,12 @@
     "reloadError": "&5TChat &e> &cError reloading TChat configuration. Check the format_config.json file.",
     "clearChatMessage": "&5TChat &e> &cChat has been cleared.",
     "clearChatSuccess": "&5TChat &e> &aChat cleared successfully!",
-    "onlyPlayer": "&5TChat &e> &cThis command can only be executed by a player."
+    "onlyPlayer": "&5TChat &e> &cThis command can only be executed by a player.",
+    "chatCooldownMessage": "&5TChat &e> &cYou must wait %time% seconds before sending another message."
   },
   "anticap_settings": {
     "anticap_enabled": true
   },
-  "antibotEnabled": true
+  "antibotEnabled": true,
+  "chatCooldownSeconds": 5
 }
