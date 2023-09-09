@@ -14,6 +14,7 @@ import com.google.gson.JsonParser;
 
 import minealex.tchat.blocked.AntiCap;
 import minealex.tchat.blocked.AntiFlood;
+import minealex.tchat.blocked.AntiSpam;
 
 import java.io.File;
 import java.io.FileReader;
@@ -37,6 +38,19 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
+        
+        if (isAntispamEnabled() && AntiSpam.containsRepeatedLetters(message)) {
+            event.setCancelled(true);
+            AntiSpam.handleSpamMessage(player, message);
+            return;
+        }
+
+        if (AntiSpam.containsRepeatedLetters(message)) {
+            event.setCancelled(true);
+            String antiSpamMessage = plugin.getMessage("antiSpamBlocked");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', antiSpamMessage));
+            return;
+        }
         
         if (!antiFlood.canPlayerChat(player)) {
             event.setCancelled(true);
@@ -111,7 +125,12 @@ public class ChatListener implements Listener {
         }
     }
 
-    private int getChatCooldownSeconds() {
+    private boolean isAntispamEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	private int getChatCooldownSeconds() {
 		// TODO Auto-generated method stub
 		return 0;
 	}

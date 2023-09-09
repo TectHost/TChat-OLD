@@ -148,6 +148,26 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     public int getChatCooldownSeconds() {
         return chatCooldownSeconds;
     }
+    
+    private boolean isAntispamEnabled() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false; // Si el archivo no existe, la función está deshabilitada por defecto.
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+
+            return jsonObject.get("antiSpamEnabled").getAsBoolean(); // Leer antiSpamEnabled del JSON
+        } catch (IOException e) {
+            getLogger().warning("Error reading format_config.json: " + e.getMessage());
+        } catch (Exception e) {
+            getLogger().warning("Error reading antiSpamEnabled from format_config.json: " + e.getMessage());
+        }
+
+        return false; // En caso de error, asumimos que la función está deshabilitada.
+    }
 
 	// Agrega un método para verificar si la función antibot está habilitada
     boolean isAntibotEnabled() {

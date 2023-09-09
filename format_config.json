@@ -19,11 +19,13 @@
     "clearChatMessage": "&5TChat &e> &cChat has been cleared.",
     "clearChatSuccess": "&5TChat &e> &aChat cleared successfully!",
     "onlyPlayer": "&5TChat &e> &cThis command can only be executed by a player.",
-    "chatCooldownMessage": "&5TChat &e> &cYou must wait %time% seconds before sending another message."
+    "chatCooldownMessage": "&5TChat &e> &cYou must wait %time% seconds before sending another message.",
+    "antiSpamBlocked": "&5TChat &e> &cYou cannot send messages with repeated letters."
   },
   "anticap_settings": {
     "anticap_enabled": true
   },
   "antibotEnabled": true,
-  "chatCooldownSeconds": 5
+  "chatCooldownSeconds": 5,
+  "antiSpamEnabled": true
 }
