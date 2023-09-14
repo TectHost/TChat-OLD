@@ -12,6 +12,7 @@ Advanced chat plugin | JSON
 - AntiCap
 - AntiFlood
 - AntiSpam
+- AntiAdvertising
 
 # Commands
 - /chat reload
