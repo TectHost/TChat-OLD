@@ -20,10 +20,19 @@
     "clearChatSuccess": "&5TChat &e> &aChat cleared successfully!",
     "onlyPlayer": "&5TChat &e> &cThis command can only be executed by a player.",
     "chatCooldownMessage": "&5TChat &e> &cYou must wait %time% seconds before sending another message.",
-    "antiSpamBlocked": "&5TChat &e> &cYou cannot send messages with repeated letters."
+    "antiSpamBlocked": "&5TChat &e> &cYou cannot send messages with repeated letters.",
+    "antiAdvertisingIPv4Blocked": "&5TChat &e> &cIPv4 addresses are not allowed in chat.",
+    "antiAdvertisingDomainBlocked": "&5TChat &e> &cDomain names are not allowed in chat.",
+    "antiAdvertisingLinkBlocked": "&5TChat &e> &cLinks are not allowed in chat."
   },
   "anticap_settings": {
     "anticap_enabled": true
+  },
+  "antiAdvertisingEnabled": true,
+  "antiAdvertisingSettings": {
+    "ipv4_blocked": true,
+    "domain_blocked": true,
+    "link_blocked": true
   },
   "antibotEnabled": true,
   "chatCooldownSeconds": 5,

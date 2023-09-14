@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import minealex.tchat.blocked.AntiAdvertising;
 import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.TChatReloadCommand;
@@ -137,7 +138,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             Gson gson = new Gson();
             JsonObject jsonObject = (JsonObject) new JsonParser().parse(new FileReader(configFile));
 
-            chatCooldownSeconds = jsonObject.get("chatCooldownSeconds").getAsInt();
+            chatCooldownSeconds = jsonObject.get("chatCooldownSeconds").getAsInt();  // Guardar el valor en la variable
             getLogger().info("chatCooldownSeconds set to " + chatCooldownSeconds + " seconds.");
         } catch (IOException e) {
             getLogger().log(Level.WARNING, "Error loading format_config.json: " + e.getMessage());
@@ -146,27 +147,29 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
     // Agrega un método para establecer chatCooldownSeconds en tu plugin
     public int getChatCooldownSeconds() {
-        return chatCooldownSeconds;
+        return chatCooldownSeconds;  // Devolver el valor almacenado en la variable
     }
     
     private boolean isAntispamEnabled() {
         File configFile = new File(getDataFolder(), "format_config.json");
         if (!configFile.exists()) {
-            return false; // Si el archivo no existe, la función está deshabilitada por defecto.
+            return false;
         }
 
         try (FileReader reader = new FileReader(configFile)) {
             JsonParser parser = new JsonParser();
             JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+            boolean antiSpamEnabled = jsonObject.get("antiSpamEnabled").getAsBoolean();
+            getLogger().info("antiSpamEnabled value: " + antiSpamEnabled); // Agrega este registro para depuración
 
-            return jsonObject.get("antiSpamEnabled").getAsBoolean(); // Leer antiSpamEnabled del JSON
+            return antiSpamEnabled;
         } catch (IOException e) {
             getLogger().warning("Error reading format_config.json: " + e.getMessage());
         } catch (Exception e) {
             getLogger().warning("Error reading antiSpamEnabled from format_config.json: " + e.getMessage());
         }
 
-        return false; // En caso de error, asumimos que la función está deshabilitada.
+        return false;
     }
 
 	// Agrega un método para verificar si la función antibot está habilitada
@@ -405,5 +408,115 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
     public Map<String, ChatGroup> getGroups() {
         return groups;
+    }
+    
+    public boolean isAntiAdvertisingEnabled() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false; // Si el archivo no existe, la función está deshabilitada por defecto.
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+
+            return jsonObject.get("antiAdvertisingEnabled").getAsBoolean(); // Leer antiAdvertisingEnabled del JSON
+        } catch (IOException e) {
+            getLogger().warning("Error reading format_config.json: " + e.getMessage());
+        } catch (Exception e) {
+            getLogger().warning("Error reading antiAdvertisingEnabled from format_config.json: " + e.getMessage());
+        }
+
+        return false; // En caso de error, asumimos que la función está deshabilitada.
+    }
+
+    public boolean isIPv4Blocked() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false;
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+            JsonObject antiAdvertisingSettings = jsonObject.getAsJsonObject("antiAdvertisingSettings");
+
+            return antiAdvertisingSettings != null && antiAdvertisingSettings.get("ipv4_blocked").getAsBoolean();
+        } catch (IOException | JsonSyntaxException e) {
+            getLogger().log(Level.WARNING, "Error reading ipv4_blocked from format_config.json.", e);
+        }
+
+        return false;
+    }
+
+    public boolean isDomainBlocked() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false;
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+            JsonObject antiAdvertisingSettings = jsonObject.getAsJsonObject("antiAdvertisingSettings");
+
+            return antiAdvertisingSettings != null && antiAdvertisingSettings.get("domain_blocked").getAsBoolean();
+        } catch (IOException | JsonSyntaxException e) {
+            getLogger().log(Level.WARNING, "Error reading domain_blocked from format_config.json.", e);
+        }
+
+        return false;
+    }
+
+    public boolean isLinkBlocked() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false;
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+            JsonObject antiAdvertisingSettings = jsonObject.getAsJsonObject("antiAdvertisingSettings");
+
+            return antiAdvertisingSettings != null && antiAdvertisingSettings.get("link_blocked").getAsBoolean();
+        } catch (IOException | JsonSyntaxException e) {
+            getLogger().log(Level.WARNING, "Error reading link_blocked from format_config.json.", e);
+        }
+
+        return false;
+    }
+
+    public void handleBlockedIPv4(Player player) {
+		String message = this.getMessage("antiAdvertisingIPv4Blocked");
+        player.sendMessage(message);
+    }
+
+    public void handleBlockedDomain(Player player) {
+        String message = this.getMessage("antiAdvertisingDomainBlocked");
+        player.sendMessage(message);
+    }
+
+    public void handleBlockedLink(Player player) {
+        String message = this.getMessage("antiAdvertisingLinkBlocked");
+        player.sendMessage(message);
+    }
+
+    public boolean isAdvertisingBlocked(String message) {
+        AntiAdvertising antiAdvertising = new AntiAdvertising(this);
+
+        if (antiAdvertising.isIPv4Blocked() && message.matches(".*\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b.*")) {
+            return true;
+        }
+
+        if (antiAdvertising.isDomainBlocked() && message.matches(".*\\b[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\\b.*")) {
+            return true;
+        }
+
+        if (antiAdvertising.isLinkBlocked() && message.matches(".*\\bhttps?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/?.*")) {
+            return true;
+        }
+
+        return false;
     }
 }

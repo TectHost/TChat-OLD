@@ -12,6 +12,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import me.clip.placeholderapi.PlaceholderAPI;
+import minealex.tchat.blocked.AntiAdvertising;
 import minealex.tchat.blocked.AntiCap;
 import minealex.tchat.blocked.AntiFlood;
 import minealex.tchat.blocked.AntiSpam;
@@ -22,19 +24,23 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.UnknownFormatConversionException;
 
 @SuppressWarnings("unused")
 public class ChatListener implements Listener {
     private TChat plugin;
     private AntiFlood antiFlood;
     private Map<UUID, Long> lastChatTime = new HashMap<>();
+    private boolean isProcessingChat = false;
+	private TChat antiAdvertising;
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
         this.antiFlood = new AntiFlood(plugin.getChatCooldownSeconds());
+        this.antiAdvertising = plugin;
     }
 
-    @EventHandler
+	@EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
@@ -50,6 +56,21 @@ public class ChatListener implements Listener {
             String antiSpamMessage = plugin.getMessage("antiSpamBlocked");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', antiSpamMessage));
             return;
+        }
+        
+        if (isAntiAdvertisingEnabled()) {
+            if (antiAdvertising.isAdvertisingBlocked(message)) {
+                event.setCancelled(true);
+
+                if (antiAdvertising.isIPv4Blocked() && message.matches(".*\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b.*")) {
+                    antiAdvertising.handleBlockedIPv4(player);
+                } else if (antiAdvertising.isDomainBlocked() && message.matches(".*\\b[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\\b.*")) {
+                    antiAdvertising.handleBlockedDomain(player);
+                } else if (antiAdvertising.isLinkBlocked() && message.matches(".*\\bhttps?://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/?.*")) {
+                    antiAdvertising.handleBlockedLink(player);
+                }
+                return;
+            }
         }
         
         if (!antiFlood.canPlayerChat(player)) {
@@ -85,16 +106,16 @@ public class ChatListener implements Listener {
         lastChatTime.put(player.getUniqueId(), currentTimeMillis);
         
         if (isAnticapEnabled()) {
-            // Aplicar anticap solo si está habilitado
             String correctedMessage = AntiCap.fixCaps(message);
-
-            // Formatear el mensaje y establecer el formato del chat
             String format = plugin.formatMessage(correctedMessage, event.getPlayer());
+            format = PlaceholderAPI.setPlaceholders(player, format);
+            format = format.replace("{porcentaje}", "%"); // Cambia {porcentaje} a %
             event.setFormat(format);
-            event.setMessage(correctedMessage);
+            event.setMessage(correctedMessage.replace("{porcentaje}", "%")); // Cambia {porcentaje} a %
         } else {
-            // El anticap está deshabilitado, no se hace nada especial
             String format = plugin.formatMessage(message, event.getPlayer());
+            format = PlaceholderAPI.setPlaceholders(player, format);
+            format = format.replace("{porcentaje}", "%"); // Cambia {porcentaje} a %
             event.setFormat(format);
         }
 
@@ -125,13 +146,23 @@ public class ChatListener implements Listener {
         }
     }
 
-    private boolean isAntispamEnabled() {
-		// TODO Auto-generated method stub
+	private boolean isAntiAdvertisingEnabled() {
+        return plugin.isAntiAdvertisingEnabled();
+    }
+	
+	private boolean isDomainBlocked() {
+		return false;
+	}
+
+	private boolean isIPv4Blocked() {
+		return false;
+	}
+
+	private boolean isAntispamEnabled() {
 		return false;
 	}
 
 	private int getChatCooldownSeconds() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
