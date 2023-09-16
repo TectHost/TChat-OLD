@@ -1,5 +1,5 @@
 name: TChat
-version: 1.7
+version: 1.8
 main: minealex.tchat.TChat
 
 commands:
@@ -7,3 +7,5 @@ commands:
     description: TChat command
   chatclear:
     description: Clear the chat
+    aliases:
+      - cc

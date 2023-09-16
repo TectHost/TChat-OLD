@@ -23,10 +23,9 @@
     "antiSpamBlocked": "&5TChat &e> &cYou cannot send messages with repeated letters.",
     "antiAdvertisingIPv4Blocked": "&5TChat &e> &cIPv4 addresses are not allowed in chat.",
     "antiAdvertisingDomainBlocked": "&5TChat &e> &cDomain names are not allowed in chat.",
-    "antiAdvertisingLinkBlocked": "&5TChat &e> &cLinks are not allowed in chat."
+    "antiAdvertisingLinkBlocked": "&5TChat &e> &cLinks are not allowed in chat.",
+    "versionMessage": "&5TChat &e> &fPlugin version: &a{version}"
   },
-  "anticap_settings": {
-    "anticap_enabled": true
   },
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {
@@ -36,5 +35,6 @@
   },
   "antibotEnabled": true,
   "chatCooldownSeconds": 5,
-  "antiSpamEnabled": true
+  "antiSpamEnabled": true,
+  "anticap_enabled": true
 }

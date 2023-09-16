@@ -11,7 +11,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import minealex.tchat.blocked.AntiAdvertising;
 import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.commands.ClearChatCommand;
-import minealex.tchat.commands.TChatReloadCommand;
+import minealex.tchat.commands.Commands;
 import minealex.tchat.listener.PlayerMoveListener;
 import minealex.tchat.placeholders.Placeholders;
 
@@ -61,6 +61,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     private Map<UUID, Boolean> playerMovementStatus = new HashMap<>();
     private boolean anticapEnabled;
 	private int chatCooldownSeconds;
+	private String version;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -96,7 +97,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     @Override
     public void onEnable() {
         // Registrar el comando /chat reload
-        getCommand("chat").setExecutor(new TChatReloadCommand(this));
+        getCommand("chat").setExecutor(new Commands(this));
+        
+        this.version = getDescription().getVersion();
 
         // Registrar el comando /chat clear
         getCommand("chatclear").setExecutor(new ClearChatCommand(this));
@@ -518,5 +521,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         }
 
         return false;
+    }
+    
+    public String getVersion() {
+        return this.version;
     }
 }

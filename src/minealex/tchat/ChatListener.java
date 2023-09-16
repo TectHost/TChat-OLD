@@ -45,6 +45,8 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         String message = event.getMessage();
         
+        message = message.replace("%", "%%");
+        
         if (isAntispamEnabled() && AntiSpam.containsRepeatedLetters(message)) {
             event.setCancelled(true);
             AntiSpam.handleSpamMessage(player, message);
@@ -107,16 +109,15 @@ public class ChatListener implements Listener {
         
         if (isAnticapEnabled()) {
             String correctedMessage = AntiCap.fixCaps(message);
-            String format = plugin.formatMessage(correctedMessage, event.getPlayer());
-            format = PlaceholderAPI.setPlaceholders(player, format);
-            format = format.replace("{porcentaje}", "%"); // Cambia {porcentaje} a %
-            event.setFormat(format);
-            event.setMessage(correctedMessage.replace("{porcentaje}", "%")); // Cambia {porcentaje} a %
+            String format1 = plugin.formatMessage(correctedMessage, event.getPlayer());
+            format1 = PlaceholderAPI.setPlaceholders(player, format1);
+            event.setFormat(format1);
+            event.setMessage(correctedMessage.replace("%", "%%"));
         } else {
             String format = plugin.formatMessage(message, event.getPlayer());
             format = PlaceholderAPI.setPlaceholders(player, format);
-            format = format.replace("{porcentaje}", "%"); // Cambia {porcentaje} a %
             event.setFormat(format);
+            event.setMessage(message.replace("%", "%%"));
         }
 
         // Check if the message contains any banned words
@@ -133,6 +134,7 @@ public class ChatListener implements Listener {
             }
         // Format the message and set the chat format
         String format = plugin.formatMessage(event.getMessage(), event.getPlayer());
+        format = PlaceholderAPI.setPlaceholders(player, format);
         event.setFormat(format);
         
         if (isAnticapEnabled()) {
@@ -176,8 +178,7 @@ public class ChatListener implements Listener {
             JsonParser parser = new JsonParser();
             JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
 
-            JsonObject anticapSettings = jsonObject.getAsJsonObject("anticap_settings");
-            return anticapSettings.get("anticap_enabled").getAsBoolean(); // Leer anticap_enabled del JSON
+            return jsonObject.get("anticap_enabled").getAsBoolean(); // Leer anticap_enabled del JSON
         } catch (IOException e) {
             plugin.getLogger().warning("Error reading format_config.json: " + e.getMessage());
         } catch (Exception e) {
