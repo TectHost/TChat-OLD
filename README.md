@@ -17,11 +17,13 @@ Advanced chat plugin | JSON
 # Commands
 - /chat reload
 - /chatclear
+- /chat version
 
 # Permissions
 - tchat.reload
 - tchat.group.(group)
 - tchat.admin.chatclear
+- tchat.version
 
 # Dependencies
 - PlaceholderAPI
