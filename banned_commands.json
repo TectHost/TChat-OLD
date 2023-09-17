@@ -1,0 +1,12 @@
+{
+  "bannedCommands": [
+    "pl",
+    "plugins",
+    "icanhasbukkit",
+    "about",
+    "?",
+    "help",
+    "ver"
+  ],
+  "blockedMessage": "&5TChat &e> &cYou are not allowed to use that command."
+}

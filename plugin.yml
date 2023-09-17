@@ -1,5 +1,5 @@
 name: TChat
-version: 1.8
+version: 1.9
 main: minealex.tchat.TChat
 
 commands:
@@ -9,3 +9,11 @@ commands:
     description: Clear the chat
     aliases:
       - cc
+  msg:
+    description: Send a private message
+    aliases:
+      - tell
+      - whisper
+      - ewhisper
+      - pm
+      - emsg

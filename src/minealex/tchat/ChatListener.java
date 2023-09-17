@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -17,6 +20,7 @@ import minealex.tchat.blocked.AntiAdvertising;
 import minealex.tchat.blocked.AntiCap;
 import minealex.tchat.blocked.AntiFlood;
 import minealex.tchat.blocked.AntiSpam;
+import minealex.tchat.blocked.BannedCommands;
 
 import java.io.File;
 import java.io.FileReader;
@@ -39,7 +43,35 @@ public class ChatListener implements Listener {
         this.antiFlood = new AntiFlood(plugin.getChatCooldownSeconds());
         this.antiAdvertising = plugin;
     }
+    
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        String[] parts = event.getMessage().split(" ");
+        String command = parts[0].substring(1); // Quitamos el "/" del comando
 
+        if (plugin.getBannedCommands() != null && plugin.getBannedCommands().isCommandBanned(command)) {
+            event.setCancelled(true);
+
+            // Leer el archivo JSON
+            try {
+                JSONParser parser = new JSONParser();
+                Object obj = parser.parse(new FileReader(plugin.getDataFolder() + "/banned_commands.json"));
+                JSONObject jsonObject = (JSONObject) obj;
+
+                // Obtener el mensaje bloqueado
+                String blockedMessage = (String) jsonObject.get("blockedMessage");
+
+                // Enviar el mensaje al jugador
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', blockedMessage));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return;
+        }
+    }
+    
 	@EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();

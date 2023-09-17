@@ -26,6 +26,9 @@
     "antiAdvertisingLinkBlocked": "&5TChat &e> &cLinks are not allowed in chat.",
     "versionMessage": "&5TChat &e> &fPlugin version: &a{version}"
   },
+  "msgFormats": {
+    "msgSent": "&5&l⚠️ &a<sender> &e&l> &f<message>",
+    "msgReceived": "&5&l⚠️ &a<sender> &e&l> &f<message>"
   },
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {

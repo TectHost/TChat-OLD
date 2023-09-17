@@ -9,9 +9,11 @@ import com.google.gson.JsonSyntaxException;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import minealex.tchat.blocked.AntiAdvertising;
+import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
+import minealex.tchat.commands.MsgCommand;
 import minealex.tchat.listener.PlayerMoveListener;
 import minealex.tchat.placeholders.Placeholders;
 
@@ -62,6 +64,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     private boolean anticapEnabled;
 	private int chatCooldownSeconds;
 	private String version;
+	private BannedCommands bannedCommands;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -98,12 +101,12 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     public void onEnable() {
         // Registrar el comando /chat reload
         getCommand("chat").setExecutor(new Commands(this));
-        
+        MsgCommand msgCommand = new MsgCommand(this);
+        getCommand("msg").setExecutor(msgCommand);
         this.version = getDescription().getVersion();
 
         // Registrar el comando /chat clear
         getCommand("chatclear").setExecutor(new ClearChatCommand(this));
-
         // Cargar la configuración
         loadConfigFile();
 
@@ -119,6 +122,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
         // Registrar el evento del chat
         registerChatListener();
+        bannedCommands = new BannedCommands(this);
 
         // Registrar el evento de movimiento
         getServer().getPluginManager().registerEvents(this, this);
@@ -525,5 +529,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     
     public String getVersion() {
         return this.version;
+    }
+    
+    public BannedCommands getBannedCommands() {
+        return bannedCommands;
     }
 }
