@@ -13,6 +13,8 @@ Advanced chat plugin | JSON
 - AntiFlood
 - AntiSpam
 - AntiAdvertising
+- BanCommands
+- MsgFormatter
 
 # Commands
 - /chat reload
@@ -20,6 +22,11 @@ Advanced chat plugin | JSON
 - /chat version
 - /msg
 - /cc
+- /tell
+- /whisper
+- /ewhisper
+- /pm
+- /emsg
 
 # Permissions
 - tchat.reload
