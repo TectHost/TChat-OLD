@@ -18,12 +18,15 @@ Advanced chat plugin | JSON
 - /chat reload
 - /chatclear
 - /chat version
+- /msg
+- /cc
 
 # Permissions
 - tchat.reload
 - tchat.group.(group)
 - tchat.admin.chatclear
 - tchat.version
+- tchat.bypass.bannedwords
 
 # Dependencies
 - PlaceholderAPI
