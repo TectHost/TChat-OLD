@@ -22,33 +22,40 @@ public class MsgCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if (args.length >= 2) {
-                Player recipient = sender.getServer().getPlayer(args[0]);
-                if (recipient != null) {
-                    String message = String.join(" ", args).substring(args[0].length() + 1);
+            if (sender.hasPermission("tchat.msg")) {
+                if (args.length >= 2) {
+                    Player recipient = sender.getServer().getPlayer(args[0]);
+                    if (recipient != null) {
+                        String message = String.join(" ", args).substring(args[0].length() + 1);
+                        
+                        plugin.updateLastConversationalist(((Player) sender).getUniqueId(), recipient.getUniqueId());
 
-                    String msgSentFormat = getConfiguredFormat("msgSent");
-                    String msgReceivedFormat = getConfiguredFormat("msgReceived");
+                        String msgSentFormat = getConfiguredFormat("msgSent");
+                        String msgReceivedFormat = getConfiguredFormat("msgReceived");
 
-                    String formattedMessageSent = msgSentFormat
-                            .replace("<sender>", sender.getName())
-                            .replace("<recipient>", recipient.getName())
-                            .replace("<message>", message);
+                        String formattedMessageSent = msgSentFormat
+                                .replace("<sender>", sender.getName())
+                                .replace("<recipient>", recipient.getName())
+                                .replace("<message>", message);
 
-                    String formattedMessageReceived = msgReceivedFormat
-                            .replace("<sender>", sender.getName())
-                            .replace("<message>", message);
+                        String formattedMessageReceived = msgReceivedFormat
+                                .replace("<sender>", sender.getName())
+                                .replace("<recipient>", recipient.getName())
+                                .replace("<message>", message);
 
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessageSent));
-                    recipient.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessageReceived));
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessageSent));
+                        recipient.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessageReceived));
+                    } else {
+                        sender.sendMessage(getConfiguredFormat("noPlayerOnline"));
+                    }
                 } else {
-                    sender.sendMessage("The specified player is not online.");
+                    sender.sendMessage(getConfiguredFormat("incorrectUsage"));
                 }
             } else {
-                sender.sendMessage("Incorrect use. You must use /msg <player> <message>");
+                sender.sendMessage(getConfiguredFormat("noPermission"));
             }
         } else {
-            sender.sendMessage("Only players can use this command.");
+            sender.sendMessage(getConfiguredFormat("playersOnly"));
         }
         return true;
     }
@@ -60,7 +67,16 @@ public class MsgCommand implements CommandExecutor {
             Object obj = parser.parse(new FileReader(filePath));
             JSONObject jsonObject = (JSONObject) obj;
 
-            return (String) ((JSONObject) jsonObject.get("msgFormats")).get(formatKey);
+            JSONObject msgFormats = (JSONObject) jsonObject.get("msgFormats");
+            JSONObject messages = (JSONObject) jsonObject.get("messages");
+
+            if (msgFormats.containsKey(formatKey)) {
+                return ChatColor.translateAlternateColorCodes('&', (String) msgFormats.get(formatKey));
+            } else if (messages.containsKey(formatKey)) {
+                return ChatColor.translateAlternateColorCodes('&', (String) messages.get(formatKey));
+            } else {
+                return "<sender> whispers to <recipient>: <message>";
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return "<sender> whispers to <recipient>: <message>";

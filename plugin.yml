@@ -1,5 +1,5 @@
 name: TChat
-version: 1.9
+version: 2.0
 main: minealex.tchat.TChat
 
 commands:
@@ -17,3 +17,7 @@ commands:
       - ewhisper
       - pm
       - emsg
+  reply:
+    description: Send a reply to a private message
+    aliases:
+      - r

@@ -51,25 +51,46 @@ public class ChatListener implements Listener {
         String command = parts[0].substring(1); // Quitamos el "/" del comando
 
         if (plugin.getBannedCommands() != null && plugin.getBannedCommands().isCommandBanned(command)) {
-            event.setCancelled(true);
+            if (!player.hasPermission("tchat.bypass.commandblocker")) {
+                event.setCancelled(true);
 
-            // Leer el archivo JSON
-            try {
-                JSONParser parser = new JSONParser();
-                Object obj = parser.parse(new FileReader(plugin.getDataFolder() + "/banned_commands.json"));
-                JSONObject jsonObject = (JSONObject) obj;
+                // Leer el archivo JSON
+                try {
+                    JSONParser parser = new JSONParser();
+                    Object obj = parser.parse(new FileReader(plugin.getDataFolder() + "/banned_commands.json"));
+                    JSONObject jsonObject = (JSONObject) obj;
 
-                // Obtener el mensaje bloqueado
-                String blockedMessage = (String) jsonObject.get("blockedMessage");
+                    // Obtener el mensaje bloqueado
+                    String blockedMessage = (String) jsonObject.get("blockedMessage");
 
-                // Enviar el mensaje al jugador
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', blockedMessage));
-            } catch (Exception e) {
-                e.printStackTrace();
+                    // Enviar el mensaje al jugador
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', blockedMessage));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-            return;
         }
+    }
+
+    
+    private boolean isUnicodeBlocked() {
+        File configFile = new File(plugin.getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false; // Si el archivo no existe, asumimos que la función está deshabilitada por defecto.
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+
+            return jsonObject.get("anti_unicode").getAsBoolean(); // Leer anti_unicode del JSON
+        } catch (IOException e) {
+            plugin.getLogger().warning("Error reading format_config.json: " + e.getMessage());
+        } catch (Exception e) {
+            plugin.getLogger().warning("Error reading anti_unicode from format_config.json: " + e.getMessage());
+        }
+
+        return false; // En caso de error, asumimos que la función está deshabilitada.
     }
     
 	@EventHandler
@@ -78,6 +99,13 @@ public class ChatListener implements Listener {
         String message = event.getMessage();
         
         message = message.replace("%", "%%");
+        
+        if (isUnicodeBlocked() && !player.hasPermission("tchat.bypass.unicode") && containsEmojiOrUnicode(message)) {
+            event.setCancelled(true);
+            String antiUnicodeMessage = plugin.getMessage("antiUnicodeBlocked");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', antiUnicodeMessage));
+            return;
+        }
         
         if (isAntispamEnabled() && AntiSpam.containsRepeatedLetters(message)) {
             event.setCancelled(true);
@@ -186,6 +214,35 @@ public class ChatListener implements Listener {
 	
 	private boolean isDomainBlocked() {
 		return false;
+	}
+	
+	private boolean isAntiUnicodeEnabled() {
+	    File configFile = new File(plugin.getDataFolder(), "format_config.json");
+	    if (!configFile.exists()) {
+	        return false;
+	    }
+
+	    try (FileReader reader = new FileReader(configFile)) {
+	        JsonParser parser = new JsonParser();
+	        JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+
+	        return jsonObject.get("anti_unicode").getAsBoolean();
+	    } catch (IOException e) {
+	        plugin.getLogger().warning("Error reading format_config.json: " + e.getMessage());
+	    } catch (Exception e) {
+	        plugin.getLogger().warning("Error reading anti_unicode from format_config.json: " + e.getMessage());
+	    }
+
+	    return false;
+	}
+	
+	private boolean containsEmojiOrUnicode(String message) {
+	    for (char c : message.toCharArray()) {
+	        if (Character.UnicodeBlock.of(c) != Character.UnicodeBlock.BASIC_LATIN) {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
 	private boolean isIPv4Blocked() {

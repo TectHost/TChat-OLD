@@ -102,4 +102,8 @@ public class BannedCommands implements CommandExecutor {
         }
         return false;
     }
+    
+    public boolean canBypassCommandBlocker(Player player) {
+        return player.hasPermission("tchat.bypass.commandblocker");
+    }
 }

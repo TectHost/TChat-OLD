@@ -1,7 +1,7 @@
 {
   "defaultPrefix": "&a[Tect.host] ",
   "defaultSuffix": "",
-  "format": "<prefix> <player><suffix> &e>> &f",
+  "format": "<prefix><player><suffix> &e>> &f",
   "groups": {
     "admin": {
       "prefix": "&c[Admin] ",
@@ -24,11 +24,16 @@
     "antiAdvertisingIPv4Blocked": "&5TChat &e> &cIPv4 addresses are not allowed in chat.",
     "antiAdvertisingDomainBlocked": "&5TChat &e> &cDomain names are not allowed in chat.",
     "antiAdvertisingLinkBlocked": "&5TChat &e> &cLinks are not allowed in chat.",
-    "versionMessage": "&5TChat &e> &fPlugin version: &a{version}"
+    "versionMessage": "&5TChat &e> &fPlugin version: &a{version}",
+    "noPlayerOnline": "&5TChat &e> &cThe specified player is not online.",
+    "incorrectUsage": "&5TChat &e> &cIncorrect use. You must use /msg <player> <message>",
+    "playersOnly": "&5TChat &e> &cOnly players can use this command.",
+    "noLastConversationalist": "&5TChat &e> &cYou have no recent conversations to reply to.",
+    "antiUnicodeBlocked": "&5TChat &e> &cUnicode symbols are blocked."
   },
   "msgFormats": {
-    "msgSent": "&5&l⚠️ &a<sender> &e&l> &f<message>",
-    "msgReceived": "&5&l⚠️ &a<sender> &e&l> &f<message>"
+    "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",
+    "msgReceived": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>"
   },
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {
@@ -39,5 +44,6 @@
   "antibotEnabled": true,
   "chatCooldownSeconds": 5,
   "antiSpamEnabled": true,
-  "anticap_enabled": true
+  "anticap_enabled": true,
+  "anti_unicode": true
 }

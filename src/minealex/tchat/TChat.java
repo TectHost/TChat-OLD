@@ -9,11 +9,13 @@ import com.google.gson.JsonSyntaxException;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import minealex.tchat.blocked.AntiAdvertising;
+import minealex.tchat.blocked.AntiUnicode;
 import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
 import minealex.tchat.commands.MsgCommand;
+import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.listener.PlayerMoveListener;
 import minealex.tchat.placeholders.Placeholders;
 
@@ -33,6 +35,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,6 +68,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private int chatCooldownSeconds;
 	private String version;
 	private BannedCommands bannedCommands;
+	private Map<UUID, UUID> lastConversations = new HashMap<>();
+	private AntiUnicode antiUnicode;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -99,16 +104,24 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
     @Override
     public void onEnable() {
-        // Registrar el comando /chat reload
         getCommand("chat").setExecutor(new Commands(this));
+        
         MsgCommand msgCommand = new MsgCommand(this);
         getCommand("msg").setExecutor(msgCommand);
+        
         this.version = getDescription().getVersion();
-
+        
+        getCommand("reply").setExecutor(new ReplyCommand(this));
+        
         // Registrar el comando /chat clear
         getCommand("chatclear").setExecutor(new ClearChatCommand(this));
+        
         // Cargar la configuración
         loadConfigFile();
+        
+        boolean isUnicodeBlocked = isUnicodeBlocked();
+        
+        antiUnicode = new AntiUnicode(isUnicodeBlocked);
 
         // Load the banned words list
         loadBannedWordsList();
@@ -133,8 +146,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             new Placeholders(this).register();
         }
     }
-    
-    private void loadAndSetChatCooldownSeconds() {
+
+	private void loadAndSetChatCooldownSeconds() {
         File configFile = new File(getDataFolder(), "format_config.json");
         if (!configFile.exists()) {
             getLogger().warning("The format_config.json file does not exist.");
@@ -155,6 +168,26 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     // Agrega un método para establecer chatCooldownSeconds en tu plugin
     public int getChatCooldownSeconds() {
         return chatCooldownSeconds;  // Devolver el valor almacenado en la variable
+    }
+    
+    public boolean isUnicodeBlocked() {
+        File configFile = new File(getDataFolder(), "format_config.json");
+        if (!configFile.exists()) {
+            return false; // Si el archivo no existe, asumimos que la función está deshabilitada por defecto.
+        }
+
+        try (FileReader reader = new FileReader(configFile)) {
+            JsonParser parser = new JsonParser();
+            JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+
+            return jsonObject.get("anti_unicode").getAsBoolean(); // Leer anti_unicode del JSON
+        } catch (IOException e) {
+            getLogger().warning("Error reading format_config.json: " + e.getMessage());
+        } catch (Exception e) {
+            getLogger().warning("Error reading anti_unicode from format_config.json: " + e.getMessage());
+        }
+
+        return false; // En caso de error, asumimos que la función está deshabilitada.
     }
     
     private boolean isAntispamEnabled() {
@@ -498,6 +531,14 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 		String message = this.getMessage("antiAdvertisingIPv4Blocked");
         player.sendMessage(message);
     }
+    
+    public UUID getLastConversationalist(UUID playerUUID) {
+        if (lastConversations.containsKey(playerUUID)) {
+            return lastConversations.get(playerUUID);
+        } else {
+            return null; // Devuelve null si no hay una última conversación registrada
+        }
+    }
 
     public void handleBlockedDomain(Player player) {
         String message = this.getMessage("antiAdvertisingDomainBlocked");
@@ -529,6 +570,24 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     
     public String getVersion() {
         return this.version;
+    }
+    
+    public String getConfiguredFormat(String formatKey) {
+        try {
+            String filePath = getDataFolder().getPath() + "/format_config.json";
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            return (String) ((JSONObject) jsonObject.get("msgFormats")).get(formatKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "<sender> sends a message to <recipient>: <message>";
+        }
+    }
+
+    public void updateLastConversationalist(UUID sender, UUID recipient) {
+        lastConversations.put(sender, recipient);
     }
     
     public BannedCommands getBannedCommands() {
