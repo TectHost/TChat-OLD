@@ -21,6 +21,7 @@ import minealex.tchat.blocked.AntiCap;
 import minealex.tchat.blocked.AntiFlood;
 import minealex.tchat.blocked.AntiSpam;
 import minealex.tchat.blocked.BannedCommands;
+import minealex.tchat.bot.ChatGames;
 
 import java.io.File;
 import java.io.FileReader;
@@ -37,11 +38,13 @@ public class ChatListener implements Listener {
     private Map<UUID, Long> lastChatTime = new HashMap<>();
     private boolean isProcessingChat = false;
 	private TChat antiAdvertising;
+	private ChatGames chatGames;
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
         this.antiFlood = new AntiFlood(plugin.getChatCooldownSeconds());
         this.antiAdvertising = plugin;
+        this.chatGames = plugin.getChatGames();
     }
     
     @EventHandler
@@ -196,6 +199,8 @@ public class ChatListener implements Listener {
         String format = plugin.formatMessage(event.getMessage(), event.getPlayer());
         format = PlaceholderAPI.setPlaceholders(player, format);
         event.setFormat(format);
+        
+        chatGames.processChat(player, message);
         
         if (isAnticapEnabled()) {
             // Aplicar anticap solo si está habilitado

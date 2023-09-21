@@ -1,0 +1,29 @@
+[
+    {
+        "message": "&5TChat &e> &aHow much is 2 + 2?",
+        "time": 60,
+        "keyword": "4",
+        "rewards": [
+            "give %winner% diamond 1",
+            "say TChat > %winner% has won the game!"
+        ]
+    },
+    {
+        "message": "&5TChat &e> &aWrite the name of an animal that has 4 legs:",
+        "time": 45,
+        "keyword": "dog",
+        "rewards": [
+            "give %winner% iron_sword 1",
+            "say TChat > %winner% has won the game!"
+        ]
+    },
+    {
+        "message": "&5TChat &e> &aWhat is the capital of France?",
+        "time": 60,
+        "keyword": "paris",
+        "rewards": [
+            "give %winner% gold_ingot 1",
+            "say TChat > %winner% has won the game!"
+        ]
+    }
+]

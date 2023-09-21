@@ -12,10 +12,12 @@ import minealex.tchat.blocked.AntiAdvertising;
 import minealex.tchat.blocked.AntiUnicode;
 import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.blocked.BannedWords;
+import minealex.tchat.bot.ChatGames;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
 import minealex.tchat.commands.MsgCommand;
 import minealex.tchat.commands.ReplyCommand;
+import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.PlayerMoveListener;
 import minealex.tchat.placeholders.Placeholders;
 
@@ -34,6 +36,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -70,6 +73,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private BannedCommands bannedCommands;
 	private Map<UUID, UUID> lastConversations = new HashMap<>();
 	private AntiUnicode antiUnicode;
+	private ChatGames chatGames;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -112,6 +116,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         this.version = getDescription().getVersion();
         
         getCommand("reply").setExecutor(new ReplyCommand(this));
+        
+        chatGames = new ChatGames(this);
+        getServer().getPluginManager().registerEvents(new ChatEventListener(chatGames), this);
         
         // Registrar el comando /chat clear
         getCommand("chatclear").setExecutor(new ClearChatCommand(this));
@@ -572,6 +579,14 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         return this.version;
     }
     
+    public void writeJsonToFile(File file, JSONArray games) {
+        try (FileWriter fileWriter = new FileWriter(file)) {
+            fileWriter.write(games.toJSONString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public String getConfiguredFormat(String formatKey) {
         try {
             String filePath = getDataFolder().getPath() + "/format_config.json";
@@ -588,6 +603,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
     public void updateLastConversationalist(UUID sender, UUID recipient) {
         lastConversations.put(sender, recipient);
+    }
+    
+    public ChatGames getChatGames() {
+        return chatGames;
     }
     
     public BannedCommands getBannedCommands() {

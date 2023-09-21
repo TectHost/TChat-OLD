@@ -29,7 +29,8 @@
     "incorrectUsage": "&5TChat &e> &cIncorrect use. You must use /msg <player> <message>",
     "playersOnly": "&5TChat &e> &cOnly players can use this command.",
     "noLastConversationalist": "&5TChat &e> &cYou have no recent conversations to reply to.",
-    "antiUnicodeBlocked": "&5TChat &e> &cUnicode symbols are blocked."
+    "antiUnicodeBlocked": "&5TChat &e> &cUnicode symbols are blocked.",
+    "correct_answer_message": "&5TChat &e> &aCorrect answer! You receive a reward."
   },
   "msgFormats": {
     "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",
@@ -42,7 +43,7 @@
     "link_blocked": true
   },
   "antibotEnabled": true,
-  "chatCooldownSeconds": 5,
+  "chatCooldownSeconds": 3,
   "antiSpamEnabled": true,
   "anticap_enabled": true,
   "anti_unicode": true
