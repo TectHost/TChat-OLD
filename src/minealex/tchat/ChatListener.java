@@ -21,6 +21,7 @@ import minealex.tchat.blocked.AntiCap;
 import minealex.tchat.blocked.AntiFlood;
 import minealex.tchat.blocked.AntiSpam;
 import minealex.tchat.blocked.BannedCommands;
+import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
 
 import java.io.File;
@@ -39,6 +40,7 @@ public class ChatListener implements Listener {
     private boolean isProcessingChat = false;
 	private TChat antiAdvertising;
 	private ChatGames chatGames;
+	private JSONObject chatbotRespuestas;
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
@@ -102,6 +104,15 @@ public class ChatListener implements Listener {
         String message = event.getMessage();
         
         message = message.replace("%", "%%");
+        
+        ChatBot chatBot = plugin.getChatBot();
+        chatBot.sendResponse(message, player);
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        
+        if (chatbotRespuestas != null && chatbotRespuestas.containsKey(message.toLowerCase())) {
+            String respuesta = (String) chatbotRespuestas.get(message.toLowerCase());
+            player.sendMessage(ChatColor.GREEN + "Chatbot dice: " + ChatColor.RESET + respuesta);
+        }
         
         if (isUnicodeBlocked() && !player.hasPermission("tchat.bypass.unicode") && containsEmojiOrUnicode(message)) {
             event.setCancelled(true);

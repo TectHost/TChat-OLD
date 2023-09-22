@@ -12,6 +12,7 @@ import minealex.tchat.blocked.AntiAdvertising;
 import minealex.tchat.blocked.AntiUnicode;
 import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.blocked.BannedWords;
+import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
@@ -74,6 +75,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private Map<UUID, UUID> lastConversations = new HashMap<>();
 	private AntiUnicode antiUnicode;
 	private ChatGames chatGames;
+	private ChatBot chatBot;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -125,6 +127,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         // Cargar la configuración
         loadConfigFile();
+        
+        chatBot = new ChatBot(this);
         
         boolean isUnicodeBlocked = isUnicodeBlocked();
         
@@ -603,6 +607,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
     public void updateLastConversationalist(UUID sender, UUID recipient) {
         lastConversations.put(sender, recipient);
+    }
+    
+    public ChatBot getChatBot() {
+        return chatBot;
     }
     
     public ChatGames getChatGames() {
