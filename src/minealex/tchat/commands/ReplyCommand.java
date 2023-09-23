@@ -34,15 +34,15 @@ public class ReplyCommand implements CommandExecutor {
                         if (args.length > 0) {
                             String message = String.join(" ", args);
 
-                            String msgSentFormat = getConfiguredFormat("msgSent");
-                            String msgReceivedFormat = getConfiguredFormat("msgReceived");
+                            String replySentFormat = getConfiguredFormat("replySent");
+                            String replyReceivedFormat = getConfiguredFormat("replyReceived");
 
-                            String formattedMessageSent = msgSentFormat
+                            String formattedMessageSent = replySentFormat
                                     .replace("<sender>", player.getName())
                                     .replace("<recipient>", recipient.getName())
                                     .replace("<message>", message);
 
-                            String formattedMessageReceived = msgReceivedFormat
+                            String formattedMessageReceived = replyReceivedFormat
                                     .replace("<sender>", player.getName())
                                     .replace("<recipient>", recipient.getName())
                                     .replace("<message>", message);
@@ -74,11 +74,11 @@ public class ReplyCommand implements CommandExecutor {
             Object obj = parser.parse(new FileReader(filePath));
             JSONObject jsonObject = (JSONObject) obj;
 
-            JSONObject msgFormats = (JSONObject) jsonObject.get("msgFormats");
+            JSONObject replyFormats = (JSONObject) jsonObject.get("replyFormats");
             JSONObject messages = (JSONObject) jsonObject.get("messages");
 
-            if (msgFormats.containsKey(formatKey)) {
-                return ChatColor.translateAlternateColorCodes('&', (String) msgFormats.get(formatKey));
+            if (replyFormats.containsKey(formatKey)) {
+                return ChatColor.translateAlternateColorCodes('&', (String) replyFormats.get(formatKey));
             } else if (messages.containsKey(formatKey)) {
                 return ChatColor.translateAlternateColorCodes('&', (String) messages.get(formatKey));
             } else {

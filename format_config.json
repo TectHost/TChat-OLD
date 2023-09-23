@@ -36,6 +36,10 @@
     "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",
     "msgReceived": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>"
   },
+  "replyFormats": {
+    "replySent": "&5&l!! &a<sender> &e&l> &a<recipient>&7: &f<message>",
+    "replyReceived": "&5&l!! &a<sender> &e&l> &a<recipient>&7: &f<message>"
+  },
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {
     "ipv4_blocked": true,
