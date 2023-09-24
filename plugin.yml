@@ -1,5 +1,5 @@
 name: TChat
-version: 2.2.1
+version: 2.3.0
 main: minealex.tchat.TChat
 
 commands:
@@ -21,3 +21,5 @@ commands:
     description: Send a reply to a private message
     aliases:
       - r
+  chatcolor:
+    description: Set the chat color

@@ -14,6 +14,7 @@ import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
+import minealex.tchat.commands.ChatColorCommand;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
 import minealex.tchat.commands.MsgCommand;
@@ -124,6 +125,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         // Registrar el comando /chat clear
         getCommand("chatclear").setExecutor(new ClearChatCommand(this));
+        
+        getCommand("chatcolor").setExecutor(new ChatColorCommand(this));
         
         // Cargar la configuración
         loadConfigFile();

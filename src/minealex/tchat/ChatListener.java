@@ -109,6 +109,14 @@ public class ChatListener implements Listener {
         chatBot.sendResponse(message, player);
         message = ChatColor.translateAlternateColorCodes('&', message);
         
+        if (player.hasPermission("tchat.color")) {
+            // Si tiene el permiso, reemplazar los colores &
+            message = ChatColor.translateAlternateColorCodes('&', message);
+        } else {
+            // Si no tiene el permiso, no aplicar colores
+            message = ChatColor.stripColor(message); // Elimina cualquier código de color
+        }
+        
         if (chatbotRespuestas != null && chatbotRespuestas.containsKey(message.toLowerCase())) {
             String respuesta = (String) chatbotRespuestas.get(message.toLowerCase());
             player.sendMessage(ChatColor.GREEN + "Chatbot dice: " + ChatColor.RESET + respuesta);

@@ -2,6 +2,7 @@ package minealex.tchat.placeholders;
 
 import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -95,9 +96,27 @@ public class Placeholders extends PlaceholderExpansion {
 	        } else {
 	            return chatGroup.getPrefix();
 	        }
-	    }
+	    } else if (identifier.equals("chatcolor")) {
+            return obtenerColorAsignado(player);
+        }
 
 	    return null;
 	}
+	
+	private String obtenerColorAsignado(Player player) {
+	    String playerName = player.getName();
+	    String colorName = plugin.getConfig().getString("players." + player.getUniqueId() + ".chatcolor");
 
+	    if (colorName != null) {
+	        return ChatColor.valueOf(colorName).toString();
+	    }
+
+	    // Si el jugador no tiene un color asignado, devolvemos un color predeterminado
+	    return ChatColor.RESET.toString(); // Puedes cambiar esto al color que prefieras.
+	}
+
+	private boolean isValidColorCode(String colorCode) {
+	    // Verifica si el código de color es válido (por ejemplo, &a, &b, etc.)
+	    return colorCode.matches("&[0-9a-fA-F]");
+	}
 }
