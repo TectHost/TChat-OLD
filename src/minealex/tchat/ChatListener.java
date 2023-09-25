@@ -211,7 +211,8 @@ public class ChatListener implements Listener {
         UUID playerId = player.getUniqueId();
 			if (!plugin.hasPlayerMoved(playerId)) {
                 event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "Debes moverte antes de poder chatear.");
+                String antiBotMessage = plugin.getMessage("antiBotMessage");
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', antiBotMessage));
                 return;
             }
         // Format the message and set the chat format
