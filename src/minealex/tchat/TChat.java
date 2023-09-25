@@ -20,6 +20,7 @@ import minealex.tchat.commands.Commands;
 import minealex.tchat.commands.MsgCommand;
 import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.listener.ChatEventListener;
+import minealex.tchat.listener.JoinListener;
 import minealex.tchat.listener.PlayerMoveListener;
 import minealex.tchat.placeholders.Placeholders;
 
@@ -119,6 +120,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         this.version = getDescription().getVersion();
         
         getCommand("reply").setExecutor(new ReplyCommand(this));
+        
+        getServer().getPluginManager().registerEvents(new JoinListener(this), this);
         
         chatGames = new ChatGames(this);
         getServer().getPluginManager().registerEvents(new ChatEventListener(chatGames), this);
