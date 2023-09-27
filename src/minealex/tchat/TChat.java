@@ -12,6 +12,7 @@ import minealex.tchat.blocked.AntiAdvertising;
 import minealex.tchat.blocked.AntiUnicode;
 import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.blocked.BannedWords;
+import minealex.tchat.bot.AutoBroadcast;
 import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
 import minealex.tchat.commands.ChatColorCommand;
@@ -50,6 +51,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -78,6 +80,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private AntiUnicode antiUnicode;
 	private ChatGames chatGames;
 	private ChatBot chatBot;
+	private AutoBroadcast autoBroadcast;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -158,6 +161,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getServer().getPluginManager().registerEvents(this, this);
         
         loadAndSetChatCooldownSeconds();
+        
+        autoBroadcast = new AutoBroadcast(this);
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholders(this).register();

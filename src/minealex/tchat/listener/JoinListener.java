@@ -4,9 +4,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import me.clip.placeholderapi.PlaceholderAPI;
 
 import java.io.FileReader;
 
@@ -40,7 +43,8 @@ public class JoinListener implements Listener {
         }
     }
 
-    private String getConfiguredJoinMessage(String playerName) {
+    @SuppressWarnings("deprecation")
+	private String getConfiguredJoinMessage(String playerName) {
         try {
             String filePath = plugin.getDataFolder().getPath() + "/format_config.json";
             JSONParser parser = new JSONParser();
@@ -52,6 +56,7 @@ public class JoinListener implements Listener {
             if (joins != null && joins.containsKey("JoinMessage")) {
                 String joinMessage = (String) joins.get("JoinMessage");
                 joinMessage = joinMessage.replace("%player%", playerName); // Reemplazar %player% con el nombre del jugador
+                joinMessage = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(playerName), joinMessage);
                 return ChatColor.translateAlternateColorCodes('&', joinMessage);
             } else {
                 return "&5TChat &e> &7[&a+&7] &a" + playerName + " &7has entered the server";
@@ -62,7 +67,8 @@ public class JoinListener implements Listener {
         }
     }
 
-    private String getConfiguredQuitMessage(String playerName) {
+    @SuppressWarnings("deprecation")
+	private String getConfiguredQuitMessage(String playerName) {
         try {
             String filePath = plugin.getDataFolder().getPath() + "/format_config.json";
             JSONParser parser = new JSONParser();
@@ -74,6 +80,7 @@ public class JoinListener implements Listener {
             if (joins != null && joins.containsKey("QuitMessage")) {
                 String quitMessage = (String) joins.get("QuitMessage");
                 quitMessage = quitMessage.replace("%player%", playerName); // Reemplazar %player% con el nombre del jugador
+                quitMessage = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(playerName), quitMessage);
                 return ChatColor.translateAlternateColorCodes('&', quitMessage);
             } else {
                 return "&5TChat &e> &7[&c-&7] &c" + playerName + " &7has left the server";

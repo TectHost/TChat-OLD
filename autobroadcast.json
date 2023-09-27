@@ -1,0 +1,17 @@
+{
+  "time": 60,
+  "enabled": true,
+  "broadcasts": {
+    "broadcast1": [
+      "&7+----------------------",
+      "&aThis server is using TChat",
+      "&7+----------------------"
+    ],
+    "broadcast2": [
+      "&7+----------------------",
+      "&aThe best cheap hosting!",
+      "&bhttps://tect.host/",
+      "&7+----------------------"
+    ]
+  }
+}
