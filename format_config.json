@@ -48,6 +48,11 @@
     "JoinMessage": "&5TChat &e> &7[&a+&7] &a%player% &7has entered the server",
     "QuitMessage": "&5TChat &e> &7[&c-&7] &c%player% &7has left the server"
   },
+  "rules_message": [
+    "Rule 1: No cheating",
+    "Rule 2: Respecting others",
+    "Rule 3: Respect the personal space of others. Do not invade other players' building or living space without their permission."
+  ],
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {
     "ipv4_blocked": true,
