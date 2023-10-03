@@ -53,6 +53,11 @@
     "Rule 2: Respecting others",
     "Rule 3: Respect the personal space of others. Do not invade other players' building or living space without their permission."
   ],
+  "List": {
+    "header_format": "&7---- + Players online: &a%online%/%max% &7+ ----",
+    "player_format": "&a%player%",
+    "footer_format": "&7-------- + End of the list + --------"
+  },
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {
     "ipv4_blocked": true,

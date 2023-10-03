@@ -1,5 +1,5 @@
 name: TChat
-version: 2.4.1
+version: 2.4.2
 main: minealex.tchat.TChat
 
 commands:
@@ -25,3 +25,5 @@ commands:
     description: Set the chat color
   rules:
     description: See the rules
+  list:
+    description: See the online players

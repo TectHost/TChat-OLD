@@ -18,6 +18,7 @@ import minealex.tchat.bot.ChatGames;
 import minealex.tchat.commands.ChatColorCommand;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
+import minealex.tchat.commands.ListCommand;
 import minealex.tchat.commands.MsgCommand;
 import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
@@ -136,6 +137,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("chatcolor").setExecutor(new ChatColorCommand(this));
         
         getCommand("rules").setExecutor(new RulesCommand(this));
+        
+        getCommand("list").setExecutor(new ListCommand(this));
         
         // Cargar la configuración
         loadConfigFile();
