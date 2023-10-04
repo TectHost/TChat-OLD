@@ -1,5 +1,5 @@
 name: TChat
-version: 2.4.2
+version: 2.4.3
 main: minealex.tchat.TChat
 
 commands:
@@ -27,3 +27,7 @@ commands:
     description: See the rules
   list:
     description: See the online players
+  broadcast:
+    description: Send a broadcast in the chat
+    aliases:
+      - bcast

@@ -58,6 +58,9 @@
     "player_format": "&a%player%",
     "footer_format": "&7-------- + End of the list + --------"
   },
+  "Broadcast": {
+  "broadcastFormat": "&4[Broadcast] &a%s"
+  },
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {
     "ipv4_blocked": true,
