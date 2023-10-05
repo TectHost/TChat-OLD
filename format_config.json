@@ -58,8 +58,9 @@
     "player_format": "&a%player%",
     "footer_format": "&7-------- + End of the list + --------"
   },
-  "Broadcast": {
-  "broadcastFormat": "&4[Broadcast] &a%s"
+  "Announcements": {
+    "broadcastFormat": "&4[Broadcast] &a%s"
+    "warningFormat": "&4[Warning] &a%s"
   },
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {

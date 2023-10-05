@@ -10,17 +10,17 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
 
-public class BroadcastCommand implements CommandExecutor {
+public class WarningCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    	if (!sender.hasPermission("tchat.broadcast")) {
+    	if (!sender.hasPermission("tchat.warning")) {
             sender.sendMessage(getMessage("noPermission"));
             return true;
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Correct use: /broadcast <message>");
+            sender.sendMessage(ChatColor.RED + "Correct use: /warning <message>");
             return true;
         }
 
@@ -33,7 +33,7 @@ public class BroadcastCommand implements CommandExecutor {
             JSONParser parser = new JSONParser();
             JSONObject config = (JSONObject) parser.parse(new FileReader("plugins/TChat/format_config.json"));
             JSONObject broadcastConfig = (JSONObject) config.get("Announcements");
-            String format = (String) broadcastConfig.get("broadcastFormat");
+            String format = (String) broadcastConfig.get("warningFormat");
 
             String formattedMessage = ChatColor.translateAlternateColorCodes('&', format.replace("%s", message.toString().trim()));
             Bukkit.broadcastMessage(formattedMessage);
