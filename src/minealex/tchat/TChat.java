@@ -15,6 +15,7 @@ import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.bot.AutoBroadcast;
 import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
+import minealex.tchat.commands.AnnouncementCommand;
 import minealex.tchat.commands.BroadcastCommand;
 import minealex.tchat.commands.ChatColorCommand;
 import minealex.tchat.commands.ClearChatCommand;
@@ -145,6 +146,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("broadcast").setExecutor(new BroadcastCommand());
         
         getCommand("warning").setExecutor(new WarningCommand());
+        
+        getCommand("announcement").setExecutor(new AnnouncementCommand());
         
         // Cargar la configuración
         loadConfigFile();

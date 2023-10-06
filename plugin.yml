@@ -33,3 +33,7 @@ commands:
       - bcast
   warning:
     description: Send a warning in the chat
+  announcement:
+    description: Send a announcement in the chat
+    aliases:
+      - ann

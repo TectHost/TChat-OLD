@@ -61,6 +61,7 @@
   "Announcements": {
     "broadcastFormat": "&4[Broadcast] &a%s"
     "warningFormat": "&4[Warning] &a%s"
+    "announcementFormat": "&4[Announcement] &a%s"
   },
   "antiAdvertisingEnabled": true,
   "antiAdvertisingSettings": {
