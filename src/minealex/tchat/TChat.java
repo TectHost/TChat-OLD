@@ -155,6 +155,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         getCommand("me").setExecutor(new MeCommand());
         
+        getCommand("checkcommand").setExecutor(new BannedCommands(this));
+        
         // Cargar la configuración
         loadConfigFile();
         

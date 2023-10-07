@@ -55,6 +55,10 @@ public class BannedCommands implements CommandExecutor {
             plugin.getLogger().log(Level.WARNING, "Error parsing banned_commands.json, the default list will be used.", e);
         }
     }
+    
+    public String getBlockedMessage() {
+        return blockedMessage;
+    }
 
     private void loadBlockedMessage() {
         File configFile = new File(plugin.getDataFolder(), "banned_commands.json");
@@ -76,17 +80,22 @@ public class BannedCommands implements CommandExecutor {
         }
     }
 
-    public boolean isCommandBanned(String command) {
-        return bannedCommands.contains(command.toLowerCase());
-    }
-
     public void sendBlockedMessage(CommandSender sender) {
         sender.sendMessage(blockedMessage);
+    }
+    
+    public boolean isCommandBanned(String command) {
+        return bannedCommands.contains(command.toLowerCase());
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("checkcommand")) {
+            if (!sender.hasPermission("tchat.checkcommand")) {
+                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                return true;
+            }
+
             if (args.length != 1) {
                 sender.sendMessage(ChatColor.RED + "Usage: /checkcommand <command>");
                 return true;

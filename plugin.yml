@@ -1,5 +1,5 @@
 name: TChat
-version: 2.4.7
+version: 2.4.8
 main: minealex.tchat.TChat
 
 commands:
@@ -41,3 +41,5 @@ commands:
     description: See the ping
   me:
     description: Send a message with a different format
+  checkcommand:
+    description: Check if a command is banned

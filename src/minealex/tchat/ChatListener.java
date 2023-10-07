@@ -2,6 +2,8 @@ package minealex.tchat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -41,42 +43,51 @@ public class ChatListener implements Listener {
 	private TChat antiAdvertising;
 	private ChatGames chatGames;
 	private JSONObject chatbotRespuestas;
+	private BannedCommands bannedCommands;
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
         this.antiFlood = new AntiFlood(plugin.getChatCooldownSeconds());
         this.antiAdvertising = plugin;
         this.chatGames = plugin.getChatGames();
+        this.bannedCommands = new BannedCommands(plugin);
+    }
+    
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        // Asegúrate de que el comando provenga de un jugador.
+    	if (!(sender instanceof Player)) {
+            sender.sendMessage(ChatColor.RED + "Only players can use this command.");
+            return true;
+        }
+
+        Player player = (Player) sender;
+        String commandName = cmd.getName().toLowerCase();
+
+        // Verifica si el comando está en la lista de comandos bloqueados.
+        if (bannedCommands.isCommandBanned(commandName)) {
+            // Verifica si el jugador tiene el permiso de bypass.
+            if (player.hasPermission("tchat.bypass")) {
+                return false; // Permite que el comando se ejecute si tiene el permiso de bypass.
+            } else {
+                // Si no tiene el permiso, muestra el mensaje de comandos bloqueados.
+                player.sendMessage(bannedCommands.getBlockedMessage());
+                return true;
+            }
+        }
+        return false;
     }
     
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
-        String[] parts = event.getMessage().split(" ");
-        String command = parts[0].substring(1); // Quitamos el "/" del comando
-
-        if (plugin.getBannedCommands() != null && plugin.getBannedCommands().isCommandBanned(command)) {
-            if (!player.hasPermission("tchat.bypass.commandblocker")) {
-                event.setCancelled(true);
-
-                // Leer el archivo JSON
-                try {
-                    JSONParser parser = new JSONParser();
-                    Object obj = parser.parse(new FileReader(plugin.getDataFolder() + "/banned_commands.json"));
-                    JSONObject jsonObject = (JSONObject) obj;
-
-                    // Obtener el mensaje bloqueado
-                    String blockedMessage = (String) jsonObject.get("blockedMessage");
-
-                    // Enviar el mensaje al jugador
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', blockedMessage));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+        String[] commandArgs = event.getMessage().split(" ");
+        String command = commandArgs[0].substring(1).toLowerCase(); // Obtén el comando sin el '/'
+        
+        if (bannedCommands.isCommandBanned(command)) {
+            event.setCancelled(true);
+            Player player = event.getPlayer();
+            player.sendMessage(bannedCommands.getBlockedMessage());
         }
     }
-
     
     private boolean isUnicodeBlocked() {
         File configFile = new File(plugin.getDataFolder(), "format_config.json");
