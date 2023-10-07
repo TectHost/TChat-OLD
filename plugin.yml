@@ -1,5 +1,5 @@
 name: TChat
-version: 2.4.4
+version: 2.4.6
 main: minealex.tchat.TChat
 
 commands:
@@ -37,3 +37,5 @@ commands:
     description: Send a announcement in the chat
     aliases:
       - ann
+  ping:
+    description: See the ping

@@ -34,7 +34,8 @@
     "chatColorIncorrectUsage": "&5TChat &e> &cIncorrect use. Use /chatcolor <color>",
     "chatColorSuccess": "&5TChat &e> &aYour chat colour has been changed %color%successfully&a!",
     "antiBotMessage": "&5TChat &e> &cYou have to move before you can get upset.",
-    "chatColorInvalid": "&5TChat &e> &cInvalid colour. Valid colours are: black, darkblue, darkgreen, darkaqua, darkred, purple, gold, gray, darkgray, blue, green, aqua, red, pink, yellow, white."
+    "chatColorInvalid": "&5TChat &e> &cInvalid colour. Valid colours are: black, darkblue, darkgreen, darkaqua, darkred, purple, gold, gray, darkgray, blue, green, aqua, red, pink, yellow, white.",
+    "ping_message": "&5TChat &e> &fYour ping is: &a%ping%"
   },
   "msgFormats": {
     "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",
@@ -59,8 +60,8 @@
     "footer_format": "&7-------- + End of the list + --------"
   },
   "Announcements": {
-    "broadcastFormat": "&4[Broadcast] &a%s"
-    "warningFormat": "&4[Warning] &a%s"
+    "broadcastFormat": "&4[Broadcast] &a%s",
+    "warningFormat": "&4[Warning] &a%s",
     "announcementFormat": "&4[Announcement] &a%s"
   },
   "antiAdvertisingEnabled": true,
