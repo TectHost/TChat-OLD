@@ -1,5 +1,5 @@
 name: TChat
-version: 2.4.6
+version: 2.4.7
 main: minealex.tchat.TChat
 
 commands:
@@ -39,3 +39,5 @@ commands:
       - ann
   ping:
     description: See the ping
+  me:
+    description: Send a message with a different format

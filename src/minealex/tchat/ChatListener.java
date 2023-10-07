@@ -117,6 +117,15 @@ public class ChatListener implements Listener {
             message = ChatColor.stripColor(message); // Elimina cualquier código de color
         }
         
+        String[] words = message.toLowerCase().split("[^a-zA-Z0-9_]");
+        for (String word : words) {
+            if (!word.isEmpty() && plugin.getBannedWords().isWordBanned(word)) {
+                plugin.getBannedWords().sendBlockedMessage(player);
+                event.setCancelled(true);
+                return;
+            }
+        }
+        
         if (chatbotRespuestas != null && chatbotRespuestas.containsKey(message.toLowerCase())) {
             String respuesta = (String) chatbotRespuestas.get(message.toLowerCase());
             player.sendMessage(ChatColor.GREEN + "Chatbot dice: " + ChatColor.RESET + respuesta);
