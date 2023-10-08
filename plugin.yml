@@ -1,5 +1,5 @@
 name: TChat
-version: 2.4.8
+version: 2.5.0
 main: minealex.tchat.TChat
 
 commands:
@@ -43,3 +43,9 @@ commands:
     description: Send a message with a different format
   checkcommand:
     description: Check if a command is banned
+  staffchat:
+    description: Check if a command is banned
+    aliases:
+      - sc
+      - staffc
+      - schat

@@ -42,11 +42,13 @@
     "msgReceived": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>"
   },
   "replyFormats": {
-    "replySent": "&5&l!! &a<sender> &e&l> &a<recipient>&7: &f<message>",
-    "replyReceived": "&5&l!! &a<sender> &e&l> &a<recipient>&7: &f<message>"
+    "replySent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",
+    "replyReceived": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>"
   },
   "Joins": {
+    "joinMessagesEnabled": true,
     "JoinMessage": "&5TChat &e> &7[&a+&7] &a%player% &7has entered the server",
+    "quitMessagesEnabled": true,
     "QuitMessage": "&5TChat &e> &7[&c-&7] &c%player% &7has left the server"
   },
   "rules_message": [
