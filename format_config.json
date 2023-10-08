@@ -51,6 +51,11 @@
     "quitMessagesEnabled": true,
     "QuitMessage": "&5TChat &e> &7[&c-&7] &c%player% &7has left the server"
   },
+  "Staff": {
+    "format": "&d[SC] &a%player% &e>> &f%message%",
+    "staff_chat_join_message": "&aYou are now in the Staff channel.",
+    "staff_chat_leave_message": "&cYou have left the Staff channel."
+  },
   "rules_message": [
     "Rule 1: No cheating",
     "Rule 2: Respecting others",

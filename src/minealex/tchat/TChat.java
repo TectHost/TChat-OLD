@@ -26,6 +26,7 @@ import minealex.tchat.commands.MsgCommand;
 import minealex.tchat.commands.PingCommand;
 import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
+import minealex.tchat.commands.StaffChatCommand;
 import minealex.tchat.commands.WarningCommand;
 import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.JoinListener;
@@ -88,6 +89,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private ChatGames chatGames;
 	private ChatBot chatBot;
 	private AutoBroadcast autoBroadcast;
+	private Set<UUID> staffChatPlayers = new HashSet<>();
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -156,6 +158,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("me").setExecutor(new MeCommand());
         
         getCommand("checkcommand").setExecutor(new BannedCommands(this));
+        
+        getCommand("staffchat").setExecutor(new StaffChatCommand(this));
         
         // Cargar la configuración
         loadConfigFile();
@@ -641,6 +645,18 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
     public void updateLastConversationalist(UUID sender, UUID recipient) {
         lastConversations.put(sender, recipient);
+    }
+    
+    public Set<UUID> getStaffChatPlayers() {
+        return staffChatPlayers;
+    }
+
+    public void addPlayerToStaffChat(Player player) {
+        staffChatPlayers.add(player.getUniqueId());
+    }
+
+    public void removePlayerFromStaffChat(Player player) {
+        staffChatPlayers.remove(player.getUniqueId());
     }
     
     public ChatBot getChatBot() {

@@ -44,6 +44,7 @@ public class ChatListener implements Listener {
 	private ChatGames chatGames;
 	private JSONObject chatbotRespuestas;
 	private BannedCommands bannedCommands;
+	private String staffChatFormat;
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
@@ -51,6 +52,7 @@ public class ChatListener implements Listener {
         this.antiAdvertising = plugin;
         this.chatGames = plugin.getChatGames();
         this.bannedCommands = new BannedCommands(plugin);
+        loadConfig();
     }
     
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -135,6 +137,24 @@ public class ChatListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
+        }
+        
+        if (plugin.getStaffChatPlayers().contains(player.getUniqueId())) {
+            event.setCancelled(true);
+
+            // Envía el mensaje del staff chat a los demás jugadores de staff
+            for (UUID staffMember : plugin.getStaffChatPlayers()) {
+                Player staffPlayer = plugin.getServer().getPlayer(staffMember);
+                if (staffPlayer != null) {
+                	staffPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', staffChatFormat
+                            .replace("%player%", player.getName())
+                            .replace("%message%", message)
+                            ));
+                }
+            }
+        } else {
+            // Si no está en el staff chat, se comporta como de costumbre
+            event.setFormat(plugin.formatMessage(message, player));
         }
         
         if (chatbotRespuestas != null && chatbotRespuestas.containsKey(message.toLowerCase())) {
@@ -300,6 +320,20 @@ public class ChatListener implements Listener {
 
 	private int getChatCooldownSeconds() {
 		return 0;
+	}
+	
+	private void loadConfig() {
+	    try {
+	        JSONParser parser = new JSONParser();
+	        JSONObject config = (JSONObject) parser.parse(new FileReader("plugins/TChat/format_config.json"));
+	        JSONObject staffConfig = (JSONObject) config.get("Staff");
+
+	        // Leer configuraciones del JSON
+	        staffChatFormat = (String) staffConfig.get("format");
+	    } catch (IOException | org.json.simple.parser.ParseException e) {
+	        e.printStackTrace();
+	        System.out.println("Error al cargar la configuración: " + e.getMessage());
+	    }
 	}
 
 	private boolean isAnticapEnabled() {
