@@ -32,6 +32,7 @@ import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.JoinListener;
 import minealex.tchat.listener.PlayerMoveListener;
 import minealex.tchat.placeholders.Placeholders;
+import minealex.tchat.utils.SignColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -163,6 +164,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         // Cargar la configuración
         loadConfigFile();
+        
+        new SignColor(this);
         
         chatBot = new ChatBot(this);
         

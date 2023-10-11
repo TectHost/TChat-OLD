@@ -1,5 +1,5 @@
 name: TChat
-version: 2.5.0
+version: 2.5.1
 main: minealex.tchat.TChat
 
 commands:
@@ -44,7 +44,7 @@ commands:
   checkcommand:
     description: Check if a command is banned
   staffchat:
-    description: Check if a command is banned
+    description: Toggle staff chat
     aliases:
       - sc
       - staffc
