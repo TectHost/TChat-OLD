@@ -29,7 +29,7 @@ public class ChatColorCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (args.length != 1) {
+        if (args.length != 2) {
             player.sendMessage(getMessages("chatColorIncorrectUsage"));
             return true;
         }
@@ -42,19 +42,24 @@ public class ChatColorCommand implements CommandExecutor {
             return true;
         }
 
-        // Verificar si el jugador tiene el permiso adecuado
-        if (!player.hasPermission("tchat.chatcolor." + colorName)) {
+        String format = args[1].toLowerCase(); // Obtener el formato
+
+        // Verificar si el jugador tiene el permiso adecuado para el formato
+        if (!player.hasPermission("tchat.chatcolor." + colorName + "." + format)) {
             player.sendMessage(getMessages("noPermission"));
             return true;
         }
 
-        // Aplicar el color al jugador
+        // Aplicar el color y el formato al jugador
         String chatColorSuccess = getMessages("chatColorSuccess");
         chatColorSuccess = PlaceholderAPI.setPlaceholders(player, chatColorSuccess);
         chatColorSuccess = chatColorSuccess.replace("%color%", chatColor.toString());
+        chatColorSuccess = chatColorSuccess.replace("%format%", format);
 
-        player.sendMessage(ChatColor.GREEN + chatColorSuccess);
+        chatColorSuccess = ChatColor.translateAlternateColorCodes('&', chatColorSuccess);
+        player.sendMessage(chatColorSuccess);
         plugin.getConfig().set("players." + player.getUniqueId() + ".chatcolor", chatColor.name());
+        plugin.getConfig().set("players." + player.getUniqueId() + ".format", format); // Guardar el formato
         plugin.saveConfig();
 
         return true;
@@ -94,6 +99,24 @@ public class ChatColorCommand implements CommandExecutor {
                 return ChatColor.YELLOW;
             case "white":
                 return ChatColor.WHITE;
+            default:
+                return null;
+        }
+    }
+    
+    @SuppressWarnings("unused")
+	private ChatColor getFormatFromString(String formatName) {
+        switch (formatName.toLowerCase()) {
+            case "bold":
+                return ChatColor.BOLD;
+            case "italic":
+                return ChatColor.ITALIC;
+            case "underline":
+                return ChatColor.UNDERLINE;
+            case "strikethrough":
+                return ChatColor.STRIKETHROUGH;
+            case "magic":
+                return ChatColor.MAGIC;
             default:
                 return null;
         }

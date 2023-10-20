@@ -1,5 +1,5 @@
 name: TChat
-version: 2.5.1
+version: 2.5.2
 main: minealex.tchat.TChat
 
 commands:

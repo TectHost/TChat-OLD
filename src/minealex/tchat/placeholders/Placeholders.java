@@ -106,12 +106,13 @@ public class Placeholders extends PlaceholderExpansion {
 	private String obtenerColorAsignado(Player player) {
 	    String playerName = player.getName();
 	    String colorName = plugin.getConfig().getString("players." + player.getUniqueId() + ".chatcolor");
+	    String format = plugin.getConfig().getString("players." + player.getUniqueId() + ".format"); // Obtener el formato
 
-	    if (colorName != null) {
-	        return ChatColor.valueOf(colorName).toString();
+	    if (colorName != null && format != null) {
+	        return ChatColor.valueOf(colorName) + ChatColor.translateAlternateColorCodes('&', format); // Aplicar color y formato
 	    }
 
-	    // Si el jugador no tiene un color asignado, devolvemos un color predeterminado
+	    // Si el jugador no tiene un color o formato asignado, devolvemos un color predeterminado
 	    return ChatColor.RESET.toString(); // Puedes cambiar esto al color que prefieras.
 	}
 
