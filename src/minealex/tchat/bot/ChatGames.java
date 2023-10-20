@@ -14,6 +14,8 @@ import minealex.tchat.TChat;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ChatGames {
@@ -63,9 +65,22 @@ public class ChatGames {
     private JSONObject getRandomGame() {
         JSONArray games = loadChatGamesConfig();
         if (games != null && !games.isEmpty()) {
-            Random random = new Random();
-            int index = random.nextInt(games.size());
-            return (JSONObject) games.get(index);
+            List<JSONObject> enabledGames = new ArrayList<>();
+
+            for (Object obj : games) {
+                JSONObject game = (JSONObject) obj;
+                boolean isEnabled = (boolean) game.get("enabled");
+
+                if (isEnabled) {
+                    enabledGames.add(game);
+                }
+            }
+
+            if (!enabledGames.isEmpty()) {
+                Random random = new Random();
+                int index = random.nextInt(enabledGames.size());
+                return enabledGames.get(index);
+            }
         }
         return null;
     }
