@@ -23,6 +23,7 @@ import minealex.tchat.commands.Commands;
 import minealex.tchat.commands.ListCommand;
 import minealex.tchat.commands.MeCommand;
 import minealex.tchat.commands.MsgCommand;
+import minealex.tchat.commands.NickCommand;
 import minealex.tchat.commands.PingCommand;
 import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
@@ -161,6 +162,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("checkcommand").setExecutor(new BannedCommands(this));
         
         getCommand("staffchat").setExecutor(new StaffChatCommand(this));
+        
+        this.getCommand("nick").setExecutor(new NickCommand(this));
         
         // Cargar la configuración
         loadConfigFile();
@@ -400,7 +403,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             format = PlaceholderAPI.setPlaceholders(player, format);
         }
 
-        format = format.replace("<prefix>", prefix).replace("<player>", "%1$s").replace("<suffix>", suffix);
+        format = format.replace("<prefix>", prefix).replace("<suffix>", suffix);
         return ChatColor.translateAlternateColorCodes('&', format) + message;
     }
 
