@@ -1,5 +1,5 @@
 name: TChat
-version: 2.5.2
+version: 2.5.3
 main: minealex.tchat.TChat
 
 commands:
@@ -49,3 +49,5 @@ commands:
       - sc
       - staffc
       - schat
+  nick:
+    description: Change the username's nick
