@@ -29,8 +29,11 @@ import minealex.tchat.bot.ChatGames;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.UnknownFormatConversionException;
 
@@ -121,6 +124,20 @@ public class ChatListener implements Listener {
         ChatBot chatBot = plugin.getChatBot();
         chatBot.sendResponse(message, player);
         message = ChatColor.translateAlternateColorCodes('&', message);
+        
+        List<String> ignoredPlayersSender = plugin.getConfig().getStringList("players." + player.getUniqueId() + ".ignore");
+        List<Player> nuevosDestinatarios = new ArrayList<>();
+
+        for (Player recipient : event.getRecipients()) {
+            List<String> ignoredPlayersRecipient = plugin.getConfig().getStringList("players." + recipient.getUniqueId() + ".ignore");
+
+            if (!(ignoredPlayersSender.contains(recipient.getName()) || ignoredPlayersRecipient.contains(player.getName()))) {
+                nuevosDestinatarios.add(recipient);
+            }
+        }
+
+        event.getRecipients().clear();
+        event.getRecipients().addAll(nuevosDestinatarios);
         
         if (player.hasPermission("tchat.color")) {
             // Si tiene el permiso, reemplazar los colores &
@@ -355,6 +372,33 @@ public class ChatListener implements Listener {
 
         return false; // En caso de error, asumimos que la función está deshabilitada.
     }
+	
+	private boolean isPlayerIgnoring(Player sender, Set<Player> set) {
+	    UUID senderUUID = sender.getUniqueId();
+
+	    for (Player recipient : set) {
+	        // Verificar si el destinatario está en la lista de ignorados del remitente
+	        if (isPlayerIgnored(senderUUID, recipient.getUniqueId())) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+	
+	private boolean isPlayerIgnored(UUID senderUUID, UUID recipientUUID) {
+	    File configFile = new File(plugin.getDataFolder(), "config.yml");
+	    FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+	    if (config.contains("ignore." + senderUUID.toString())) {
+	        List<String> ignoredPlayers = config.getStringList("ignore." + senderUUID.toString());
+
+	        // Verificar si el destinatario está en la lista de ignorados del remitente
+	        return ignoredPlayers.contains(recipientUUID.toString());
+	    }
+
+	    return false;
+	}
 
 	// Agrega un método para verificar si el jugador se ha movido
     private boolean hasPlayerMoved(Player player) {
