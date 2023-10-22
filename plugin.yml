@@ -1,5 +1,5 @@
 name: TChat
-version: 2.5.6
+version: 2.5.7
 main: minealex.tchat.TChat
 
 commands:
@@ -53,3 +53,5 @@ commands:
     description: Change the username's nick
   ignore:
     description: Ignore a user
+  helpop:
+    description: Ask staff for help

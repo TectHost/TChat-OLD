@@ -38,12 +38,17 @@
     "ping_message": "&5TChat &e> &fYour ping is: &a%ping%",
     "nickCommandUsage": "&5TChat &e> &cUsage: /nick <nick>",
     "cannotMessageIgnored": "&5TChat &e> You cannot send messages to %player% because you are ignoring it.",
-    "ignoreAdd": "You are now ignoring %ignored%.",
-    "ignoreRemove": "You have stopped ignoring %ignored%."
+    "ignoreAdd": "&5TChat &e> You are now ignoring %ignored%.",
+    "ignoreRemove": "&5TChat &e> You have stopped ignoring %ignored%.",
+    "helpopUsage": "&5TChat &e> &cUsage: /helpop <message>",
+    "helpopFormatError": "&5TChat &e> &cError in helpop format."
   },
   "msgFormats": {
     "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",
     "msgReceived": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>"
+  },
+  "helpFormats": {
+    "helpopFormat": "&4[HelpOp] %tchat_prefix%<player>%tchat_suffix%: &c<message>"
   },
   "replyFormats": {
     "replySent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",

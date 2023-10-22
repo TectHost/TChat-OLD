@@ -20,6 +20,7 @@ import minealex.tchat.commands.BroadcastCommand;
 import minealex.tchat.commands.ChatColorCommand;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
+import minealex.tchat.commands.HelpOpCommand;
 import minealex.tchat.commands.IgnoreCommand;
 import minealex.tchat.commands.ListCommand;
 import minealex.tchat.commands.MeCommand;
@@ -167,6 +168,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         this.getCommand("nick").setExecutor(new NickCommand(this));
         
         getCommand("ignore").setExecutor(new IgnoreCommand(this));
+        
+        getCommand("helpop").setExecutor(new HelpOpCommand(this));
         
         // Cargar la configuración
         loadConfigFile();
@@ -645,10 +648,22 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             Object obj = parser.parse(new FileReader(filePath));
             JSONObject jsonObject = (JSONObject) obj;
 
-            return (String) ((JSONObject) jsonObject.get("msgFormats")).get(formatKey);
+            JSONObject helpFormatsObject = (JSONObject) jsonObject.get("helpFormats");
+            JSONObject messagesObject = (JSONObject) jsonObject.get("messages");
+
+            String formatValue = (String) helpFormatsObject.get(formatKey);
+            String messageValue = (String) messagesObject.get(formatKey);
+
+            if (formatValue != null) {
+                return formatValue;
+            } else if (messageValue != null) {
+                return messageValue;
+            } else {
+                return "<prefix><player><suffix>: <message>"; // Formato por defecto
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return "<sender> sends a message to <recipient>: <message>";
+            return "<prefix><player><suffix>: <message>"; // Formato por defecto
         }
     }
 
@@ -658,6 +673,20 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     
     public Set<UUID> getStaffChatPlayers() {
         return staffChatPlayers;
+    }
+    
+    public String getConfiguredMessage(String messageKey) {
+        try {
+            String filePath = getDataFolder().getPath() + "/format_config.json";
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            return (String) ((JSONObject) jsonObject.get("messages")).get(messageKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "&cMessage not found: " + messageKey;
+        }
     }
 
     public void addPlayerToStaffChat(Player player) {
