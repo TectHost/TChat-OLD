@@ -28,6 +28,11 @@ public class IgnoreCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
+        
+        if (!player.hasPermission("tchat.ignore")) {
+            player.sendMessage(ChatColor.RED + getConfiguredFormat("noPermission"));
+            return true;
+        }
 
         if (args.length != 1) {
             player.sendMessage(ChatColor.RED + getConfiguredFormat("incorrectIgnoreUsage"));
