@@ -34,6 +34,7 @@ import minealex.tchat.commands.WarningCommand;
 import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.JoinListener;
 import minealex.tchat.listener.PlayerMoveListener;
+import minealex.tchat.perworldchat.PerWorldChat;
 import minealex.tchat.placeholders.Placeholders;
 import minealex.tchat.utils.SignColor;
 
@@ -94,6 +95,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private ChatBot chatBot;
 	private AutoBroadcast autoBroadcast;
 	private Set<UUID> staffChatPlayers = new HashSet<>();
+	private PerWorldChat perWorldChat;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -175,6 +177,12 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         loadConfigFile();
         
         new SignColor(this);
+        
+        chatListener = new ChatListener(this);
+        perWorldChat = new PerWorldChat(this);
+
+        getServer().getPluginManager().registerEvents(chatListener, this);
+        getServer().getPluginManager().registerEvents(perWorldChat, this);
         
         chatBot = new ChatBot(this);
         

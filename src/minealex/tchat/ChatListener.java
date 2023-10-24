@@ -25,6 +25,7 @@ import minealex.tchat.blocked.AntiSpam;
 import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
+import minealex.tchat.perworldchat.PerWorldChat;
 
 import java.io.File;
 import java.io.FileReader;
@@ -48,6 +49,7 @@ public class ChatListener implements Listener {
 	private JSONObject chatbotRespuestas;
 	private BannedCommands bannedCommands;
 	private String staffChatFormat;
+	private PerWorldChat perWorldChat;
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
@@ -55,6 +57,7 @@ public class ChatListener implements Listener {
         this.antiAdvertising = plugin;
         this.chatGames = plugin.getChatGames();
         this.bannedCommands = new BannedCommands(plugin);
+        this.perWorldChat = new PerWorldChat(plugin);
         loadConfig();
     }
     
@@ -399,6 +402,10 @@ public class ChatListener implements Listener {
 
 	    return false;
 	}
+	
+	private void registerListeners() {
+        plugin.getServer().getPluginManager().registerEvents(perWorldChat, plugin);
+    }
 
 	// Agrega un método para verificar si el jugador se ha movido
     private boolean hasPlayerMoved(Player player) {
