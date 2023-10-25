@@ -1,5 +1,5 @@
 name: TChat
-version: 2.6.0
+version: 2.6.1
 main: minealex.tchat.TChat
 
 commands:
@@ -55,3 +55,5 @@ commands:
     description: Ignore a user
   helpop:
     description: Ask staff for help
+  perworldchat:
+    description: Per world chat

@@ -1,6 +1,17 @@
 [
   {
     "worldName": "world",
-    "chatEnabled": true
+    "chatEnabled": true,
+    "perWorldChat": false
+  },
+  {
+    "worldName": "world_nether",
+    "chatEnabled": true,
+    "perWorldChat": false
+  },
+  {
+    "worldName": "world_the_end",
+    "chatEnabled": true,
+    "perWorldChat": false
   }
 ]

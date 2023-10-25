@@ -30,7 +30,9 @@ public class WorldsManager {
     private void initConfig() {
         try (FileWriter writer = new FileWriter(configFile)) {
             List<WorldConfig> defaultConfigs = new ArrayList<>();
-            defaultConfigs.add(new WorldConfig("world", true));
+            defaultConfigs.add(new WorldConfig("world", true, false));
+            defaultConfigs.add(new WorldConfig("world_nether", true, false));
+            defaultConfigs.add(new WorldConfig("world_the_end", true, false));
             String json = gson.toJson(defaultConfigs);
             writer.write(json);
         } catch (IOException e) {
@@ -47,7 +49,7 @@ public class WorldsManager {
             }
         }
 
-        return new WorldConfig(worldName, true); // Si no se encuentra, por defecto está habilitado
+        return new WorldConfig(worldName, true, true); // Si no se encuentra, por defecto está habilitado
     }
 
     public List<WorldConfig> loadWorldConfigs() {
