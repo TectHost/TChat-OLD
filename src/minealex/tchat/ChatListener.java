@@ -26,6 +26,8 @@ import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
 import minealex.tchat.perworldchat.PerWorldChat;
+import minealex.tchat.perworldchat.WorldConfig;
+import minealex.tchat.perworldchat.WorldsManager;
 
 import java.io.File;
 import java.io.FileReader;
@@ -121,12 +123,30 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
+        String worldName = player.getWorld().getName();
         
         message = message.replace("%", "%%");
         
         ChatBot chatBot = plugin.getChatBot();
         chatBot.sendResponse(message, player);
         message = ChatColor.translateAlternateColorCodes('&', message);
+        
+        WorldsManager worldsManager = plugin.getWorldsManager();
+        WorldConfig worldConfig = worldsManager.loadWorldConfig(worldName);
+
+        if (worldConfig.isRadiusChatEnabled()) {
+            int radius = worldConfig.getRadiusChat();
+            
+            event.getRecipients().removeIf(recipient -> {
+                Location playerLocation = player.getLocation();
+                Location recipientLocation = recipient.getLocation();
+                
+                double distanceSquared = playerLocation.distanceSquared(recipientLocation);
+                double radiusSquared = radius * radius;
+                
+                return distanceSquared > radiusSquared;
+            });
+        }
         
         List<String> ignoredPlayersSender = plugin.getConfig().getStringList("players." + player.getUniqueId() + ".ignore");
         List<Player> nuevosDestinatarios = new ArrayList<>();

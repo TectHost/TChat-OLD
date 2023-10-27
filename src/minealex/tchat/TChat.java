@@ -35,6 +35,8 @@ import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.JoinListener;
 import minealex.tchat.listener.PlayerMoveListener;
 import minealex.tchat.perworldchat.PerWorldChat;
+import minealex.tchat.perworldchat.RadiusChat;
+import minealex.tchat.perworldchat.WorldsManager;
 import minealex.tchat.placeholders.Placeholders;
 import minealex.tchat.utils.SignColor;
 
@@ -96,6 +98,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private AutoBroadcast autoBroadcast;
 	private Set<UUID> staffChatPlayers = new HashSet<>();
 	private PerWorldChat perWorldChat;
+	private RadiusChat radiusChat;
+	private WorldsManager worldsManager;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -183,6 +187,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
         getServer().getPluginManager().registerEvents(chatListener, this);
         getServer().getPluginManager().registerEvents(perWorldChat, this);
+        
+        this.worldsManager = new WorldsManager(new File(getDataFolder(), "worlds.json"));
+        this.radiusChat = new RadiusChat(worldsManager);
         
         chatBot = new ChatBot(this);
         
@@ -501,12 +508,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
 
-    // Clase TChatReloadCommand
-    // (El código para esta clase se mantiene igual)
-
-    // Clase ChatListener
-    // (El código para esta clase se mantiene igual)
-
     public BannedWords getBannedWords() {
         return bannedWords;
     }
@@ -712,6 +713,11 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     public ChatGames getChatGames() {
         return chatGames;
     }
+    
+    public WorldsManager getWorldsManager() {
+        return worldsManager;
+    }
+
     
     public BannedCommands getBannedCommands() {
         return bannedCommands;

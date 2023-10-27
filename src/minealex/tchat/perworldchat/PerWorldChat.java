@@ -56,7 +56,7 @@ public class PerWorldChat implements Listener {
             event.setCancelled(true);
             return;
         }
-        
+
         if (!worldConfig.isPerWorldChat()) {
             return;
         }
@@ -85,9 +85,9 @@ public class PerWorldChat implements Listener {
     private void initConfig() {
         try (FileWriter writer = new FileWriter(configFile)) {
             List<WorldConfig> defaultConfigs = new ArrayList<>();
-            defaultConfigs.add(new WorldConfig("world", true, false));
-            defaultConfigs.add(new WorldConfig("world_nether", true, false));
-            defaultConfigs.add(new WorldConfig("world_the_end", true, false));
+            defaultConfigs.add(new WorldConfig("world", true, false, false, 10));
+            defaultConfigs.add(new WorldConfig("world_nether", true, false, false, 10));
+            defaultConfigs.add(new WorldConfig("world_the_end", true, false, false, 10));
             String json = gson.toJson(defaultConfigs);
             writer.write(json);
         } catch (IOException e) {
