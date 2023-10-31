@@ -23,6 +23,11 @@ public class Commands implements CommandExecutor {
                     if (!(sender instanceof Player) || sender.hasPermission("tchat.reload")) {
                         plugin.reloadFormatConfig();
                         plugin.getBannedWords().reloadBannedWordsList();
+                        plugin.reloadWorldsConfig();
+                        plugin.reloadBannedCommandsConfig();
+                        plugin.reloadChatGamesConfig();
+                        plugin.reloadChatBotConfig();
+                        plugin.reloadAutoBroadcastConfig();
                         String reloadSuccessMessage = plugin.getMessage("reloadSuccess");
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', reloadSuccessMessage));
                     } else {

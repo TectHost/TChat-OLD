@@ -58,12 +58,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -714,11 +716,138 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         return chatGames;
     }
     
+    public void reloadAutoBroadcastConfig() {
+        File file = new File(getDataFolder(), "autobroadcast.json");
+        if (file.exists()) {
+            try {
+                FileReader reader = new FileReader(file);
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+
+                long time = (Long) jsonObject.get("time");
+                boolean enabled = (Boolean) jsonObject.get("enabled");
+
+                Map<String, List<String>> broadcasts = new HashMap<>();
+                JSONObject broadcastsObject = (JSONObject) jsonObject.get("broadcasts");
+                for (Object key : broadcastsObject.keySet()) {
+                    String broadcastKey = (String) key;
+                    JSONArray broadcastArray = (JSONArray) broadcastsObject.get(broadcastKey);
+                    @SuppressWarnings("unchecked")
+					List<String> broadcastMessages = (List<String>) broadcastArray.clone();
+                    broadcasts.put(broadcastKey, broadcastMessages);
+                }
+
+                reader.close();
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void reloadChatGamesConfig() {
+        File file = new File(getDataFolder(), "chatgames.json");
+        if (file.exists()) {
+            try {
+                FileReader reader = new FileReader(file);
+                JSONParser jsonParser = new JSONParser();
+                JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
+
+                for (Object obj : jsonArray) {
+                    JSONObject gameObject = (JSONObject) obj;
+
+                    boolean enabled = (Boolean) gameObject.get("enabled");
+                    String message = (String) gameObject.get("message");
+                    long time = (Long) gameObject.get("time");
+                    String keyword = (String) gameObject.get("keyword");
+
+                    JSONArray rewardsArray = (JSONArray) gameObject.get("rewards");
+                    List<String> rewards = new ArrayList<>();
+                    for (Object reward : rewardsArray) {
+                        rewards.add((String) reward);
+                    }
+                }
+
+                reader.close();
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void reloadChatBotConfig() {
+        File file = new File(getDataFolder(), "chatbot.json");
+        if (file.exists()) {
+            try {
+                FileReader reader = new FileReader(file);
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+
+                Map<String, String> responses = new HashMap<>();
+                for (Object key : jsonObject.keySet()) {
+                    String keyword = (String) key;
+                    String response = (String) jsonObject.get(key);
+                    responses.put(keyword, response);
+                }
+
+                reader.close();
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void reloadBannedCommandsConfig() {
+        File file = new File(getDataFolder(), "banned_commands.json");
+        if (file.exists()) {
+            try {
+                FileReader reader = new FileReader(file);
+                JSONParser jsonParser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+
+                JSONArray bannedCommandsArray = (JSONArray) jsonObject.get("bannedCommands");
+                List<String> bannedCommands = new ArrayList<>();
+                for (Object cmd : bannedCommandsArray) {
+                    bannedCommands.add((String) cmd);
+                }
+
+                String blockedMessage = (String) jsonObject.get("blockedMessage");
+
+                reader.close();
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    public void reloadWorldsConfig() {
+        File file = new File(getDataFolder(), "worlds.json");
+        if (file.exists()) {
+            try {
+                FileReader reader = new FileReader(file);
+                JSONParser jsonParser = new JSONParser();
+                JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
+
+                for (Object obj : jsonArray) {
+                    JSONObject worldObject = (JSONObject) obj;
+
+                    String worldName = (String) worldObject.get("worldName");
+                    boolean chatEnabled = (Boolean) worldObject.get("chatEnabled");
+                    boolean perWorldChat = (Boolean) worldObject.get("perWorldChat");
+                    boolean radiusChatEnabled = (Boolean) worldObject.get("radiusChatEnabled");
+                    long radiusChat = (Long) worldObject.get("radiusChat");
+                }
+
+                reader.close();
+            } catch (IOException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     public WorldsManager getWorldsManager() {
         return worldsManager;
     }
 
-    
     public BannedCommands getBannedCommands() {
         return bannedCommands;
     }

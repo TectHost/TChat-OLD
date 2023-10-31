@@ -3,21 +3,21 @@
     "worldName": "world",
     "chatEnabled": true,
     "perWorldChat": false,
-    "RadiusChatEnabled": false,
-    "RadiusChat": 10
+    "radiusChatEnabled": false,
+    "radiusChat": 10
   },
   {
     "worldName": "world_nether",
     "chatEnabled": true,
     "perWorldChat": false,
-    "RadiusChatEnabled": false,
-    "RadiusChat": 10
+    "radiusChatEnabled": false,
+    "radiusChat": 10
   },
   {
     "worldName": "world_the_end",
     "chatEnabled": true,
     "perWorldChat": false,
-    "RadiusChatEnabled": false,
-    "RadiusChat": 10
+    "radiusChatEnabled": false,
+    "radiusChat": 10
   }
 ]
