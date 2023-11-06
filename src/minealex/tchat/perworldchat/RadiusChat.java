@@ -28,9 +28,11 @@ public class RadiusChat {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (!p.equals(player) && p.getWorld().equals(player.getWorld()) && p.getLocation().distance(player.getLocation()) <= getRadius(player.getWorld().getName())) {
-                nearbyPlayers.add(p);
+            	if (player.hasPermission("tchat.bypass.chatradius") || p.getLocation().distance(player.getLocation()) <= getRadius(player.getWorld().getName())) {
+            	    nearbyPlayers.add(p);
+            	    }
+                }
             }
-        }
 
         return nearbyPlayers;
     }
