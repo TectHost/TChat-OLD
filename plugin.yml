@@ -1,14 +1,21 @@
 name: TChat
-version: 2.6.4
+version: 2.6.6
 main: minealex.tchat.TChat
 
 commands:
   chat:
     description: TChat command
+    permission: tchat.reload
   chatclear:
     description: Clear the chat
     aliases:
       - cc
+    permission: tchat.admin.chatclear
+  chatversion:
+    description: Check the plugin version
+    permission: tchat.version
+  chatcolor:
+    description: Set the chat color
   msg:
     description: Send a private message
     aliases:
@@ -17,41 +24,100 @@ commands:
       - ewhisper
       - pm
       - emsg
+    permission: tchat.msg
   reply:
     description: Send a reply to a private message
     aliases:
       - r
-  chatcolor:
-    description: Set the chat color
-  rules:
-    description: See the rules
+    permission: tchat.reply
   list:
     description: See the online players
+    permission: tchat.list
+  rules:
+    description: See the rules
   broadcast:
     description: Send a broadcast in the chat
     aliases:
       - bcast
+    permission: tchat.broadcast
   warning:
     description: Send a warning in the chat
+    permission: tchat.warning
   announcement:
-    description: Send a announcement in the chat
+    description: Send an announcement in the chat
     aliases:
       - ann
+    permission: tchat.announcement
   ping:
     description: See the ping
+    permission: tchat.ping
   me:
     description: Send a message with a different format
+    permission: tchat.me
   checkcommand:
     description: Check if a command is banned
+    permission: tchat.checkcommand
   staffchat:
     description: Toggle staff chat
     aliases:
       - sc
       - staffc
       - schat
+    permission: tchat.staffchat
   nick:
     description: Change the username's nick
+    permission: tchat.nick
   ignore:
     description: Ignore a user
+    permission: tchat.ignore
   helpop:
     description: Ask staff for help
+    permission: tchat.helpop
+
+permissions:
+  tchat.reload:
+    description: Reload TChat
+  tchat.admin.chatclear:
+    description: Clear the chat (admin)
+  tchat.version:
+    description: Check plugin version
+  tchat.msg:
+    description: Send private messages
+  tchat.reply:
+    description: Reply to private messages
+  tchat.bypass.bannedwords:
+    description: Bypass banned words filter
+  tchat.bypass.commandblocker:
+    description: Bypass command blocker
+  tchat.bypass.unicode:
+    description: Bypass unicode filter
+  tchat.color:
+    description: Use chat color codes
+  tchat.list:
+    description: See online players
+  tchat.broadcast:
+    description: Send a broadcast
+  tchat.warning:
+    description: Send a warning
+  tchat.announcement:
+    description: Send an announcement
+  tchat.ping:
+    description: See ping
+  tchat.me:
+    description: Use /me command
+  tchat.checkcommand:
+    description: Check if a command is banned
+  tchat.staffchat:
+    description: Use staff chat
+  tchat.signcolor:
+    description: Use sign color codes
+  tchat.nick:
+    description: Change username's nick
+  tchat.ignore:
+    description: Ignore a user
+  tchat.helpop:
+    description: Ask staff for help
+  tchat.helpop.receive:
+    description: Receive helpop requests
+  tchat.bypass.chatradius:
+    description: Bypass chat radius limit
