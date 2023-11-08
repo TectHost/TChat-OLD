@@ -85,19 +85,19 @@ public class ChatGames {
         return null;
     }
     
-    @SuppressWarnings("unused")
     public void startGameTimer() {
-    	if (currentGame == null || isGameActive) {
+        if (currentGame == null || isGameActive) {
             return;
         }
 
         isGameActive = true;
-        BukkitScheduler scheduler = plugin.getServer().getScheduler();
+        @SuppressWarnings("unused")
+		BukkitScheduler scheduler = Bukkit.getServer().getScheduler(); 
         long time = (Long) currentGame.get("time");
         int delay = (int) (time * 20);
 
         if (activeGameTask != null) {
-            activeGameTask.cancel(); // Cancelar el temporizador del juego activo
+            activeGameTask.cancel();
         }
 
         activeGameTask = new BukkitRunnable() {
@@ -106,13 +106,37 @@ public class ChatGames {
                 currentGame = getRandomGame();
                 if (currentGame != null) {
                     isGameActive = false;
-
-                    // Reset flags
                     hasSentMessage = false;
-
-                    // Broadcast the new game message here
                     String newGameMessage = ChatColor.translateAlternateColorCodes('&', (String) currentGame.get("message"));
                     Bukkit.broadcastMessage(newGameMessage);
+
+                    int responseTime = ((Long) currentGame.get("time")).intValue();
+                    int responseDelay = responseTime * 20;
+
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (!hasSentMessage) {
+                                JSONObject formatConfig = loadFormatConfig();
+                                String gameEndMessage = "&5TChat &e> &cTime is up, next question!";
+
+                                if (formatConfig != null && formatConfig.containsKey("messages")) {
+                                    JSONObject messagesConfig = (JSONObject) formatConfig.get("messages");
+                                    if (messagesConfig.containsKey("game_end")) {
+                                        gameEndMessage = (String) messagesConfig.get("game_end");
+                                    }
+                                }
+
+                                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', gameEndMessage));
+                                isGameActive = false;
+                                isGameInProgress = false;
+                                currentGame = getRandomGame();
+                                if (currentGame != null) {
+                                    startGameTimer();
+                                }
+                            }
+                        }
+                    }.runTaskLater(plugin, responseDelay);
                 }
             }
         }.runTaskLater(plugin, delay);
