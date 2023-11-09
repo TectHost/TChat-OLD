@@ -1,5 +1,6 @@
 package minealex.tchat.placeholders;
 
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
@@ -98,6 +99,8 @@ public class Placeholders extends PlaceholderExpansion {
             return obtenerColorAsignado(player);
         } else if (identifier.equals("nickname")) {
             return obtenerNick(player);
+        } else if (identifier.equals("tchat_ignored")) {
+        return obtenerJugadoresIgnorados(player);
         }
 
         return null;
@@ -114,6 +117,17 @@ public class Placeholders extends PlaceholderExpansion {
 
         // Si el jugador no tiene un color o formato asignado, devolvemos un color predeterminado
         return ChatColor.RESET.toString(); // Puedes cambiar esto al color que prefieras.
+    }
+    
+    private String obtenerJugadoresIgnorados(Player player) {
+        String uuid = player.getUniqueId().toString();
+        List<String> jugadoresIgnorados = plugin.getConfig().getStringList("players." + uuid + ".ignore");
+
+        if (jugadoresIgnorados != null) {
+            return String.valueOf(jugadoresIgnorados.size());
+        }
+
+        return "0";
     }
 
     private String obtenerNick(Player player) {
