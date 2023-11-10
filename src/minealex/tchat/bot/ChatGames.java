@@ -168,8 +168,11 @@ public class ChatGames {
                 JSONObject formatConfig = loadFormatConfig();
                 String correctAnswerMessage = "&5TChat &e> &aCorrect answer! You receive a reward.";
 
-                if (formatConfig != null && formatConfig.containsKey("correct_answer_message")) {
-                    correctAnswerMessage = (String) formatConfig.get("correct_answer_message");
+                if (formatConfig != null && formatConfig.containsKey("messages")) {
+                    JSONObject messagesConfig = (JSONObject) formatConfig.get("messages");
+                    if (messagesConfig.containsKey("correct_answer_message")) {
+                        correctAnswerMessage = (String) messagesConfig.get("correct_answer_message");
+                    }
                 }
 
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', correctAnswerMessage));
