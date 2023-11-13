@@ -117,17 +117,7 @@ public class ChatGames {
                         @Override
                         public void run() {
                             if (!hasSentMessage) {
-                                JSONObject formatConfig = loadFormatConfig();
-                                String gameEndMessage = "&5TChat &e> &cTime is up, next question!";
 
-                                if (formatConfig != null && formatConfig.containsKey("messages")) {
-                                    JSONObject messagesConfig = (JSONObject) formatConfig.get("messages");
-                                    if (messagesConfig.containsKey("game_end")) {
-                                        gameEndMessage = (String) messagesConfig.get("game_end");
-                                    }
-                                }
-
-                                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', gameEndMessage));
                                 isGameActive = false;
                                 isGameInProgress = false;
                                 currentGame = getRandomGame();

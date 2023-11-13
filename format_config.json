@@ -42,8 +42,7 @@
     "ignoreRemove": "&5TChat &e> You have stopped ignoring %ignored%.",
     "helpopUsage": "&5TChat &e> &cUsage: /helpop <message>",
     "helpopFormatError": "&5TChat &e> &cError in helpop format.",
-    "chatDisabledMessage": "&5TChat &e> &cChat is disabled in this world.",
-    "game_end": "&5TChat &e> &cTime is up, next question!"
+    "chatDisabledMessage": "&5TChat &e> &cChat is disabled in this world."
   },
   "msgFormats": {
     "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",
