@@ -31,6 +31,7 @@ import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
 import minealex.tchat.commands.StaffChatCommand;
 import minealex.tchat.commands.WarningCommand;
+import minealex.tchat.disable.DisableConfig;
 import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.JoinListener;
 import minealex.tchat.listener.PlayerMoveListener;
@@ -46,6 +47,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -177,9 +179,13 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         getCommand("ignore").setExecutor(new IgnoreCommand(this));
         
-        getCommand("helpop").setExecutor(new HelpOpCommand(this));
+
+        boolean isHelpOpEnabled = isHelpOpEnabled();
+
+        if (isHelpOpEnabled) {
+            getCommand("helpop").setExecutor(new HelpOpCommand(this));
+        }
         
-        // Cargar la configuración
         loadConfigFile();
         
         new SignColor(this);
@@ -192,6 +198,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         this.worldsManager = new WorldsManager(new File(getDataFolder(), "worlds.json"));
         this.radiusChat = new RadiusChat(worldsManager);
+        
+        DisableConfig disableConfig = new DisableConfig(this);
+        disableConfig.createDefaultConfig();
         
         chatBot = new ChatBot(this);
         
@@ -394,6 +403,21 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
     private void loadBannedWordsList() {
         bannedWords = new BannedWords(this);
+    }
+    
+    private boolean isHelpOpEnabled() {
+        File configFile = new File(getDataFolder(), "disable.json");
+        if (configFile.exists()) {
+            try (FileReader reader = new FileReader(configFile)) {
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(reader);
+                return !(Boolean) jsonObject.get("disable_helpop");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // En caso de error o si el archivo no existe, asumimos que la función está habilitada
+        return true;
     }
 
     public String formatMessage(String message, CommandSender sender) {
