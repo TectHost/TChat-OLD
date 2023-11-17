@@ -175,7 +175,11 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         getCommand("staffchat").setExecutor(new StaffChatCommand(this));
         
-        this.getCommand("nick").setExecutor(new NickCommand(this));
+        boolean isNickEnabled = isNickEnabled();
+        
+        if (isNickEnabled) {
+        	this.getCommand("nick").setExecutor(new NickCommand(this));
+        }
         
         getCommand("ignore").setExecutor(new IgnoreCommand(this));
         
@@ -412,6 +416,21 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 JSONParser parser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) parser.parse(reader);
                 return !(Boolean) jsonObject.get("disable_helpop");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // En caso de error o si el archivo no existe, asumimos que la función está habilitada
+        return true;
+    }
+    
+    private boolean isNickEnabled() {
+        File configFile = new File(getDataFolder(), "disable.json");
+        if (configFile.exists()) {
+            try (FileReader reader = new FileReader(configFile)) {
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(reader);
+                return !(Boolean) jsonObject.get("disable_nick");
             } catch (Exception e) {
                 e.printStackTrace();
             }
