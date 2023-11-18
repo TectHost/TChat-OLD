@@ -140,12 +140,15 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     public void onEnable() {
         getCommand("chat").setExecutor(new Commands(this));
         
-        MsgCommand msgCommand = new MsgCommand(this);
-        getCommand("msg").setExecutor(msgCommand);
+        boolean isMsgEnabled = isMsgEnabled();
+        
+        if (isMsgEnabled) {
+        	MsgCommand msgCommand = new MsgCommand(this);
+            getCommand("msg").setExecutor(msgCommand);
+            getCommand("reply").setExecutor(new ReplyCommand(this));
+        }
         
         this.version = getDescription().getVersion();
-        
-        getCommand("reply").setExecutor(new ReplyCommand(this));
         
         getServer().getPluginManager().registerEvents(new JoinListener(this), this);
         
@@ -434,6 +437,21 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 JSONParser parser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) parser.parse(reader);
                 return !(Boolean) jsonObject.get("disable_ignore");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // En caso de error o si el archivo no existe, asumimos que la función está habilitada
+        return true;
+    }
+    
+    private boolean isMsgEnabled() {
+        File configFile = new File(getDataFolder(), "disable.json");
+        if (configFile.exists()) {
+            try (FileReader reader = new FileReader(configFile)) {
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(reader);
+                return !(Boolean) jsonObject.get("disable_msg");
             } catch (Exception e) {
                 e.printStackTrace();
             }
