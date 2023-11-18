@@ -181,8 +181,11 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         	this.getCommand("nick").setExecutor(new NickCommand(this));
         }
         
-        getCommand("ignore").setExecutor(new IgnoreCommand(this));
+        boolean isIgnoreEnabled = isIgnoreEnabled();
         
+        if (isIgnoreEnabled) {
+        	getCommand("ignore").setExecutor(new IgnoreCommand(this));
+        }
 
         boolean isHelpOpEnabled = isHelpOpEnabled();
 
@@ -416,6 +419,21 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 JSONParser parser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) parser.parse(reader);
                 return !(Boolean) jsonObject.get("disable_helpop");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // En caso de error o si el archivo no existe, asumimos que la función está habilitada
+        return true;
+    }
+    
+    private boolean isIgnoreEnabled() {
+        File configFile = new File(getDataFolder(), "disable.json");
+        if (configFile.exists()) {
+            try (FileReader reader = new FileReader(configFile)) {
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(reader);
+                return !(Boolean) jsonObject.get("disable_ignore");
             } catch (Exception e) {
                 e.printStackTrace();
             }
