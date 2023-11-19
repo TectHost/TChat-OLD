@@ -160,7 +160,11 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         getCommand("chatcolor").setExecutor(new ChatColorCommand(this));
         
-        getCommand("rules").setExecutor(new RulesCommand(this));
+        boolean isRulesEnabled = isRulesEnabled();
+        
+        if (isRulesEnabled) {
+        	getCommand("rules").setExecutor(new RulesCommand(this));
+        }
         
         getCommand("list").setExecutor(new ListCommand(this));
         
@@ -467,6 +471,21 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 JSONParser parser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) parser.parse(reader);
                 return !(Boolean) jsonObject.get("disable_nick");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // En caso de error o si el archivo no existe, asumimos que la función está habilitada
+        return true;
+    }
+    
+    private boolean isRulesEnabled() {
+        File configFile = new File(getDataFolder(), "disable.json");
+        if (configFile.exists()) {
+            try (FileReader reader = new FileReader(configFile)) {
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(reader);
+                return !(Boolean) jsonObject.get("disable_rules");
             } catch (Exception e) {
                 e.printStackTrace();
             }
