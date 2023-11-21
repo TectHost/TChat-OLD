@@ -35,7 +35,8 @@ public class AutoBroadcast {
         }
     }
 
-    private Map<String, Object> loadAutoBroadcast() {
+    @SuppressWarnings("unchecked")
+	private Map<String, Object> loadAutoBroadcast() {
         File configFile = new File(plugin.getDataFolder(), "autobroadcast.json");
 
         if (!configFile.exists()) {
@@ -50,23 +51,29 @@ public class AutoBroadcast {
             int time = ((Long) jsonObject.get("time")).intValue();
             autoBroadcastData.put("time", time);
 
-            @SuppressWarnings("unchecked")
-			boolean enabled = (boolean) jsonObject.getOrDefault("enabled", true); // Asegúrate de añadir esta línea
-            autoBroadcastData.put("enabled", enabled); // Asegúrate de añadir esta línea
+            boolean enabled = (boolean) jsonObject.getOrDefault("enabled", true);
+            autoBroadcastData.put("enabled", enabled);
 
             JSONObject broadcasts = (JSONObject) jsonObject.get("broadcasts");
-            Map<String, List<String>> broadcastMap = new HashMap<>();
+            Map<String, Map<String, Object>> broadcastMap = new HashMap<>();
 
             for (Object key : broadcasts.keySet()) {
                 String broadcastKey = (String) key;
-                JSONArray messagesArray = (JSONArray) broadcasts.get(broadcastKey);
-                List<String> messagesList = new ArrayList<>();
+                JSONObject broadcastObj = (JSONObject) broadcasts.get(broadcastKey);
 
+                List<String> messagesList = new ArrayList<>();
+                JSONArray messagesArray = (JSONArray) broadcastObj.get("messages");
                 for (Object message : messagesArray) {
                     messagesList.add((String) message);
                 }
 
-                broadcastMap.put(broadcastKey, messagesList);
+                Map<String, Object> broadcastData = new HashMap<>();
+                broadcastData.put("messages", messagesList);
+                broadcastData.put("title-enabled", broadcastObj.getOrDefault("title-enabled", true));
+                broadcastData.put("title", broadcastObj.get("title"));
+                broadcastData.put("sub-title", broadcastObj.get("sub-title"));
+
+                broadcastMap.put(broadcastKey, broadcastData);
             }
 
             autoBroadcastData.put("broadcasts", broadcastMap);
@@ -79,12 +86,12 @@ public class AutoBroadcast {
     }
 
     private void startBroadcastTask() {
-        boolean broadcastsEnabled = isBroadcastsEnabled(); // Método para obtener el estado de los broadcasts
+        boolean broadcastsEnabled = isBroadcastsEnabled();
 
         if (!broadcastsEnabled) {
-            return; // Si los broadcasts están deshabilitados, no hacemos nada
+            return;
         }
-        
+
         int tiempoEntreBroadcasts = getTime();
 
         new BukkitRunnable() {
@@ -98,42 +105,56 @@ public class AutoBroadcast {
                 }
 
                 String broadcastKey = broadcastKeys.get(index);
-                List<String> messageList = getBroadcasts().get(broadcastKey);
+                Map<String, Object> broadcast = getBroadcasts().get(broadcastKey);
+                @SuppressWarnings("unchecked")
+				List<String> messageList = (List<String>) broadcast.get("messages");
 
                 for (String message : messageList) {
-                    // Aplicar códigos de formato de Minecraft y placeholders
                     message = ChatColor.translateAlternateColorCodes('&', message);
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         String formattedMessage = PlaceholderAPI.setPlaceholders(player, message);
-
-                        // Envía el mensaje a los jugadores o realiza cualquier acción que desees
                         player.sendMessage(formattedMessage);
+
+                        if (isTitleEnabled()) {
+                            boolean titleEnabled = (boolean) broadcast.getOrDefault("title-enabled", true);
+                            if (titleEnabled) {
+                                String title = (String) broadcast.get("title");
+                                String subTitle = (String) broadcast.get("sub-title");
+
+                                if (title != null && subTitle != null) {
+                                    sendTitleSubtitle(player, title, subTitle);
+                                }
+                            }
+                        }
                     }
                 }
 
                 index++;
             }
-        }.runTaskTimer(plugin, 0, tiempoEntreBroadcasts * 20); // Convierte los segundos a ticks
+        }.runTaskTimer(plugin, 0, tiempoEntreBroadcasts * 20);
     }
-    
-    public Map<String, List<String>> getBroadcasts() {
+
+    public Map<String, Map<String, Object>> getBroadcasts() {
         @SuppressWarnings("unchecked")
-        Map<String, List<String>> broadcasts = (Map<String, List<String>>) autoBroadcastData.getOrDefault("broadcasts", new HashMap<>());
+        Map<String, Map<String, Object>> broadcasts = (Map<String, Map<String, Object>>) autoBroadcastData.getOrDefault("broadcasts", new HashMap<>());
         return broadcasts;
     }
-    
+
     public boolean isBroadcastsEnabled() {
         return (boolean) autoBroadcastData.getOrDefault("enabled", true);
+    }
+
+    public boolean isTitleEnabled() {
+        return (boolean) autoBroadcastData.getOrDefault("titleEnabled", true);
     }
 
     public int getTime() {
         return (int) autoBroadcastData.getOrDefault("time", 45);
     }
 
-    public List<String> getBroadcast(String key) {
-        @SuppressWarnings("unchecked")
-        Map<String, List<String>> broadcasts = (Map<String, List<String>>) autoBroadcastData.getOrDefault("broadcasts", new HashMap<>());
-        return broadcasts.getOrDefault(key, new ArrayList<>());
+    @SuppressWarnings("deprecation")
+	public void sendTitleSubtitle(Player player, String title, String subTitle) {
+        player.sendTitle(ChatColor.translateAlternateColorCodes('&', title), ChatColor.translateAlternateColorCodes('&', subTitle));
     }
 }

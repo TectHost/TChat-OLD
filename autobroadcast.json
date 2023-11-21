@@ -2,16 +2,26 @@
   "time": 60,
   "enabled": true,
   "broadcasts": {
-    "broadcast1": [
-      "&7+----------------------",
-      "&aThis server is using TChat",
-      "&7+----------------------"
-    ],
-    "broadcast2": [
-      "&7+----------------------",
-      "&aThe best cheap hosting!",
-      "&bhttps://tect.host/",
-      "&7+----------------------"
-    ]
+    "broadcast1": {
+      "messages": [
+        "&7+----------------------",
+        "&aThis server is using TChat",
+        "&7+----------------------"
+      ],
+      "title-enabled": true,
+      "title": "&6Welcome!",
+      "sub-title": "&eEnjoy your stay!"
+    },
+    "broadcast2": {
+      "messages": [
+        "&7+----------------------",
+        "&aThe best cheap hosting!",
+        "&bhttps://tect.host/",
+        "&7+----------------------"
+      ],
+      "title-enabled": true,
+      "title": "&6Welcome!",
+      "sub-title": "&eEnjoy your stay!"
+    }
   }
 }
