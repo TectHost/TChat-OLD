@@ -9,7 +9,9 @@
         "keyword": "4",
         "rewards": [
             "give %winner% diamond 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -22,7 +24,9 @@
         "keyword": "dog",
         "rewards": [
             "give %winner% iron_sword 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -35,7 +39,9 @@
         "keyword": "paris",
         "rewards": [
             "give %winner% gold_ingot 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -48,7 +54,9 @@
         "keyword": "jupiter",
         "rewards": [
             "give %winner% emerald 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -61,7 +69,9 @@
         "keyword": "seven",
         "rewards": [
             "give %winner% diamond 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -74,7 +84,9 @@
         "keyword": "tokyo",
         "rewards": [
             "give %winner% gold_ingot 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -87,7 +99,9 @@
         "keyword": "h2o",
         "rewards": [
             "give %winner% iron_sword 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -100,7 +114,9 @@
         "keyword": "nitrogen",
         "rewards": [
             "give %winner% emerald 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -113,7 +129,9 @@
         "keyword": "o2",
         "rewards": [
             "give %winner% diamond 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -126,7 +144,9 @@
         "keyword": "africa",
         "rewards": [
             "give %winner% gold_ingot 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -139,7 +159,9 @@
         "keyword": "eight",
         "rewards": [
             "give %winner% iron_sword 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -152,7 +174,9 @@
         "keyword": "canberra",
         "rewards": [
             "give %winner% emerald 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -165,7 +189,9 @@
         "keyword": "two",
         "rewards": [
             "give %winner% diamond 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -178,7 +204,9 @@
         "keyword": "helium",
         "rewards": [
             "give %winner% gold_ingot 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -191,7 +219,9 @@
         "keyword": "au",
         "rewards": [
             "give %winner% iron_sword 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -204,7 +234,9 @@
         "keyword": "everest",
         "rewards": [
             "give %winner% emerald 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -217,7 +249,9 @@
         "keyword": "c",
         "rewards": [
             "give %winner% diamond 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     },
     {
@@ -230,7 +264,9 @@
         "keyword": "mars",
         "rewards": [
             "give %winner% gold_ingot 1",
-            "say TChat > %winner% has won the game!"
+            "say TChat > %winner% has won the game!",
+            "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
+            "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ]
     }
 ]
