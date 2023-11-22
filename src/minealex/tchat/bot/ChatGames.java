@@ -30,12 +30,25 @@ public class ChatGames {
     private boolean isGameActive = false;
     private BukkitTask activeGameTask;
     private boolean isGameInProgress = false;
+    private String gameTitle;
+    private String gameSubtitle;
+    @SuppressWarnings("unused")
+	private boolean isTitleEnabled;
 
     public ChatGames(TChat plugin) {
     	this.plugin = plugin;
         this.isGameRunning = false;
         this.currentGame = getRandomGame();
-        startGameTimer();
+        
+        if (this.currentGame != null) {
+            this.isTitleEnabled = (boolean) this.currentGame.get("title-enabled");
+            this.gameTitle = ChatColor.translateAlternateColorCodes('&', (String) this.currentGame.get("title"));
+            this.gameSubtitle = ChatColor.translateAlternateColorCodes('&', (String) this.currentGame.get("subtitle"));
+            startGameTimer();
+        } else {
+            // Handle the case where currentGame is null (e.g., no enabled games in the config)
+            Bukkit.getLogger().warning("No enabled games found in the configuration.");
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -92,7 +105,7 @@ public class ChatGames {
 
         isGameActive = true;
         @SuppressWarnings("unused")
-		BukkitScheduler scheduler = Bukkit.getServer().getScheduler(); 
+		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         long time = (Long) currentGame.get("time");
         int delay = (int) (time * 20);
 
@@ -110,6 +123,11 @@ public class ChatGames {
                     String newGameMessage = ChatColor.translateAlternateColorCodes('&', (String) currentGame.get("message"));
                     Bukkit.broadcastMessage(newGameMessage);
 
+                    // Mostrar el título solo si la opción title-enabled está habilitada
+                    if ((boolean) currentGame.get("title-enabled")) {
+                        broadcastTitle();
+                    }
+
                     int responseTime = ((Long) currentGame.get("time")).intValue();
                     int responseDelay = responseTime * 20;
 
@@ -117,7 +135,6 @@ public class ChatGames {
                         @Override
                         public void run() {
                             if (!hasSentMessage) {
-
                                 isGameActive = false;
                                 isGameInProgress = false;
                                 currentGame = getRandomGame();
@@ -135,6 +152,13 @@ public class ChatGames {
     public void cancelGameTimer() {
         if (gameTimerTask != null) {
             gameTimerTask.cancel();
+        }
+    }
+    
+    @SuppressWarnings("deprecation")
+	private void broadcastTitle() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitle(gameTitle, gameSubtitle);
         }
     }
 

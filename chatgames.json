@@ -1,6 +1,9 @@
 [
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eHow much is 2 + 2?",
         "message": "&5TChat &e> &aHow much is 2 + 2?",
         "time": 60,
         "keyword": "4",
@@ -11,6 +14,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWrite the name of an animal that has 4 legs:",
         "message": "&5TChat &e> &aWrite the name of an animal that has 4 legs:",
         "time": 45,
         "keyword": "dog",
@@ -21,6 +27,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the capital of France?",
         "message": "&5TChat &e> &aWhat is the capital of France?",
         "time": 60,
         "keyword": "paris",
@@ -31,6 +40,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the largest planet in our solar system?",
         "message": "&5TChat &e> &aWhat is the largest planet in our solar system?",
         "time": 60,
         "keyword": "jupiter",
@@ -41,6 +53,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eHow many colors are there in a rainbow?",
         "message": "&5TChat &e> &aHow many colors are there in a rainbow?",
         "time": 45,
         "keyword": "seven",
@@ -51,6 +66,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the capital of Japan?",
         "message": "&5TChat &e> &aWhat is the capital of Japan?",
         "time": 60,
         "keyword": "tokyo",
@@ -61,6 +79,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the chemical symbol for water?",
         "message": "&5TChat &e> &aWhat is the chemical symbol for water?",
         "time": 45,
         "keyword": "h2o",
@@ -71,6 +92,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eName a gas that makes up the Earth's atmosphere.",
         "message": "&5TChat &e> &aName a gas that makes up the Earth's atmosphere.",
         "time": 60,
         "keyword": "nitrogen",
@@ -81,6 +105,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the chemical symbol for oxygen?",
         "message": "&5TChat &e> &aWhat is the chemical symbol for oxygen?",
         "time": 45,
         "keyword": "o2",
@@ -91,6 +118,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eName a continent other than Asia.",
         "message": "&5TChat &e> &aName a continent other than Asia.",
         "time": 60,
         "keyword": "africa",
@@ -101,6 +131,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the square root of 64?",
         "message": "&5TChat &e> &aWhat is the square root of 64?",
         "time": 45,
         "keyword": "eight",
@@ -111,6 +144,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the capital of Australia?",
         "message": "&5TChat &e> &aWhat is the capital of Australia?",
         "time": 60,
         "keyword": "canberra",
@@ -121,6 +157,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the smallest prime number?",
         "message": "&5TChat &e> &aWhat is the smallest prime number?",
         "time": 45,
         "keyword": "two",
@@ -131,6 +170,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eName a gas that is used to fill balloons and makes your voice high-pitched.",
         "message": "&5TChat &e> &aName a gas that is used to fill balloons and makes your voice high-pitched.",
         "time": 60,
         "keyword": "helium",
@@ -141,6 +183,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the chemical symbol for gold?",
         "message": "&5TChat &e> &aWhat is the chemical symbol for gold?",
         "time": 45,
         "keyword": "au",
@@ -151,6 +196,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the tallest mountain on Earth?",
         "message": "&5TChat &e> &aWhat is the tallest mountain on Earth?",
         "time": 60,
         "keyword": "everest",
@@ -161,6 +209,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eWhat is the chemical symbol for carbon?",
         "message": "&5TChat &e> &aWhat is the chemical symbol for carbon?",
         "time": 45,
         "keyword": "c",
@@ -171,6 +222,9 @@
     },
     {
         "enabled": true,
+        "title-enabled": true,
+        "title": "&aTrivia Time!",
+        "subtitle": "&eName a planet other than Earth in our solar system.",
         "message": "&5TChat &e> &aName a planet other than Earth in our solar system.",
         "time": 60,
         "keyword": "mars",
