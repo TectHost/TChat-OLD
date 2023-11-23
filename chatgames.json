@@ -12,7 +12,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -27,7 +28,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -42,7 +44,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -57,7 +60,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -72,7 +76,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -87,7 +92,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -102,7 +108,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -117,7 +124,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -132,7 +140,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -147,7 +156,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -162,7 +172,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -177,7 +188,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -192,7 +204,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -207,7 +220,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -222,7 +236,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -237,7 +252,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -252,7 +268,8 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     },
     {
         "enabled": true,
@@ -267,6 +284,7 @@
             "say TChat > %winner% has won the game!",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
-        ]
+        ],
+        "sound": "BLOCK_NOTE_BLOCK_HAT"
     }
 ]

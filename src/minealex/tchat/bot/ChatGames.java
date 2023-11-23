@@ -109,6 +109,11 @@ public class ChatGames {
         long time = (Long) currentGame.get("time");
         int delay = (int) (time * 20);
 
+        // Reproducir sonido al inicio del juego
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            playStartSound(player);
+        }
+
         if (activeGameTask != null) {
             activeGameTask.cancel();
         }
@@ -123,7 +128,6 @@ public class ChatGames {
                     String newGameMessage = ChatColor.translateAlternateColorCodes('&', (String) currentGame.get("message"));
                     Bukkit.broadcastMessage(newGameMessage);
 
-                    // Mostrar el título solo si la opción title-enabled está habilitada
                     if ((boolean) currentGame.get("title-enabled")) {
                         broadcastTitle();
                     }
@@ -144,6 +148,11 @@ public class ChatGames {
                             }
                         }
                     }.runTaskLater(plugin, responseDelay);
+
+                    // Reproducir sonido al final del juego
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        playEndSound(player);
+                    }
                 }
             }
         }.runTaskLater(plugin, delay);
@@ -211,6 +220,26 @@ public class ChatGames {
             }
         } else {
             hasSentMessage = false;
+        }
+    }
+    
+    private void playEndSound(Player player) {
+        if (currentGame.containsKey("sound")) {
+            String soundName = (String) currentGame.get("sound");
+            player.playSound(player.getLocation(), soundName, 1.0F, 1.0F);
+        } else {
+            // El sonido por defecto si no se especifica en el JSON
+            player.playSound(player.getLocation(), "note.hat", 1.0F, 1.0F);
+        }
+    }
+    
+    private void playStartSound(Player player) {
+        if (currentGame.containsKey("sound")) {
+            String soundName = (String) currentGame.get("sound");
+            player.playSound(player.getLocation(), soundName, 1.0F, 1.0F);
+        } else {
+            // El sonido por defecto si no se especifica en el JSON
+            player.playSound(player.getLocation(), "note.hat", 1.0F, 1.0F);
         }
     }
     
