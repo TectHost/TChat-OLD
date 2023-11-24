@@ -224,23 +224,21 @@ public class ChatGames {
     }
     
     private void playEndSound(Player player) {
-        if (currentGame.containsKey("sound")) {
-            String soundName = (String) currentGame.get("sound");
-            player.playSound(player.getLocation(), soundName, 1.0F, 1.0F);
-        } else {
-            // El sonido por defecto si no se especifica en el JSON
-            player.playSound(player.getLocation(), "note.hat", 1.0F, 1.0F);
+        if (currentGame.containsKey("sound-enabled") && !(boolean) currentGame.get("sound-enabled")) {
+            return;  // Si el sonido está deshabilitado, no lo reproduzcas.
         }
+
+        String soundName = currentGame.containsKey("sound") ? (String) currentGame.get("sound") : "BLOCK_NOTE_BLOCK_HAT";
+        player.playSound(player.getLocation(), soundName, 1.0F, 1.0F);
     }
-    
+
     private void playStartSound(Player player) {
-        if (currentGame.containsKey("sound")) {
-            String soundName = (String) currentGame.get("sound");
-            player.playSound(player.getLocation(), soundName, 1.0F, 1.0F);
-        } else {
-            // El sonido por defecto si no se especifica en el JSON
-            player.playSound(player.getLocation(), "note.hat", 1.0F, 1.0F);
+        if (currentGame.containsKey("sound-enabled") && !(boolean) currentGame.get("sound-enabled")) {
+            return;  // Si el sonido está deshabilitado, no lo reproduzcas.
         }
+
+        String soundName = currentGame.containsKey("sound") ? (String) currentGame.get("sound") : "BLOCK_NOTE_BLOCK_HAT";
+        player.playSound(player.getLocation(), soundName, 1.0F, 1.0F);
     }
     
     private JSONObject loadFormatConfig() {
