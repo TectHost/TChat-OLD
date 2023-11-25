@@ -2,6 +2,7 @@ package minealex.tchat.bot;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -107,7 +108,7 @@ public class AutoBroadcast {
                 String broadcastKey = broadcastKeys.get(index);
                 Map<String, Object> broadcast = getBroadcasts().get(broadcastKey);
                 @SuppressWarnings("unchecked")
-				List<String> messageList = (List<String>) broadcast.get("messages");
+                List<String> messageList = (List<String>) broadcast.get("messages");
 
                 for (String message : messageList) {
                     message = ChatColor.translateAlternateColorCodes('&', message);
@@ -125,6 +126,17 @@ public class AutoBroadcast {
                                 if (title != null && subTitle != null) {
                                     sendTitleSubtitle(player, title, subTitle);
                                 }
+                            }
+                        }
+
+                        // Reproduce el sonido si está configurado
+                        if (broadcast.containsKey("sound")) {
+                            String soundName = (String) broadcast.get("sound");
+                            try {
+                                Sound sound = Sound.valueOf(soundName);
+                                player.playSound(player.getLocation(), sound, 1.0F, 1.0F);
+                            } catch (IllegalArgumentException e) {
+                                plugin.getLogger().warning("Sound '" + soundName + "' not found!");
                             }
                         }
                     }

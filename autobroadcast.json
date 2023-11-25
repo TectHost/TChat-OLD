@@ -10,7 +10,8 @@
       ],
       "title-enabled": true,
       "title": "&6Welcome!",
-      "sub-title": "&eEnjoy your stay!"
+      "sub-title": "&eEnjoy your stay!",
+      "sound": "entity.experience_orb.pickup"
     },
     "broadcast2": {
       "messages": [
@@ -21,7 +22,8 @@
       ],
       "title-enabled": true,
       "title": "&6Welcome!",
-      "sub-title": "&eEnjoy your stay!"
+      "sub-title": "&eEnjoy your stay!",
+      "sound": "block.note.harp"
     }
   }
 }
