@@ -1,7 +1,14 @@
 package minealex.tchat.bot;
 
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -11,12 +18,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import minealex.tchat.TChat;
-
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class ChatGames {
     private TChat plugin;
@@ -34,6 +35,7 @@ public class ChatGames {
     private String gameSubtitle;
     @SuppressWarnings("unused")
 	private boolean isTitleEnabled;
+    private String sound;
 
     public ChatGames(TChat plugin) {
     	this.plugin = plugin;
@@ -44,6 +46,7 @@ public class ChatGames {
             this.isTitleEnabled = (boolean) this.currentGame.get("title-enabled");
             this.gameTitle = ChatColor.translateAlternateColorCodes('&', (String) this.currentGame.get("title"));
             this.gameSubtitle = ChatColor.translateAlternateColorCodes('&', (String) this.currentGame.get("subtitle"));
+            this.sound = (String) this.currentGame.get("sound");
             startGameTimer();
         } else {
             // Handle the case where currentGame is null (e.g., no enabled games in the config)
@@ -109,11 +112,6 @@ public class ChatGames {
         long time = (Long) currentGame.get("time");
         int delay = (int) (time * 20);
 
-        // Reproducir sonido al inicio del juego
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            playStartSound(player);
-        }
-
         if (activeGameTask != null) {
             activeGameTask.cancel();
         }
@@ -128,6 +126,7 @@ public class ChatGames {
                     String newGameMessage = ChatColor.translateAlternateColorCodes('&', (String) currentGame.get("message"));
                     Bukkit.broadcastMessage(newGameMessage);
 
+                    // Mostrar el título solo si la opción title-enabled está habilitada
                     if ((boolean) currentGame.get("title-enabled")) {
                         broadcastTitle();
                     }
@@ -148,11 +147,6 @@ public class ChatGames {
                             }
                         }
                     }.runTaskLater(plugin, responseDelay);
-
-                    // Reproducir sonido al final del juego
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        playEndSound(player);
-                    }
                 }
             }
         }.runTaskLater(plugin, delay);
@@ -168,6 +162,17 @@ public class ChatGames {
 	private void broadcastTitle() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendTitle(gameTitle, gameSubtitle);
+            
+            if ((boolean) currentGame.get("sound-enabled")) {
+                playSound(player);
+            }
+        }
+    }
+    
+    private void playSound(Player player) {
+        // Verificar si el sonido está habilitado
+        if ((boolean) currentGame.get("sound-enabled")) {
+            player.playSound(player.getLocation(), Sound.valueOf(sound), 1.0F, 1.0F);
         }
     }
 
@@ -221,24 +226,6 @@ public class ChatGames {
         } else {
             hasSentMessage = false;
         }
-    }
-    
-    private void playEndSound(Player player) {
-        if (currentGame.containsKey("sound-enabled") && !(boolean) currentGame.get("sound-enabled")) {
-            return;  // Si el sonido está deshabilitado, no lo reproduzcas.
-        }
-
-        String soundName = currentGame.containsKey("sound") ? (String) currentGame.get("sound") : "BLOCK_NOTE_BLOCK_HAT";
-        player.playSound(player.getLocation(), soundName, 1.0F, 1.0F);
-    }
-
-    private void playStartSound(Player player) {
-        if (currentGame.containsKey("sound-enabled") && !(boolean) currentGame.get("sound-enabled")) {
-            return;  // Si el sonido está deshabilitado, no lo reproduzcas.
-        }
-
-        String soundName = currentGame.containsKey("sound") ? (String) currentGame.get("sound") : "BLOCK_NOTE_BLOCK_HAT";
-        player.playSound(player.getLocation(), soundName, 1.0F, 1.0F);
     }
     
     private JSONObject loadFormatConfig() {

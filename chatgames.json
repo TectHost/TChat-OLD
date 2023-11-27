@@ -11,10 +11,11 @@
         "rewards": [
             "give %winner% diamond 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -28,10 +29,11 @@
         "rewards": [
             "give %winner% iron_sword 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -45,10 +47,11 @@
         "rewards": [
             "give %winner% gold_ingot 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -62,10 +65,11 @@
         "rewards": [
             "give %winner% emerald 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -79,10 +83,11 @@
         "rewards": [
             "give %winner% diamond 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -96,10 +101,11 @@
         "rewards": [
             "give %winner% gold_ingot 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -113,10 +119,11 @@
         "rewards": [
             "give %winner% iron_sword 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -130,10 +137,11 @@
         "rewards": [
             "give %winner% emerald 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -147,10 +155,11 @@
         "rewards": [
             "give %winner% diamond 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -164,10 +173,11 @@
         "rewards": [
             "give %winner% gold_ingot 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -181,10 +191,11 @@
         "rewards": [
             "give %winner% iron_sword 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -198,10 +209,11 @@
         "rewards": [
             "give %winner% emerald 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -215,10 +227,11 @@
         "rewards": [
             "give %winner% diamond 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -232,10 +245,11 @@
         "rewards": [
             "give %winner% gold_ingot 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -249,10 +263,11 @@
         "rewards": [
             "give %winner% iron_sword 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -266,10 +281,11 @@
         "rewards": [
             "give %winner% emerald 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -283,10 +299,11 @@
         "rewards": [
             "give %winner% diamond 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     },
     {
         "enabled": true,
@@ -299,9 +316,10 @@
         "rewards": [
             "give %winner% gold_ingot 1",
             "say TChat > %winner% has won the game!",
+            "particle explode ~ ~ ~ 0 1 0 0.05 100",
             "title %winner% subtitle {\"text\":\"You've won the game!\",\"color\":\"gold\"}",
             "title %winner% title {\"text\":\"¡WINNER!\",\"bold\":true,\"color\":\"green\"}"
         ],
-        "sound": "BLOCK_NOTE_BLOCK_HAT"
+        "sound": "BAT_DEATH"
     }
 ]
