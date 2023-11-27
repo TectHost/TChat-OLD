@@ -8,8 +8,12 @@ import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Sound;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
@@ -187,6 +191,10 @@ public class ChatGames {
                 for (Object rewardObj : rewards) {
                     String reward = (String) rewardObj;
                     String formattedReward = reward.replace("%winner%", player.getName());
+                    
+                    if ((boolean) currentGame.get("firework-enabled")) {
+                        showFirework(player);
+                    }
 
                     Bukkit.getScheduler().runTask(plugin, () -> {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedReward);
@@ -225,6 +233,70 @@ public class ChatGames {
             }
         } else {
             hasSentMessage = false;
+        }
+    }
+    
+    private void showFirework(Player player) {
+        // Obtener información del juego actual
+        boolean fireworkEnabled = (boolean) currentGame.get("firework-enabled");
+        String fireworkColor = (String) currentGame.get("firework-color");
+
+        // Verificar si mostrar el fuego artificial está habilitado
+        if (fireworkEnabled) {
+            // Programar la creación del fuego artificial en el hilo principal
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                // Crear y mostrar el fuego artificial en las coordenadas del jugador ganador
+                Firework firework = (Firework) player.getWorld().spawn(player.getLocation(), Firework.class);
+                FireworkMeta meta = firework.getFireworkMeta();
+                FireworkEffect.Builder builder = FireworkEffect.builder();
+
+                // Configurar el color del fuego artificial
+                builder.withColor(Color.fromRGB(getRGBFromColorName(fireworkColor)));
+
+                // Agregar más configuraciones según sea necesario (puedes hacer esto configurable también)
+
+                meta.addEffect(builder.build());
+                firework.setFireworkMeta(meta);
+            });
+        }
+    }
+    
+    private int getRGBFromColorName(String colorName) {
+        switch (colorName.toUpperCase()) {
+            case "AQUA":
+                return 0x00FFFF;
+            case "BLACK":
+                return 0x000000;
+            case "BLUE":
+                return 0x0000FF;
+            case "FUCHSIA":
+                return 0xFF00FF;
+            case "GRAY":
+                return 0x808080;
+            case "GREEN":
+                return 0x008000;
+            case "LIME":
+                return 0x00FF00;
+            case "MAROON":
+                return 0x800000;
+            case "NAVY":
+                return 0x000080;
+            case "OLIVE":
+                return 0x808000;
+            case "PURPLE":
+                return 0x800080;
+            case "RED":
+                return 0xFF0000;
+            case "SILVER":
+                return 0xC0C0C0;
+            case "TEAL":
+                return 0x008080;
+            case "WHITE":
+                return 0xFFFFFF;
+            case "YELLOW":
+                return 0xFFFF00;
+            default:
+                return 0xFFFFFF;
         }
     }
     
