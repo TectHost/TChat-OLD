@@ -30,7 +30,7 @@ public class AutoBroadcast {
         this.autoBroadcastData = loadAutoBroadcast();
 
         if (autoBroadcastData.isEmpty()) {
-            plugin.getLogger().severe("No se pudo cargar la configuración del autobroadcast.");
+            plugin.getLogger().severe("The autobroadcast configuration could not be loaded.");
         } else {
             startBroadcastTask();
         }
@@ -129,8 +129,7 @@ public class AutoBroadcast {
                             }
                         }
 
-                        // Reproduce el sonido si está configurado
-                        if (broadcast.containsKey("sound")) {
+                        if (broadcast.containsKey("sound") && (boolean) broadcast.getOrDefault("sound-enabled", true)) {
                             String soundName = (String) broadcast.get("sound");
                             try {
                                 Sound sound = Sound.valueOf(soundName);
