@@ -24,24 +24,30 @@ public class StaffChatCommand implements CommandExecutor {
 
     public StaffChatCommand(TChat plugin) {
         this.plugin = plugin;
-        loadConfig();
+        loadConfig(); // Make sure to load the config when the command executor is instantiated
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-        	Player player = (Player) sender;
+            Player player = (Player) sender;
             if (player.hasPermission("tchat.staffchat")) {
+                loadConfig(); // Reload the config to make sure variables are updated
+
                 if (plugin.getStaffChatPlayers().contains(player.getUniqueId())) {
-                	removePlayerFromStaffChat(player);
+                    removePlayerFromStaffChat(player);
                     String message = String.join(" ", args);
-                    for (UUID uuid : plugin.getStaffChatPlayers()) {
-                        Player staffPlayer = Bukkit.getPlayer(uuid);
-                        if (staffPlayer != null && staffPlayer.isOnline()) {
-                        	player.sendMessage(ChatColor.translateAlternateColorCodes('&', staffChatFormat
-                        	        .replace("%player%", player.getName())
-                        	        .replace("%message%", message)
-                        	));
+
+                    // Check if variables are not null before using them
+                    if (staffChatFormat != null) {
+                        for (UUID uuid : plugin.getStaffChatPlayers()) {
+                            Player staffPlayer = Bukkit.getPlayer(uuid);
+                            if (staffPlayer != null && staffPlayer.isOnline()) {
+                                staffPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', staffChatFormat
+                                        .replace("%player%", player.getName())
+                                        .replace("%message%", message)
+                                ));
+                            }
                         }
                     }
                     return true;
@@ -56,14 +62,13 @@ public class StaffChatCommand implements CommandExecutor {
         }
         return false;
     }
-    
+
     public void removePlayerFromStaffChat(Player player) {
         if (plugin.getStaffChatPlayers().contains(player.getUniqueId())) {
             plugin.removePlayerFromStaffChat(player);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', staffChatLeaveMessage));
         }
     }
-    
 
     private String getOnlyPlayer() {
         try {
@@ -77,25 +82,19 @@ public class StaffChatCommand implements CommandExecutor {
             return "Ocurrió un error al cargar el mensaje para jugadores.";
         }
     }
-    
+
     private void loadConfig() {
         try {
             JSONParser parser = new JSONParser();
-            JSONObject config = null;
-            try {
-                config = (JSONObject) parser.parse(new FileReader("plugins/TChat/format_config.json"));
-            } catch (org.json.simple.parser.ParseException e) {
-                e.printStackTrace();
-            }
+            JSONObject config = (JSONObject) parser.parse(new FileReader("plugins/TChat/format_config.json"));
             JSONObject staffConfig = (JSONObject) config.get("Staff");
 
             // Leer configuraciones del JSON
             staffChatFormat = (String) staffConfig.get("format");
             staffChatJoinMessage = (String) staffConfig.get("staff_chat_join_message");
             staffChatLeaveMessage = (String) staffConfig.get("staff_chat_leave_message");
-        } catch (IOException e) {
+        } catch (IOException | org.json.simple.parser.ParseException e) {
             System.out.println("Error al cargar la configuración: " + e.getMessage());
         }
     }
-
 }
