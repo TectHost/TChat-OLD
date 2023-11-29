@@ -81,6 +81,11 @@
     "staff_chat_join_message": "&5TChat &e> &aYou are now in the Staff channel.",
     "staff_chat_leave_message": "&5TChat &e> &cYou have left the Staff channel."
   },
+  "Plugin": [
+    "&cPlugin: &f%plugin%",
+    "&cRAM: &f%ram% MB",
+    "&cVersion: &f%version%"
+  ],
   "rules_message": [
     "Rule 1: No cheating",
     "Rule 2: Respecting others",

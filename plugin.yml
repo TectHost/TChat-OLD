@@ -1,5 +1,5 @@
 name: TChat
-version: 2.8.0
+version: 2.8.1
 main: minealex.tchat.TChat
 
 commands:
@@ -76,6 +76,9 @@ commands:
   info:
     description: Info of the server
     permission: tchat.info
+  plugin:
+    description: Info of the plugin
+    permission: tchat.plugin
 
 permissions:
   tchat.reload:
@@ -126,3 +129,5 @@ permissions:
     description: Bypass chat radius limit
   tchat.info:
     description: Permission to execute info
+  tchat.plugin:
+    description: Permission to execute plugin
