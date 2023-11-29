@@ -1,5 +1,5 @@
 name: TChat
-version: 2.7.14
+version: 2.8.0
 main: minealex.tchat.TChat
 
 commands:
@@ -73,6 +73,9 @@ commands:
   helpop:
     description: Ask staff for help
     permission: tchat.helpop
+  info:
+    description: Info of the server
+    permission: tchat.info
 
 permissions:
   tchat.reload:
@@ -121,3 +124,5 @@ permissions:
     description: Receive helpop requests
   tchat.bypass.chatradius:
     description: Bypass chat radius limit
+  tchat.info:
+    description: Permission to execute info

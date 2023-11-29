@@ -22,6 +22,7 @@ import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
 import minealex.tchat.commands.HelpOpCommand;
 import minealex.tchat.commands.IgnoreCommand;
+import minealex.tchat.commands.InfoCommand;
 import minealex.tchat.commands.ListCommand;
 import minealex.tchat.commands.MeCommand;
 import minealex.tchat.commands.MsgCommand;
@@ -35,6 +36,7 @@ import minealex.tchat.disable.DisableConfig;
 import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.JoinListener;
 import minealex.tchat.listener.PlayerMoveListener;
+import minealex.tchat.listener.TPSListener;
 import minealex.tchat.perworldchat.PerWorldChat;
 import minealex.tchat.perworldchat.RadiusChat;
 import minealex.tchat.perworldchat.WorldsManager;
@@ -199,6 +201,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         if (isHelpOpEnabled) {
             getCommand("helpop").setExecutor(new HelpOpCommand(this));
         }
+        
+        getCommand("info").setExecutor(new InfoCommand(this));
+        
+        new TPSListener(this);
         
         loadConfigFile();
         

@@ -61,6 +61,21 @@
     "quitMessagesEnabled": true,
     "QuitMessage": "&5TChat &e> &7[&c-&7] &c%player% &7has left the server"
   },
+  "Info": [
+    "&cJava: &f%java_version%",
+    "&cServer Port: &f%port%",
+    "&cServer Version: &f%version%",
+    "&cFree Memory: &f%free_memory% MB",
+    "&cOperating System: &f%os_name%",
+    "&cOS Version: &f%os_version%",
+    "&cTPS: &f%tps%",
+    "&cCPU Family: &f%cpu_family%",
+    "&cCPU Cores: &f%cpu_cores%",
+    "&cJava Version: &f%java_version%",
+    "&cMaximum Memory: &f%max_memory% MB",
+    "&cTotal Memory: &f%total_memory% MB",
+    "&cUsed Memory: &f%used_memory% MB"
+  ],
   "Staff": {
     "format": "&d[SC] &a%player% &e>> &f%message%",
     "staff_chat_join_message": "&5TChat &e> &aYou are now in the Staff channel.",
