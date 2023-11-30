@@ -15,6 +15,7 @@ import minealex.tchat.blocked.BannedWords;
 import minealex.tchat.bot.AutoBroadcast;
 import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
+import minealex.tchat.commands.AdminChatCommand;
 import minealex.tchat.commands.AnnouncementCommand;
 import minealex.tchat.commands.BroadcastCommand;
 import minealex.tchat.commands.ChatColorCommand;
@@ -186,6 +187,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("checkcommand").setExecutor(new BannedCommands(this));
         
         getCommand("staffchat").setExecutor(new StaffChatCommand(this));
+        
+        getCommand("adminchat").setExecutor(new AdminChatCommand(this));
         
         boolean isNickEnabled = isNickEnabled();
         

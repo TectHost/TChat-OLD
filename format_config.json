@@ -81,6 +81,11 @@
     "staff_chat_join_message": "&5TChat &e> &aYou are now in the Staff channel.",
     "staff_chat_leave_message": "&5TChat &e> &cYou have left the Staff channel."
   },
+  "Admin": {
+    "format": "&d[SC] &a%player% &e>> &f%message%",
+    "admin_chat_join_message": "&5TChat &e> &aYou are now in the Admin channel.",
+    "admin_chat_leave_message": "&5TChat &e> &cYou have left the Admin channel."
+  },
   "Plugin": [
     "&cPlugin: &f%plugin%",
     "&cRAM: &f%ram% MB",
