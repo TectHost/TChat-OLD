@@ -1,5 +1,5 @@
 name: TChat
-version: 2.8.1
+version: 2.8.2
 main: minealex.tchat.TChat
 
 commands:
@@ -79,6 +79,9 @@ commands:
   plugin:
     description: Info of the plugin
     permission: tchat.plugin
+  print:
+    description: Sends a message to all players
+    permission: tchat.print
 
 permissions:
   tchat.reload:
@@ -131,3 +134,5 @@ permissions:
     description: Permission to execute info
   tchat.plugin:
     description: Permission to execute plugin
+  tchat.print:
+    description: Permission to execute print

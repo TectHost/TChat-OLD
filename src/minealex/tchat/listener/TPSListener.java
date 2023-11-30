@@ -1,9 +1,7 @@
 package minealex.tchat.listener;
 
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.server.ServerListPingEvent;
 import org.bukkit.plugin.Plugin;
 
 public class TPSListener implements Listener {
@@ -23,11 +21,5 @@ public class TPSListener implements Listener {
                 TPS.recordTickTime(tickTime);
             }
         }, 0L, 1L);
-    }
-
-    @EventHandler
-    public void onServerListPing(ServerListPingEvent event) {
-        double tps = TPS.getTPS();
-        event.setMotd("TPS: " + String.format("%.2f", tps));
     }
 }

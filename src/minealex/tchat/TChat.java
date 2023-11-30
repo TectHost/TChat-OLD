@@ -28,6 +28,8 @@ import minealex.tchat.commands.MeCommand;
 import minealex.tchat.commands.MsgCommand;
 import minealex.tchat.commands.NickCommand;
 import minealex.tchat.commands.PingCommand;
+import minealex.tchat.commands.PluginCommand;
+import minealex.tchat.commands.PrintCommand;
 import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
 import minealex.tchat.commands.StaffChatCommand;
@@ -49,7 +51,6 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -170,6 +171,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         getCommand("list").setExecutor(new ListCommand(this));
         
+        getCommand("plugin").setExecutor(new PluginCommand(this));
+        
         getCommand("broadcast").setExecutor(new BroadcastCommand());
         
         getCommand("warning").setExecutor(new WarningCommand());
@@ -203,6 +206,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         }
         
         getCommand("info").setExecutor(new InfoCommand(this));
+        
+        getCommand("print").setExecutor(new PrintCommand(this));
         
         new TPSListener(this);
         
