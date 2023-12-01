@@ -109,6 +109,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private PerWorldChat perWorldChat;
 	private RadiusChat radiusChat;
 	private WorldsManager worldsManager;
+	private static TChat instance;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -238,6 +239,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         boolean isUnicodeBlocked = isUnicodeBlocked();
         
         antiUnicode = new AntiUnicode(isUnicodeBlocked);
+        
+        instance = this;
 
         // Load the banned words list
         loadBannedWordsList();
@@ -857,6 +860,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 e.printStackTrace();
             }
         }
+    }
+    
+    public static TChat getInstance() {
+        return instance;
     }
     
     public void reloadChatGamesConfig() {

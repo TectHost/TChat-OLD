@@ -87,7 +87,7 @@ public class AdminChatCommand implements CommandExecutor {
         try {
             JSONParser parser = new JSONParser();
             JSONObject config = (JSONObject) parser.parse(new FileReader("plugins/TChat/format_config.json"));
-            JSONObject adminConfig = (JSONObject) config.get("admin");
+            JSONObject adminConfig = (JSONObject) config.get("Admin");
 
             // Leer configuraciones del JSON
             adminChatFormat = (String) adminConfig.get("format");

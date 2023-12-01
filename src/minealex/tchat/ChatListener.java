@@ -2,6 +2,7 @@ package minealex.tchat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.inventory.ItemStack;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -147,6 +149,8 @@ public class ChatListener implements Listener {
                 return distanceSquared > radiusSquared;
             });
         }
+        
+        message = message.replace("[hand]", getItemText(player.getItemInHand()));
         
         List<String> ignoredPlayersSender = plugin.getConfig().getStringList("players." + player.getUniqueId() + ".ignore");
         List<Player> nuevosDestinatarios = new ArrayList<>();
@@ -422,6 +426,17 @@ public class ChatListener implements Listener {
 
 	    return false;
 	}
+	
+	private String getItemText(ItemStack itemStack) {
+        if (itemStack != null && itemStack.getType() != Material.AIR) {
+            String itemName = ChatColor.AQUA + itemStack.getType().toString();
+            String itemDetails = ChatColor.GRAY + " (x" + itemStack.getAmount() + ")" + ChatColor.WHITE;
+            return itemName + itemDetails;
+        } else {
+            // Devolver un mensaje indicando que no hay ningún ítem en la mano
+            return ChatColor.RED + "No item" + ChatColor.WHITE;
+        }
+    }
 	
 	private void registerListeners() {
         plugin.getServer().getPluginManager().registerEvents(perWorldChat, plugin);
