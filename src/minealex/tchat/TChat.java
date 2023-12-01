@@ -21,6 +21,7 @@ import minealex.tchat.commands.BroadcastCommand;
 import minealex.tchat.commands.ChatColorCommand;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
+import minealex.tchat.commands.HelpCommand;
 import minealex.tchat.commands.HelpOpCommand;
 import minealex.tchat.commands.IgnoreCommand;
 import minealex.tchat.commands.InfoCommand;
@@ -171,6 +172,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         }
         
         getCommand("list").setExecutor(new ListCommand(this));
+        
+        getCommand("help").setExecutor(new HelpCommand(this));
         
         getCommand("plugin").setExecutor(new PluginCommand(this));
         
