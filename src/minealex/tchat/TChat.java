@@ -1,6 +1,7 @@
 package minealex.tchat;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
@@ -45,6 +46,7 @@ import minealex.tchat.perworldchat.PerWorldChat;
 import minealex.tchat.perworldchat.RadiusChat;
 import minealex.tchat.perworldchat.WorldsManager;
 import minealex.tchat.placeholders.Placeholders;
+import minealex.tchat.utils.Hover;
 import minealex.tchat.utils.SignColor;
 
 import org.bukkit.Bukkit;
@@ -73,6 +75,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -242,12 +245,12 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         instance = this;
 
-        // Load the banned words list
         loadBannedWordsList();
+        
+        getServer().getPluginManager().registerEvents(new Hover(this), this);
         
         anticapEnabled = isAnticapEnabled();
 
-        // Habilitar la función antibot si está habilitada en la configuración
         if (isAntibotEnabled()) {
             getLogger().info("Antibot is enabled. Players will need to move to chat.");
         }
@@ -535,7 +538,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         if (customFormat != null && !customFormat.isEmpty()) {
             format = customFormat;
         } else {
-            format = "<prefix><player><suffix>";
+            format = "%tchat_prefix%&f%tchat_nickname%%tchat_suffix%";
         }
 
         // SetPlaceholders utilizando PlaceholderAPI
@@ -544,7 +547,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             format = PlaceholderAPI.setPlaceholders(player, format);
         }
 
-        format = format.replace("<prefix>", prefix).replace("<suffix>", suffix);
         return ChatColor.translateAlternateColorCodes('&', format) + message;
     }
 
@@ -569,6 +571,14 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             defaultSuffix = ChatColor.translateAlternateColorCodes('&', jsonObject.get("defaultSuffix").getAsString());
 
             customFormat = jsonObject.get("format").getAsString();
+            
+            JsonArray hoverArray = jsonObject.getAsJsonArray("hover");
+            List<String> hoverLines = new ArrayList<>();
+            if (hoverArray != null) {
+                for (JsonElement element : hoverArray) {
+                    hoverLines.add(ChatColor.translateAlternateColorCodes('&', element.getAsString()));
+                }
+            }
 
             groups.clear();
             JsonObject groupsObject = jsonObject.getAsJsonObject("groups");
@@ -577,6 +587,15 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 JsonObject groupObject = entry.getValue().getAsJsonObject();
                 String prefix = ChatColor.translateAlternateColorCodes('&', groupObject.get("prefix").getAsString());
                 String suffix = ChatColor.translateAlternateColorCodes('&', groupObject.get("suffix").getAsString());
+                
+                JsonArray groupHoverArray = groupObject.getAsJsonArray("hover");
+                List<String> groupHoverLines = new ArrayList<>();
+                if (groupHoverArray != null) {
+                    for (JsonElement element : groupHoverArray) {
+                        groupHoverLines.add(ChatColor.translateAlternateColorCodes('&', element.getAsString()));
+                    }
+                }
+                
                 groups.put(groupName, new ChatGroup(prefix, suffix));
             }
 
@@ -610,7 +629,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     }
 
     // Clase ChatGroup
-    public static class ChatGroup {
+    public class ChatGroup {
         private String prefix;
         private String suffix;
 
@@ -788,7 +807,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             } else if (messageValue != null) {
                 return messageValue;
             } else {
-                return "<prefix><player><suffix>: <message>"; // Formato por defecto
+                return "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> <message>"; // Formato por defecto
             }
         } catch (Exception e) {
             e.printStackTrace();

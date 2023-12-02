@@ -1,7 +1,7 @@
 {
   "defaultPrefix": "&a[Tect.host] ",
   "defaultSuffix": "",
-  "format": "<prefix>&f%tchat_nickname%<suffix> &e>> %tchat_chatcolor%",
+  "format": "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> %tchat_chatcolor%",
   "groups": {
     "admin": {
       "prefix": "&c[Admin] ",
@@ -90,6 +90,13 @@
     "&cPlugin: &f%plugin%",
     "&cRAM: &f%ram% MB",
     "&cVersion: &f%version%"
+  ],
+  "Hover": [
+    "&5User: %tchat_nickname%",
+    "&5Balance: %vault_eco_balance_formatted%",
+    "&5Rank: %tchat_prefix%",
+    "",
+    "&eClick here to send a private message"
   ],
   "rules_message": [
     "Rule 1: No cheating",
