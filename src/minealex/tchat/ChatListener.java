@@ -376,7 +376,6 @@ public class ChatListener implements Listener {
 	        staffChatFormat = (String) staffConfig.get("format");
 	    } catch (IOException | org.json.simple.parser.ParseException e) {
 	        e.printStackTrace();
-	        System.out.println("Error al cargar la configuración: " + e.getMessage());
 	    }
 	}
 

@@ -94,7 +94,6 @@ public class AdminChatCommand implements CommandExecutor {
             adminChatJoinMessage = (String) adminConfig.get("admin_chat_join_message");
             adminChatLeaveMessage = (String) adminConfig.get("admin_chat_leave_message");
         } catch (IOException | org.json.simple.parser.ParseException e) {
-            System.out.println("Error al cargar la configuración: " + e.getMessage());
         }
     }
 }

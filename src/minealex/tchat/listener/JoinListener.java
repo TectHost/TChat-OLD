@@ -6,6 +6,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -26,6 +27,13 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         try {
+            boolean motdEnabled = isMotdEnabled();
+            if (motdEnabled) {
+                // Enviar el mensaje de MOTD al jugador
+                sendMotdMessage(event.getPlayer().getName());
+            }
+
+            // Obtener y configurar el mensaje de join
             String joinMessage = getConfiguredJoinMessage(event.getPlayer().getName());
             if (joinMessage != null) {
                 event.setJoinMessage(joinMessage);
@@ -38,6 +46,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         try {
+            // Obtener y configurar el mensaje de quit
             String quitMessage = getConfiguredQuitMessage(event.getPlayer().getName());
             if (quitMessage != null) {
                 event.setQuitMessage(quitMessage);
@@ -45,6 +54,25 @@ public class JoinListener implements Listener {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @SuppressWarnings("unchecked")
+	private boolean isMotdEnabled() {
+        try {
+            String filePath = plugin.getDataFolder().getPath() + "/format_config.json";
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            JSONObject motd = (JSONObject) jsonObject.get("MOTD");
+
+            // Obtener el valor de la propiedad motdEnabled (predeterminado es true si no está presente)
+            return (boolean) motd.getOrDefault("motdEnabled", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return true; // Retorna true por defecto si hay un error
     }
 
     @SuppressWarnings({ "unchecked", "deprecation" })
@@ -103,5 +131,32 @@ public class JoinListener implements Listener {
         }
 
         return null; // Retorna null si no se pudo obtener el mensaje configurado
+    }
+
+    private void sendMotdMessage(String playerName) {
+        try {
+            String filePath = plugin.getDataFolder().getPath() + "/format_config.json";
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            if (jsonObject.containsKey("MOTD")) {
+                JSONObject motd = (JSONObject) jsonObject.get("MOTD");
+
+                @SuppressWarnings("unchecked")
+				boolean motdEnabled = (boolean) motd.getOrDefault("motdEnabled", true);
+
+                if (motdEnabled && motd.containsKey("motdMessage")) {
+                    JSONArray motdMessages = (JSONArray) motd.get("motdMessage");
+                    for (Object message : motdMessages) {
+                        // Enviar cada línea del mensaje de MOTD al jugador
+                        String formattedMessage = ChatColor.translateAlternateColorCodes('&', (String) message);
+                        Bukkit.getPlayer(playerName).sendMessage(formattedMessage);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

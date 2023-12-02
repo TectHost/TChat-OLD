@@ -103,6 +103,15 @@
     "Rule 2: Respecting others",
     "Rule 3: Respect the personal space of others. Do not invade other players' building or living space without their permission."
   ],
+  "MOTD": {
+    "motdEnabled": true,
+    "motdMessage": [
+      "&aWelcome to &5Tect.host&a!",
+      "",
+      "&aGet help in &5https://tect.host/",
+      "&5TChat &a- &5Tect.host"
+    ]
+  },
   "help_message": [
     "&7&m+---------+",
     "&fGet help in &bhttps://dc.tect.host/",

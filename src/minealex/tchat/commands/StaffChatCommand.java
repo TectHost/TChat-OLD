@@ -94,7 +94,6 @@ public class StaffChatCommand implements CommandExecutor {
             staffChatJoinMessage = (String) staffConfig.get("staff_chat_join_message");
             staffChatLeaveMessage = (String) staffConfig.get("staff_chat_leave_message");
         } catch (IOException | org.json.simple.parser.ParseException e) {
-            System.out.println("Error al cargar la configuración: " + e.getMessage());
         }
     }
 }
