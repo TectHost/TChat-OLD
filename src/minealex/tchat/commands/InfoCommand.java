@@ -59,6 +59,7 @@ public class InfoCommand implements CommandExecutor {
                     long maxMem = Runtime.getRuntime().maxMemory() / 1024L / 1024L;
                     long usedMem = totalMem - freeMem;
                     String cpuFamily = System.getenv("PROCESSOR_IDENTIFIER");
+                    int numPlugins = Bukkit.getServer().getPluginManager().getPlugins().length;
 
                     // Reemplazar placeholders en el mensaje
                     infoMessage = ChatColor.translateAlternateColorCodes('&', infoMessage);
@@ -74,6 +75,7 @@ public class InfoCommand implements CommandExecutor {
                     infoMessage = infoMessage.replace("%max_memory%", String.valueOf(maxMem));
                     infoMessage = infoMessage.replace("%total_memory%", String.valueOf(totalMem));
                     infoMessage = infoMessage.replace("%cpu_family%", cpuFamily);
+                    infoMessage = infoMessage.replace("%plugins%", String.valueOf(numPlugins));
 
                     // Enviar el mensaje con información adicional
                     sender.sendMessage(infoMessage);
