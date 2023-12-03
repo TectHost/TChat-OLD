@@ -607,9 +607,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 messages.put(messageKey, message);
             }
 
-            getLogger().info("The format_config.json file has been successfully reloaded.");
-
-            // Volver a registrar el evento del chat con la nueva configuración
             unregisterChatListener();
             registerChatListener();
         } catch (IOException e) {
@@ -807,11 +804,11 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             } else if (messageValue != null) {
                 return messageValue;
             } else {
-                return "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> <message>"; // Formato por defecto
+                return "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> <message>";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "<prefix><player><suffix>: <message>"; // Formato por defecto
+            return "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> <message>";
         }
     }
 
@@ -868,9 +865,12 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 JSONObject broadcastsObject = (JSONObject) jsonObject.get("broadcasts");
                 for (Object key : broadcastsObject.keySet()) {
                     String broadcastKey = (String) key;
-                    JSONArray broadcastArray = (JSONArray) broadcastsObject.get(broadcastKey);
+                    JSONObject broadcastInfo = (JSONObject) broadcastsObject.get(broadcastKey);
+
+                    JSONArray messagesArray = (JSONArray) broadcastInfo.get("messages");
                     @SuppressWarnings("unchecked")
-					List<String> broadcastMessages = (List<String>) broadcastArray.clone();
+                    List<String> broadcastMessages = (List<String>) messagesArray.clone();
+
                     broadcasts.put(broadcastKey, broadcastMessages);
                 }
 

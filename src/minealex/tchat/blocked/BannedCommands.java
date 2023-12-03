@@ -25,12 +25,16 @@ public class BannedCommands implements CommandExecutor {
     private Set<String> bannedCommands;
     private TChat plugin;
     private String blockedMessage;
+    private boolean titleEnabled;
+    private String title;
+    private String subtitle;
 
     public BannedCommands(TChat plugin) {
         this.plugin = plugin;
         this.bannedCommands = new HashSet<>();
         loadBannedCommands();
         loadBlockedMessage();
+        loadTitleOptions();
     }
 
     private void loadBannedCommands() {
@@ -87,6 +91,45 @@ public class BannedCommands implements CommandExecutor {
     public boolean isCommandBanned(String command) {
         return bannedCommands.contains(command.toLowerCase());
     }
+    
+    private void loadTitleOptions() {
+        File configFile = new File(plugin.getDataFolder(), "banned_commands.json");
+
+        if (!configFile.exists()) {
+            plugin.saveResource("banned_commands.json", false);
+        }
+
+        try {
+            JsonObject jsonObject = (JsonObject) new JsonParser().parse(new FileReader(configFile));
+            this.titleEnabled = jsonObject.get("titleEnabled").getAsBoolean();
+            this.title = ChatColor.translateAlternateColorCodes('&', jsonObject.get("title").getAsString());
+            this.subtitle = ChatColor.translateAlternateColorCodes('&', jsonObject.get("subtitle").getAsString());
+        } catch (IOException | JsonSyntaxException e) {
+            plugin.getLogger().log(Level.WARNING, "Error loading title options from banned_commands.json, using default values.", e);
+            this.titleEnabled = true;
+            this.title = "&cBanned Command";
+            this.subtitle = "&7You are not allowed to use this command.";
+        }
+    }
+
+    public boolean isTitleEnabled() {
+        return titleEnabled;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    @SuppressWarnings("deprecation")
+    public void sendTitle(Player player) {
+        if (titleEnabled) {
+            player.sendTitle(title, subtitle);
+        }
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -104,6 +147,7 @@ public class BannedCommands implements CommandExecutor {
             String commandToCheck = args[0].toLowerCase();
             if (isCommandBanned(commandToCheck)) {
                 sender.sendMessage(ChatColor.RED + "The command '" + commandToCheck + "' is banned.");
+                sendTitle((Player) sender);
             } else {
                 sender.sendMessage(ChatColor.GREEN + "The command '" + commandToCheck + "' is allowed.");
             }
