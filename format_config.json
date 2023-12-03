@@ -75,7 +75,8 @@
     "&cMaximum Memory: &f%max_memory% MB",
     "&cTotal Memory: &f%total_memory% MB",
     "&cUsed Memory: &f%used_memory% MB",
-    "&cPlugins: &f%plugins%"
+    "&cPlugins: &f%plugins%",
+    "&cWorlds: &f%worlds%"
   ],
   "Staff": {
     "format": "&d[SC] &a%player% &e>> &f%message%",
