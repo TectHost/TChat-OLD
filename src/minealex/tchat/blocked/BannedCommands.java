@@ -28,6 +28,8 @@ public class BannedCommands implements CommandExecutor {
     private boolean titleEnabled;
     private String title;
     private String subtitle;
+    private boolean soundEnabled;
+    private String sound;
 
     public BannedCommands(TChat plugin) {
         this.plugin = plugin;
@@ -104,11 +106,30 @@ public class BannedCommands implements CommandExecutor {
             this.titleEnabled = jsonObject.get("titleEnabled").getAsBoolean();
             this.title = ChatColor.translateAlternateColorCodes('&', jsonObject.get("title").getAsString());
             this.subtitle = ChatColor.translateAlternateColorCodes('&', jsonObject.get("subtitle").getAsString());
+            this.soundEnabled = jsonObject.get("soundEnabled").getAsBoolean();
+            this.sound = jsonObject.get("sound").getAsString();
         } catch (IOException | JsonSyntaxException e) {
             plugin.getLogger().log(Level.WARNING, "Error loading title options from banned_commands.json, using default values.", e);
             this.titleEnabled = true;
             this.title = "&cBanned Command";
             this.subtitle = "&7You are not allowed to use this command.";
+            this.soundEnabled = true;
+            this.sound = "entity.ender_dragon.growl";
+        }
+    }
+
+    // Add these methods to your BannedCommands class
+    public boolean isSoundEnabled() {
+        return soundEnabled;
+    }
+    
+    public String getSound() {
+        return sound;
+    }
+
+    public void playSound(Player player) {
+        if (soundEnabled) {
+            player.playSound(player.getLocation(), sound, 1.0F, 1.0F);
         }
     }
 
@@ -148,6 +169,7 @@ public class BannedCommands implements CommandExecutor {
             if (isCommandBanned(commandToCheck)) {
                 sender.sendMessage(ChatColor.RED + "The command '" + commandToCheck + "' is banned.");
                 sendTitle((Player) sender);
+                playSound((Player) sender);
             } else {
                 sender.sendMessage(ChatColor.GREEN + "The command '" + commandToCheck + "' is allowed.");
             }
