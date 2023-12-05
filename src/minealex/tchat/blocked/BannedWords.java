@@ -23,15 +23,17 @@ public class BannedWords {
     private Set<String> bannedWords;
     private TChat plugin;
     private String blockedMessage;
+    private boolean enableTitles;
+    private String title;
+    private String subtitle;
 
     public BannedWords(TChat plugin) {
         this.plugin = plugin;
         this.bannedWords = new HashSet<>();
-        loadBannedWords();
-        loadBlockedMessage();
+        loadConfiguration();
     }
 
-    private void loadBannedWords() {
+    private void loadConfiguration() {
         File configFile = new File(plugin.getDataFolder(), "banned_words.json");
 
         if (!configFile.exists()) {
@@ -47,47 +49,39 @@ public class BannedWords {
                 bannedWords.add(word.toLowerCase());
             }
 
-        } catch (IOException e) {
+            String blockedMessage = jsonObject.get("blockedMessage").getAsString();
+            this.blockedMessage = ChatColor.translateAlternateColorCodes('&', blockedMessage);
+
+            this.enableTitles = jsonObject.has("enableTitles") && jsonObject.get("enableTitles").getAsBoolean();
+            this.title = jsonObject.has("title") ? jsonObject.get("title").getAsString() : "Blocked Word";
+            this.subtitle = jsonObject.has("subtitle") ? jsonObject.get("subtitle").getAsString() : "Please refrain from using inappropriate language";
+
+        } catch (IOException | JsonSyntaxException e) {
             plugin.getLogger().log(Level.WARNING, "Error loading banned_words.json, the default list will be used.", e);
-        } catch (JsonSyntaxException e) {
-            plugin.getLogger().log(Level.WARNING, "Error parsing banned_words.json, the default list will be used.", e);
         }
     }
 
-    private void loadBlockedMessage() {
-        File configFile = new File(plugin.getDataFolder(), "banned_words.json");
-
-        if (!configFile.exists()) {
-            plugin.saveResource("banned_words.json", false);
+    @SuppressWarnings("deprecation")
+	public void sendBlockedMessage(CommandSender sender, String blockedWord) {
+        if (enableTitles && sender instanceof Player) {
+            Player player = (Player) sender;
+            player.sendTitle(ChatColor.translateAlternateColorCodes('&', title), ChatColor.translateAlternateColorCodes('&', subtitle));
         }
 
-        try {
-            JsonObject jsonObject = (JsonObject) new JsonParser().parse(new FileReader(configFile));
-            String blockedMessage = jsonObject.get("blockedMessage").getAsString();
-            this.blockedMessage = ChatColor.translateAlternateColorCodes('&', blockedMessage);
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Error loading blockedMessage from banned_words.json, using default message.", e);
-            this.blockedMessage = "&cYou are not allowed to use that word.";
-        } catch (JsonSyntaxException e) {
-            plugin.getLogger().log(Level.WARNING, "Error parsing blockedMessage from banned_words.json, using default message.", e);
-            this.blockedMessage = "&cYou are not allowed to use that word.";
-        }
+        sender.sendMessage(blockedMessage.replace("{word}", blockedWord));
     }
 
     public boolean isWordBanned(String word) {
         return bannedWords.contains(word.toLowerCase());
     }
 
-    public void sendBlockedMessage(CommandSender sender) {
-        sender.sendMessage(blockedMessage);
+    public void reloadBannedWordsList() {
+        bannedWords.clear();
+        // Load configuration again
+        loadConfiguration();
     }
 
     public boolean canBypassBannedWords(Player player) {
         return player.hasPermission("tchat.bypass.bannedwords");
-    }
-
-    public void reloadBannedWordsList() {
-        bannedWords.clear();
-        loadBannedWords();
     }
 }

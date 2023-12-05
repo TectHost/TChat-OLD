@@ -535,5 +535,8 @@
     "xxx"
 
   ],
-  "blockedMessage": "&5TChat &e> &cYou are not allowed to use that word. Please refrain from using inappropriate language."
+  "blockedMessage": "&5TChat &e> &cYou are not allowed to use that word. Please refrain from using inappropriate language.",
+  "enableTitles": true,
+  "title": "&cBlocked Word",
+  "subtitle": "&7Please refrain from using inappropriate language"
 }

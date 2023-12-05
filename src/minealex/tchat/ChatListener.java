@@ -177,7 +177,7 @@ public class ChatListener implements Listener {
         String[] words = message.toLowerCase().split("[^a-zA-Z0-9_]");
         for (String word : words) {
             if (!word.isEmpty() && plugin.getBannedWords().isWordBanned(word)) {
-                plugin.getBannedWords().sendBlockedMessage(player);
+            	plugin.getBannedWords().sendBlockedMessage(player, message.toLowerCase());
                 event.setCancelled(true);
                 return;
             }
@@ -285,13 +285,7 @@ public class ChatListener implements Listener {
             event.setFormat(format);
             event.setMessage(message.replace("%", "%%"));
         }
-
-        // Check if the message contains any banned words
-        if (plugin.getBannedWords().isWordBanned(message.toLowerCase()) && !plugin.getBannedWords().canBypassBannedWords(player)) {
-            plugin.getBannedWords().sendBlockedMessage(player);
-            event.setCancelled(true);
-            return;
-        }
+        
         UUID playerId = player.getUniqueId();
 			if (!plugin.hasPlayerMoved(playerId)) {
                 event.setCancelled(true);
@@ -299,7 +293,7 @@ public class ChatListener implements Listener {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', antiBotMessage));
                 return;
             }
-        // Format the message and set the chat format
+
         String format = plugin.formatMessage(event.getMessage(), event.getPlayer());
         format = PlaceholderAPI.setPlaceholders(player, format);
         event.setFormat(format);

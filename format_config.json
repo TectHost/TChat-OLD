@@ -98,7 +98,7 @@
     "&5Balance: %vault_eco_balance_formatted%",
     "&5Rank: %tchat_prefix%",
     "",
-    "&eClick here to send a private message"
+    "&e&mClick here to send a private message"
   ],
   "rules_message": [
     "Rule 1: No cheating",
