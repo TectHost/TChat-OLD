@@ -1,5 +1,6 @@
 package minealex.tchat.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,7 +34,8 @@ public class RulesCommand implements CommandExecutor {
 
                 // Enviar cada regla
                 for (Object rule : rulesArray) {
-                    sender.sendMessage((String) rule);
+                	String coloredRule = ChatColor.translateAlternateColorCodes('&', (String) rule);
+                	sender.sendMessage(coloredRule);
                 }
             } else {
                 sender.sendMessage("File 'format_config.json' was not found.");
