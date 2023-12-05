@@ -15,6 +15,7 @@ import java.io.FileReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
+import java.util.List;
 
 public class PluginCommand implements CommandExecutor {
 
@@ -48,6 +49,7 @@ public class PluginCommand implements CommandExecutor {
                 if (targetPlugin != null) {
                     String pluginName = targetPlugin.getName();
                     String pluginVersion = getPluginVersion(targetPlugin);
+                    String pluginAuthor = getPluginAuthor(targetPlugin);
                     int ramUsageMB = getRamUsage(targetPlugin);
 
                     // Reemplazar placeholders en cada regla y enviar el mensaje
@@ -56,6 +58,7 @@ public class PluginCommand implements CommandExecutor {
                         message = message.replace("%plugin%", ChatColor.translateAlternateColorCodes('&', pluginName));
                         message = message.replace("%version%", ChatColor.translateAlternateColorCodes('&', pluginVersion));
                         message = message.replace("%ram%", String.valueOf(ramUsageMB));
+                        message = message.replace("%author%", ChatColor.translateAlternateColorCodes('&', pluginAuthor));
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
                     }
                 } else {
@@ -75,6 +78,11 @@ public class PluginCommand implements CommandExecutor {
 
     private String getPluginVersion(Plugin targetPlugin) {
         return targetPlugin.getDescription().getVersion();
+    }
+    
+    private String getPluginAuthor(Plugin targetPlugin) {
+        List<String> authors = targetPlugin.getDescription().getAuthors();
+        return authors.isEmpty() ? "Unknown Author" : authors.get(0);
     }
 
     private int getRamUsage(Plugin targetPlugin) {
