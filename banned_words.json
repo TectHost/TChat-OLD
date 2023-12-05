@@ -538,5 +538,7 @@
   "blockedMessage": "&5TChat &e> &cYou are not allowed to use that word. Please refrain from using inappropriate language.",
   "enableTitles": true,
   "title": "&cBlocked Word",
-  "subtitle": "&7Please refrain from using inappropriate language"
+  "subtitle": "&7Please refrain from using inappropriate language",
+  "soundEnabled": true,
+  "sound": "entity.enderman.teleport"
 }

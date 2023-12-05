@@ -8,6 +8,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import minealex.tchat.TChat;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,6 +27,8 @@ public class BannedWords {
     private boolean enableTitles;
     private String title;
     private String subtitle;
+    private boolean soundEnabled;
+    private String sound;
 
     public BannedWords(TChat plugin) {
         this.plugin = plugin;
@@ -50,14 +53,26 @@ public class BannedWords {
             }
 
             String blockedMessage = jsonObject.get("blockedMessage").getAsString();
-            this.blockedMessage = ChatColor.translateAlternateColorCodes('&', blockedMessage);
+            this.blockedMessage = ChatColor.translateAlternateColorCodes('&', jsonObject.get("blockedMessage").getAsString());
 
             this.enableTitles = jsonObject.has("enableTitles") && jsonObject.get("enableTitles").getAsBoolean();
             this.title = jsonObject.has("title") ? jsonObject.get("title").getAsString() : "Blocked Word";
             this.subtitle = jsonObject.has("subtitle") ? jsonObject.get("subtitle").getAsString() : "Please refrain from using inappropriate language";
 
+            this.soundEnabled = jsonObject.has("soundEnabled") && jsonObject.get("soundEnabled").getAsBoolean();
+            this.sound = jsonObject.has("sound") ? jsonObject.getAsJsonPrimitive("sound").getAsString() : "entity.enderman.teleport";
+
         } catch (IOException | JsonSyntaxException e) {
             plugin.getLogger().log(Level.WARNING, "Error loading banned_words.json, the default list will be used.", e);
+        }
+    }
+    
+    private void playSound(Player player) {
+        try {
+            Sound soundType = Sound.valueOf(sound.toUpperCase());
+            player.playSound(player.getLocation(), soundType, 1.0f, 1.0f);
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().log(Level.WARNING, "Invalid sound specified in the configuration.", e);
         }
     }
 
@@ -69,6 +84,11 @@ public class BannedWords {
         }
 
         sender.sendMessage(blockedMessage.replace("{word}", blockedWord));
+
+        if (soundEnabled && sender instanceof Player) {
+            Player player = (Player) sender;
+            playSound(player);
+        }
     }
 
     public boolean isWordBanned(String word) {
