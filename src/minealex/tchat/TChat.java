@@ -37,6 +37,7 @@ import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
 import minealex.tchat.commands.StaffChatCommand;
 import minealex.tchat.commands.WarningCommand;
+import minealex.tchat.disable.DeathConfig;
 import minealex.tchat.disable.DisableConfig;
 import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.JoinListener;
@@ -46,6 +47,7 @@ import minealex.tchat.perworldchat.PerWorldChat;
 import minealex.tchat.perworldchat.RadiusChat;
 import minealex.tchat.perworldchat.WorldsManager;
 import minealex.tchat.placeholders.Placeholders;
+import minealex.tchat.utils.DeathMessages;
 import minealex.tchat.utils.Hover;
 import minealex.tchat.utils.SignColor;
 
@@ -113,6 +115,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private RadiusChat radiusChat;
 	private WorldsManager worldsManager;
 	private static TChat instance;
+	private DeathMessages deathMessages;
+	private DeathConfig deathConfig;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -236,6 +240,11 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         DisableConfig disableConfig = new DisableConfig(this);
         disableConfig.createDefaultConfig();
+        
+        deathConfig = new DeathConfig(this);
+        deathConfig.createDefaultConfig();
+        
+        deathMessages = new DeathMessages(this);
         
         chatBot = new ChatBot(this);
         
