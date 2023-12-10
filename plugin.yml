@@ -1,5 +1,5 @@
 name: TChat
-version: 2.9.1
+version: 2.9.2
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -94,7 +94,8 @@ commands:
     description: Sends a message the player with some info
   discord:
     description: Sends a message the player with the discord link
-    permission: tchat.discord
+  instagram:
+    description: Sends a message the player with the instagram link
 
 permissions:
   tchat.reload:
@@ -150,6 +151,4 @@ permissions:
   tchat.print:
     description: Permission to execute print
   tchat.adminchat:
-    description: Permission to enter to the admin chat
-  tchat.discord:
     description: Permission to enter to the admin chat

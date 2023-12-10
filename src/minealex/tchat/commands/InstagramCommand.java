@@ -12,11 +12,11 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.io.FileReader;
 
-public class DiscordCommand implements CommandExecutor {
+public class InstagramCommand implements CommandExecutor {
 
     private final JavaPlugin plugin;
 
-    public DiscordCommand(JavaPlugin plugin) {
+    public InstagramCommand(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
