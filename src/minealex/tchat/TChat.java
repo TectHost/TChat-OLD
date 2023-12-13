@@ -38,6 +38,7 @@ import minealex.tchat.commands.PrintCommand;
 import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
 import minealex.tchat.commands.StaffChatCommand;
+import minealex.tchat.commands.TikTokCommand;
 import minealex.tchat.commands.WarningCommand;
 import minealex.tchat.commands.YoutubeCommand;
 import minealex.tchat.disable.DeathConfig;
@@ -203,6 +204,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("discord").setExecutor(new DiscordCommand(this));
         
         getCommand("instagram").setExecutor(new InstagramCommand(this));
+        
+        getCommand("tiktok").setExecutor(new TikTokCommand(this));
         
         getCommand("youtube").setExecutor(new YoutubeCommand(this));
         
