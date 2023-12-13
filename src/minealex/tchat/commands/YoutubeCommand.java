@@ -12,11 +12,11 @@ import org.json.simple.parser.JSONParser;
 import java.io.File;
 import java.io.FileReader;
 
-public class InstagramCommand implements CommandExecutor {
+public class YoutubeCommand implements CommandExecutor {
 
     private final JavaPlugin plugin;
 
-    public InstagramCommand(JavaPlugin plugin) {
+    public YoutubeCommand(JavaPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -30,7 +30,7 @@ public class InstagramCommand implements CommandExecutor {
                 JSONParser parser = new JSONParser();
                 JSONObject jsonObject = (JSONObject) parser.parse(new FileReader(configFile));
 
-                JSONArray rulesArray = (JSONArray) jsonObject.get("instagram_media");
+                JSONArray rulesArray = (JSONArray) jsonObject.get("youtube_media");
 
                 // Enviar cada regla
                 for (Object rule : rulesArray) {

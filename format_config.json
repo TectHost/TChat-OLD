@@ -116,6 +116,11 @@
     "&5Instagram: &fhttps://ig.tect.host/",
     "&7+------------------------------"
   ],
+  "youtube_media": [
+    "&7+------------------------------",
+    "&5Youtube: &fhttps://yt.tect.host/",
+    "&7+------------------------------"
+  ],
   "MOTD": {
     "motdEnabled": true,
     "motdMessage": [

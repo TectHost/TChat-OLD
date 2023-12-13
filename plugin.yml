@@ -1,5 +1,5 @@
 name: TChat
-version: 2.9.2
+version: 2.9.3
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -96,6 +96,8 @@ commands:
     description: Sends a message the player with the discord link
   instagram:
     description: Sends a message the player with the instagram link
+  youtube:
+    description: Sends a message the player with the youtube link
 
 permissions:
   tchat.reload:
