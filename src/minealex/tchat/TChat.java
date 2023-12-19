@@ -23,6 +23,7 @@ import minealex.tchat.commands.ChatColorCommand;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
 import minealex.tchat.commands.DiscordCommand;
+import minealex.tchat.commands.FacebookCommand;
 import minealex.tchat.commands.HelpCommand;
 import minealex.tchat.commands.HelpOpCommand;
 import minealex.tchat.commands.IgnoreCommand;
@@ -204,6 +205,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("discord").setExecutor(new DiscordCommand(this));
         
         getCommand("instagram").setExecutor(new InstagramCommand(this));
+        
+        getCommand("facebook").setExecutor(new FacebookCommand(this));
         
         getCommand("tiktok").setExecutor(new TikTokCommand(this));
         
