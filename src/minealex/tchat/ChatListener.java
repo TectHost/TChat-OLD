@@ -197,8 +197,12 @@ public class ChatListener implements Listener {
                 }
             }
         } else {
-            // Si no está en el staff chat, se comporta como de costumbre
-            event.setFormat(plugin.formatMessage(message, player));
+        	try {
+        	    event.setFormat(plugin.formatMessage(message, player));
+        	    message = PlaceholderAPI.setPlaceholders(player, message);
+        	} catch (Exception e) {
+        	    e.printStackTrace();
+        	}
         }
         
         if (chatbotRespuestas != null && chatbotRespuestas.containsKey(message.toLowerCase())) {

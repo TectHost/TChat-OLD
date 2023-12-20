@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import minealex.tchat.TChat;
+import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
 
 @SuppressWarnings("unused")
 public class Placeholders extends PlaceholderExpansion {
@@ -101,6 +103,10 @@ public class Placeholders extends PlaceholderExpansion {
             return obtenerNick(player);
         } else if (identifier.equals("tchat_ignored")) {
         return obtenerJugadoresIgnorados(player);
+        } else if (identifier.equals("luckperms_prefix")) {
+            return obtenerLuckPermsPrefix(player);
+        } else if (identifier.equals("luckperms_suffix")) {
+            return obtenerLuckPermsSuffix(player);
         }
 
         return null;
@@ -117,6 +123,28 @@ public class Placeholders extends PlaceholderExpansion {
 
         // Si el jugador no tiene un color o formato asignado, devolvemos un color predeterminado
         return ChatColor.RESET.toString(); // Puedes cambiar esto al color que prefieras.
+    }
+    
+    private String obtenerLuckPermsPrefix(Player player) {
+        User user = LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
+
+        if (user != null) {
+            String prefix = user.getCachedData().getMetaData().getPrefix();
+            return prefix != null ? prefix : "";
+        }
+
+        return "";
+    }
+
+    private String obtenerLuckPermsSuffix(Player player) {
+        User user = LuckPermsProvider.get().getUserManager().getUser(player.getUniqueId());
+
+        if (user != null) {
+            String suffix = user.getCachedData().getMetaData().getSuffix();
+            return suffix != null ? suffix : "";
+        }
+
+        return "";
     }
     
     private String obtenerJugadoresIgnorados(Player player) {
