@@ -1,5 +1,5 @@
 name: TChat
-version: 3.0.0
+version: 3.0.1
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -102,6 +102,8 @@ commands:
     description: Sends a message the player with the tiktok link
   facebook:
     description: Sends a message the player with the facebook link
+  website:
+    description: Sends a message the player with the website link
 
 permissions:
   tchat.reload:
