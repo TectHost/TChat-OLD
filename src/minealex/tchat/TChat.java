@@ -39,6 +39,7 @@ import minealex.tchat.commands.PrintCommand;
 import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
 import minealex.tchat.commands.StaffChatCommand;
+import minealex.tchat.commands.TeamSpeakCommand;
 import minealex.tchat.commands.TikTokCommand;
 import minealex.tchat.commands.TwitterCommand;
 import minealex.tchat.commands.WarningCommand;
@@ -217,6 +218,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("youtube").setExecutor(new YoutubeCommand(this));
         
         getCommand("twitter").setExecutor(new TwitterCommand(this));
+        
+        getCommand("teamspeak").setExecutor(new TeamSpeakCommand(this));
         
         getCommand("staffchat").setExecutor(new StaffChatCommand(this));
         
