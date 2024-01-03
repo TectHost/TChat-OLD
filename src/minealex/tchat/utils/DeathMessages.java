@@ -3,7 +3,6 @@ package minealex.tchat.utils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -29,10 +28,12 @@ public class DeathMessages implements Listener {
 
     private final JavaPlugin plugin;
     private Map<String, String> deathMessages;
+    private boolean deathMessagesEnabled;
 
     public DeathMessages(JavaPlugin plugin) {
         this.plugin = plugin;
         this.deathMessages = new HashMap<>();
+        this.deathMessagesEnabled = true;
         loadDeathMessages();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -49,7 +50,20 @@ public class DeathMessages implements Listener {
             Gson gson = new Gson();
             JsonObject jsonObject = gson.fromJson(reader, JsonObject.class);
 
-            for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
+            // Verifica si los mensajes de muerte están habilitados
+            if (jsonObject.has("enabled")) {
+                deathMessagesEnabled = jsonObject.get("enabled").getAsBoolean();
+            }
+
+            // Si los mensajes de muerte están deshabilitados, no carga los mensajes
+            if (!deathMessagesEnabled) {
+                plugin.getLogger().warning("Death messages are disabled in the configuration. No custom death messages will be applied.");
+                return;
+            }
+
+            JsonObject messagesObject = jsonObject.getAsJsonObject("messages");
+
+            for (Map.Entry<String, JsonElement> entry : messagesObject.entrySet()) {
                 String key = entry.getKey();
                 String message = ChatColor.translateAlternateColorCodes('&', entry.getValue().getAsString());
                 deathMessages.put(key, message);
@@ -61,6 +75,11 @@ public class DeathMessages implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
+        // Verifica si los mensajes de muerte están habilitados
+        if (!deathMessagesEnabled) {
+            return;
+        }
+
         Player player = event.getEntity();
         DamageCause damageCause = mapDamageCause(player.getLastDamageCause().getCause());
         String deathType = damageCause.name();
