@@ -18,17 +18,18 @@ public class ClearChatCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    	Player player = (Player) sender;
         // Verify if the command was executed by a player
         if (!(sender instanceof Player)) {
-        	String onlyPlayer = plugin.getMessage("onlyPlayer");
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', onlyPlayer));
+            String onlyPlayer = plugin.getMessage("onlyPlayer");
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', onlyPlayer));
             return true;
         }
 
+        Player player = (Player) sender; // Now it's safe to cast
+
         // Verify if the player has the required permission to clear the chat
         if (!player.hasPermission("tchat.admin.chatclear")) {
-        	String noPermission = plugin.getMessage("noPermission");
+            String noPermission = plugin.getMessage("noPermission");
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermission));
             return true;
         }

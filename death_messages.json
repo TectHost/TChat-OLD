@@ -20,4 +20,5 @@
     "ENTITY_EXPLOSION": "&c%player% was blown up by %killer%.",
     "BLOCK_EXPLOSION": "&c%player% was blown up by a block.",
     "MAGIC": "&c%player% was killed by magic."
+  }
 }
