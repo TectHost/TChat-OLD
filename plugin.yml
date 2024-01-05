@@ -1,5 +1,5 @@
 name: TChat
-version: 3.0.5
+version: 3.0.6
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -108,6 +108,8 @@ commands:
     description: Sends a message the player with the twitter link
   teamspeak:
     description: Sends a message the player with the teamspeak link
+  player:
+    description: Sends a message with information of the player
 
 permissions:
   tchat.reload:
@@ -164,3 +166,5 @@ permissions:
     description: Permission to execute print
   tchat.adminchat:
     description: Permission to enter to the admin chat
+  tchat.player:
+    description: Permission to execute player

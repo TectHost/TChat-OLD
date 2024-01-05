@@ -34,6 +34,7 @@ import minealex.tchat.commands.MeCommand;
 import minealex.tchat.commands.MsgCommand;
 import minealex.tchat.commands.NickCommand;
 import minealex.tchat.commands.PingCommand;
+import minealex.tchat.commands.PlayerCommand;
 import minealex.tchat.commands.PluginCommand;
 import minealex.tchat.commands.PrintCommand;
 import minealex.tchat.commands.ReplyCommand;
@@ -196,6 +197,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("broadcast").setExecutor(new BroadcastCommand());
         
         getCommand("warning").setExecutor(new WarningCommand());
+        
+        getCommand("player").setExecutor(new PlayerCommand(this));
         
         getCommand("announcement").setExecutor(new AnnouncementCommand());
         

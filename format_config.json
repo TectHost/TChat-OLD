@@ -42,7 +42,8 @@
     "ignoreRemove": "&5TChat &e> You have stopped ignoring %ignored%.",
     "helpopUsage": "&5TChat &e> &cUsage: /helpop <message>",
     "helpopFormatError": "&5TChat &e> &cError in helpop format.",
-    "chatDisabledMessage": "&5TChat &e> &cChat is disabled in this world."
+    "chatDisabledMessage": "&5TChat &e> &cChat is disabled in this world.",
+    "incorrectUsagePlayer": "&5TChat &e> &cIncorrect use. You must use /player <player>"
   },
   "msgFormats": {
     "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",
@@ -93,6 +94,11 @@
     "&cRAM: &f%ram% MB",
     "&cVersion: &f%version%",
     "&cAuthor: &f%author%"
+  ],
+  "player_message": [
+    "&cPlayer: %player%",
+    "&cIP: &f%ip%",
+    "&cUUID: &f%uuid%"
   ],
   "Hover": [
     "&5User: %tchat_nickname%",
