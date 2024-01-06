@@ -101,13 +101,16 @@ public class Placeholders extends PlaceholderExpansion {
             return obtenerColorAsignado(player);
         } else if (identifier.equals("nickname")) {
             return obtenerNick(player);
-        } else if (identifier.equals("tchat_ignored")) {
+        } else if (identifier.equals("ignored")) {
         return obtenerJugadoresIgnorados(player);
         } else if (identifier.equals("luckperms_prefix")) {
             return obtenerLuckPermsPrefix(player);
         } else if (identifier.equals("luckperms_suffix")) {
             return obtenerLuckPermsSuffix(player);
+        } else if (identifier.equals("group")) {
+            return obtenerNombreGrupo(player);
         }
+        
 
         return null;
     }
@@ -133,6 +136,20 @@ public class Placeholders extends PlaceholderExpansion {
             return prefix != null ? prefix : "";
         }
 
+        return "";
+    }
+    
+    private String obtenerNombreGrupo(Player player) {
+        // Verificar si el jugador tiene un grupo asignado
+        for (Entry<String, minealex.tchat.TChat.ChatGroup> entry : plugin.getGroups().entrySet()) {
+            String groupName = entry.getKey();
+
+            if (player.hasPermission("tchat.group." + groupName)) {
+                return groupName;
+            }
+        }
+
+        // Si no se encontró un grupo, devolver un valor predeterminado o vacío según lo desees
         return "";
     }
 
