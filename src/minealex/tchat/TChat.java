@@ -127,6 +127,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private static TChat instance;
 	private DeathMessages deathMessages;
 	private DeathConfig deathConfig;
+	private String blockedMessage;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -262,7 +263,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         chatListener = new ChatListener(this);
         perWorldChat = new PerWorldChat(this);
 
-        getServer().getPluginManager().registerEvents(chatListener, this);
         getServer().getPluginManager().registerEvents(perWorldChat, this);
         
         this.worldsManager = new WorldsManager(new File(getDataFolder(), "worlds.json"));
@@ -990,7 +990,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                     bannedCommands.add((String) cmd);
                 }
 
-                String blockedMessage = (String) jsonObject.get("blockedMessage");
+                blockedMessage = (String) jsonObject.get("blockedMessage"); // Asignar el valor de blockedMessage
 
                 reader.close();
             } catch (IOException | ParseException e) {

@@ -43,7 +43,10 @@
     "helpopUsage": "&5TChat &e> &cUsage: /helpop <message>",
     "helpopFormatError": "&5TChat &e> &cError in helpop format.",
     "chatDisabledMessage": "&5TChat &e> &cChat is disabled in this world.",
-    "incorrectUsagePlayer": "&5TChat &e> &cIncorrect use. You must use /player <player>"
+    "incorrectUsagePlayer": "&5TChat &e> &cIncorrect use. You must use /player <player>",
+    "incorrectUsageBannedCommands": "&5TChat &e> &cIncorrect use. You must /checkcommand <command>",
+    "commandBanned": "&5TChat &e> &fThe command %command% is &cbanned.",
+    "commandAllowed": "&5TChat &e> &fThe command %command% is &aallowed."
   },
   "msgFormats": {
     "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",

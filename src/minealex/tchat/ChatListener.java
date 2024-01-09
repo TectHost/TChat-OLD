@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.UnknownFormatConversionException;
+import java.util.logging.Level;
 
 @SuppressWarnings("unused")
 public class ChatListener implements Listener {
@@ -65,39 +66,20 @@ public class ChatListener implements Listener {
         loadConfig();
     }
     
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        // Asegúrate de que el comando provenga de un jugador.
-    	if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "Only players can use this command.");
-            return true;
-        }
-
-        Player player = (Player) sender;
-        String commandName = cmd.getName().toLowerCase();
-
-        // Verifica si el comando está en la lista de comandos bloqueados.
-        if (bannedCommands.isCommandBanned(commandName)) {
-            // Verifica si el jugador tiene el permiso de bypass.
-            if (player.hasPermission("tchat.bypass")) {
-                return false; // Permite que el comando se ejecute si tiene el permiso de bypass.
-            } else {
-                // Si no tiene el permiso, muestra el mensaje de comandos bloqueados.
-                player.sendMessage(bannedCommands.getBlockedMessage());
-                return true;
-            }
-        }
-        return false;
-    }
-    
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         String[] commandArgs = event.getMessage().split(" ");
-        String command = commandArgs[0].substring(1).toLowerCase(); // Obtén el comando sin el '/'
-        
+        String command = commandArgs[0].substring(1).toLowerCase();
+
+        Player player = event.getPlayer();
+
         if (bannedCommands.isCommandBanned(command)) {
             event.setCancelled(true);
-            Player player = event.getPlayer();
-            player.sendMessage(bannedCommands.getBlockedMessage());
+            Player sender = event.getPlayer();
+            String blockedMessage = bannedCommands.loadBlockedMessage();
+            bannedCommands.sendTitle((Player) sender);
+            bannedCommands.playSound((Player) sender);
+            player.sendMessage(blockedMessage);
         }
     }
     
@@ -376,6 +358,28 @@ public class ChatListener implements Listener {
 	        e.printStackTrace();
 	    }
 	}
+	
+	private String getMessages(String formatKey) {
+        try {
+            String filePath = plugin.getDataFolder().getPath() + "/format_config.json";
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            JSONObject messages = (JSONObject) jsonObject.get("messages");
+
+            if (messages.containsKey(formatKey)) {
+                return ChatColor.translateAlternateColorCodes('&', (String) messages.get(formatKey));
+            } else {
+                // If the formatKey is not found, return a default message or handle it as needed
+                return ChatColor.RED + "Message not found for key: " + formatKey;
+            }
+        } catch (Exception e) {
+            // Handle the exception appropriately (log it, return a default value, etc.)
+            plugin.getLogger().log(Level.WARNING, "Error loading message from format_config.json", e);
+            return ChatColor.RED + "Error loading message";
+        }
+    }
 
 	private boolean isAnticapEnabled() {
         File configFile = new File(plugin.getDataFolder(), "format_config.json");

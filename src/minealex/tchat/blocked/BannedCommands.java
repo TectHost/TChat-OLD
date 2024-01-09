@@ -12,6 +12,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -35,7 +37,7 @@ public class BannedCommands implements CommandExecutor {
         this.plugin = plugin;
         this.bannedCommands = new HashSet<>();
         loadBannedCommands();
-        loadBlockedMessage();
+        this.blockedMessage = loadBlockedMessage();
         loadTitleOptions();
     }
 
@@ -62,11 +64,7 @@ public class BannedCommands implements CommandExecutor {
         }
     }
     
-    public String getBlockedMessage() {
-        return blockedMessage;
-    }
-
-    private void loadBlockedMessage() {
+    public String loadBlockedMessage() {
         File configFile = new File(plugin.getDataFolder(), "banned_commands.json");
 
         if (!configFile.exists()) {
@@ -76,18 +74,11 @@ public class BannedCommands implements CommandExecutor {
         try {
             JsonObject jsonObject = (JsonObject) new JsonParser().parse(new FileReader(configFile));
             String blockedMessage = jsonObject.get("blockedMessage").getAsString();
-            this.blockedMessage = ChatColor.translateAlternateColorCodes('&', blockedMessage);
-        } catch (IOException e) {
+            return ChatColor.translateAlternateColorCodes('&', blockedMessage);
+        } catch (IOException | JsonSyntaxException e) {
             plugin.getLogger().log(Level.WARNING, "Error loading blockedMessage from banned_commands.json, using default message.", e);
-            this.blockedMessage = "&cYou are not allowed to use that command.";
-        } catch (JsonSyntaxException e) {
-            plugin.getLogger().log(Level.WARNING, "Error parsing blockedMessage from banned_commands.json, using default message.", e);
-            this.blockedMessage = "&cYou are not allowed to use that command.";
+            return ChatColor.RED + "No permissions.";
         }
-    }
-
-    public void sendBlockedMessage(CommandSender sender) {
-        sender.sendMessage(blockedMessage);
     }
     
     public boolean isCommandBanned(String command) {
@@ -126,6 +117,28 @@ public class BannedCommands implements CommandExecutor {
     public String getSound() {
         return sound;
     }
+    
+    private String getMessages(String formatKey) {
+        try {
+            String filePath = plugin.getDataFolder().getPath() + "/format_config.json";
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(new FileReader(filePath));
+            JSONObject jsonObject = (JSONObject) obj;
+
+            JSONObject messages = (JSONObject) jsonObject.get("messages");
+
+            if (messages.containsKey(formatKey)) {
+                return ChatColor.translateAlternateColorCodes('&', (String) messages.get(formatKey));
+            } else {
+                // If the formatKey is not found, return a default message or handle it as needed
+                return ChatColor.RED + "Message not found for key: " + formatKey;
+            }
+        } catch (Exception e) {
+            // Handle the exception appropriately (log it, return a default value, etc.)
+            plugin.getLogger().log(Level.WARNING, "Error loading message from format_config.json", e);
+            return ChatColor.RED + "Error loading message";
+        }
+    }
 
     public void playSound(Player player) {
         if (soundEnabled) {
@@ -156,22 +169,20 @@ public class BannedCommands implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("checkcommand")) {
             if (!sender.hasPermission("tchat.checkcommand")) {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+                sender.sendMessage(getMessages("noPermission"));
                 return true;
             }
 
             if (args.length != 1) {
-                sender.sendMessage(ChatColor.RED + "Usage: /checkcommand <command>");
+                sender.sendMessage(getMessages("incorrectUsageBannedCommands"));
                 return true;
             }
 
             String commandToCheck = args[0].toLowerCase();
             if (isCommandBanned(commandToCheck)) {
-                sender.sendMessage(ChatColor.RED + "The command '" + commandToCheck + "' is banned.");
-                sendTitle((Player) sender);
-                playSound((Player) sender);
+                sender.sendMessage(getMessages("commandBanned").replace("%command%", commandToCheck));
             } else {
-                sender.sendMessage(ChatColor.GREEN + "The command '" + commandToCheck + "' is allowed.");
+                sender.sendMessage(getMessages("commandAllowed").replace("%command%", commandToCheck));
             }
             return true;
         }
