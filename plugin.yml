@@ -1,5 +1,5 @@
 name: TChat
-version: 3.0.9
+version: 3.0.10
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -114,6 +114,11 @@ commands:
     description: Sends a message with information of the player
   store:
     description: Sends a message the player with the store link
+  calculate:
+    description: Calculate any math equation
+    permission: tchat.calculate
+    aliases:
+      - calc
 
 permissions:
   tchat.reload:
@@ -172,3 +177,5 @@ permissions:
     description: Permission to enter to the admin chat
   tchat.player:
     description: Permission to execute player
+  tchat.calculate:
+    description: Permission to execute calculate

@@ -46,7 +46,11 @@
     "incorrectUsagePlayer": "&5TChat &e> &cIncorrect use. You must use /player <player>",
     "incorrectUsageBannedCommands": "&5TChat &e> &cIncorrect use. You must /checkcommand <command>",
     "commandBanned": "&5TChat &e> &fThe command %command% is &cbanned.",
-    "commandAllowed": "&5TChat &e> &fThe command %command% is &aallowed."
+    "commandAllowed": "&5TChat &e> &fThe command %command% is &aallowed.",
+    "calculateSecondArgument": "&5TChat &e> &fThe 2nd argument must be a +, -, * or /",
+    "calculateThirdArgument": "&5TChat &e> &fYou have to put at least 3 arguments",
+    "calculate": "&5TChat &e> &fCalculation: &a%arg1% &f%arg2% &a%arg3%",
+    "calculateResult": "&5TChat &e> &fResult: &a%results%"
   },
   "msgFormats": {
     "msgSent": "&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>",

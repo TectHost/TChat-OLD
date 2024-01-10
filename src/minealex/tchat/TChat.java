@@ -19,6 +19,7 @@ import minealex.tchat.bot.ChatGames;
 import minealex.tchat.commands.AdminChatCommand;
 import minealex.tchat.commands.AnnouncementCommand;
 import minealex.tchat.commands.BroadcastCommand;
+import minealex.tchat.commands.CalculateCommand;
 import minealex.tchat.commands.ChatColorCommand;
 import minealex.tchat.commands.ClearChatCommand;
 import minealex.tchat.commands.Commands;
@@ -231,6 +232,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("staffchat").setExecutor(new StaffChatCommand(this));
         
         getCommand("adminchat").setExecutor(new AdminChatCommand(this));
+        
+        getCommand("calculate").setExecutor(new CalculateCommand(this));
         
         boolean isNickEnabled = isNickEnabled();
         
