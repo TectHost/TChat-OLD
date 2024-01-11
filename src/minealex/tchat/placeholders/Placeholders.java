@@ -1,9 +1,16 @@
 package minealex.tchat.placeholders;
 
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -111,6 +118,31 @@ public class Placeholders extends PlaceholderExpansion {
             return obtenerNombreGrupo(player);
         } else if (identifier.equals("chatgames_wins")) {
             return String.valueOf(obtenerChatGamesWins(player));
+        } else if (identifier.startsWith("chatgames_winstop")) {
+            int topNumber;
+            try {
+                topNumber = Integer.parseInt(identifier.replace("chatgames_winstop", ""));
+            } catch (NumberFormatException e) {
+                return "Invalid top number";
+            }
+
+            Map<String, Integer> playersAndWins = obtenerJugadoresYVictorias();
+
+            if (playersAndWins.isEmpty()) {
+                return "No players in the top";
+            }
+
+            List<Entry<String, Integer>> sortedPlayers = playersAndWins.entrySet().stream()
+                    .sorted(Entry.comparingByValue(Comparator.reverseOrder()))
+                    .collect(Collectors.toList());
+
+            if (topNumber > 0 && topNumber <= sortedPlayers.size()) {
+                Entry<String, Integer> topPlayer = sortedPlayers.get(topNumber - 1);
+
+                return topPlayer.getKey();
+            } else {
+                return "No players found";
+            }
         }
         
 
@@ -128,6 +160,18 @@ public class Placeholders extends PlaceholderExpansion {
 
         // Si el jugador no tiene un color o formato asignado, devolvemos un color predeterminado
         return ChatColor.RESET.toString(); // Puedes cambiar esto al color que prefieras.
+    }
+    
+    private Map<String, Integer> obtenerJugadoresYVictorias() {
+        Map<String, Integer> playersAndWins = new HashMap<>();
+        ConfigurationSection playersConfigSection = plugin.getConfig().getConfigurationSection("players");
+        if (playersConfigSection != null) {
+            for (String uuid : playersConfigSection.getKeys(false)) {
+                int wins = plugin.getConfig().getInt("players." + uuid + ".chatgames_wins", 0);
+                playersAndWins.put(Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName(), wins);
+            }
+        }
+        return playersAndWins;
     }
     
     private String obtenerLuckPermsPrefix(Player player) {
