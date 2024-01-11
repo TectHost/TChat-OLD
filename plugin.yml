@@ -1,5 +1,5 @@
 name: TChat
-version: 3.0.10
+version: 3.0.11
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -124,7 +124,7 @@ permissions:
   tchat.reload:
     description: Reload TChat
   tchat.admin.chatclear:
-    description: Clear the chat (admin)
+    description: Clear the chat
   tchat.version:
     description: Check plugin version
   tchat.msg:

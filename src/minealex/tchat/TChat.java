@@ -579,8 +579,12 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         String format;
         if (customFormat != null && !customFormat.isEmpty()) {
             format = customFormat;
+            Player player = (Player) sender;
+            format = PlaceholderAPI.setPlaceholders(player, format);
         } else {
             format = "%tchat_prefix%&f%tchat_nickname%%tchat_suffix%";
+            Player player = (Player) sender;
+            format = PlaceholderAPI.setPlaceholders(player, format);
         }
 
         // SetPlaceholders utilizando PlaceholderAPI

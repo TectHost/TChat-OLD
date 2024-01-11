@@ -53,7 +53,6 @@ public class ChatGames {
             this.sound = (String) this.currentGame.get("sound");
             startGameTimer();
         } else {
-            // Handle the case where currentGame is null (e.g., no enabled games in the config)
             Bukkit.getLogger().warning("No enabled games found in the configuration.");
         }
     }
@@ -80,6 +79,14 @@ public class ChatGames {
             }
         }
         return null;
+    }
+    
+    private void incrementarChatGamesWins(Player player) {
+        String uuid = player.getUniqueId().toString();
+        int currentWins = plugin.getConfig().getInt("players." + uuid + ".chatgames_wins", 0);
+        int newWins = currentWins + 1;
+        plugin.getConfig().set("players." + uuid + ".chatgames_wins", newWins);
+        plugin.saveConfig();
     }
     
     private JSONObject getRandomGame() {
@@ -191,7 +198,7 @@ public class ChatGames {
                 for (Object rewardObj : rewards) {
                     String reward = (String) rewardObj;
                     String formattedReward = reward.replace("%winner%", player.getName());
-                    
+
                     if ((boolean) currentGame.get("firework-enabled")) {
                         showFirework(player);
                     }
@@ -200,6 +207,8 @@ public class ChatGames {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedReward);
                     });
                 }
+                
+                incrementarChatGamesWins(player);
 
                 JSONObject formatConfig = loadFormatConfig();
                 String correctAnswerMessage = "&5TChat &e> &aCorrect answer! You receive a reward.";
@@ -216,19 +225,15 @@ public class ChatGames {
                 isGameActive = false;
                 isGameInProgress = false;
 
-                // Cancelar el juego actual
                 cancelGameTimer();
 
-                // Reset flags
                 hasSentMessage = false;
 
-                // Iniciar un nuevo juego
                 currentGame = getRandomGame();
                 if (currentGame != null) {
                     startGameTimer();
                 }
 
-                // Asegurarse de no procesar esta respuesta nuevamente
                 return;
             }
         } else {
@@ -237,23 +242,16 @@ public class ChatGames {
     }
     
     private void showFirework(Player player) {
-        // Obtener información del juego actual
         boolean fireworkEnabled = (boolean) currentGame.get("firework-enabled");
         String fireworkColor = (String) currentGame.get("firework-color");
 
-        // Verificar si mostrar el fuego artificial está habilitado
         if (fireworkEnabled) {
-            // Programar la creación del fuego artificial en el hilo principal
             Bukkit.getScheduler().runTask(plugin, () -> {
-                // Crear y mostrar el fuego artificial en las coordenadas del jugador ganador
                 Firework firework = (Firework) player.getWorld().spawn(player.getLocation(), Firework.class);
                 FireworkMeta meta = firework.getFireworkMeta();
                 FireworkEffect.Builder builder = FireworkEffect.builder();
 
-                // Configurar el color del fuego artificial
                 builder.withColor(Color.fromRGB(getRGBFromColorName(fireworkColor)));
-
-                // Agregar más configuraciones según sea necesario (puedes hacer esto configurable también)
 
                 meta.addEffect(builder.build());
                 firework.setFireworkMeta(meta);

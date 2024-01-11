@@ -109,6 +109,8 @@ public class Placeholders extends PlaceholderExpansion {
             return obtenerLuckPermsSuffix(player);
         } else if (identifier.equals("group")) {
             return obtenerNombreGrupo(player);
+        } else if (identifier.equals("chatgames_wins")) {
+            return String.valueOf(obtenerChatGamesWins(player));
         }
         
 
@@ -137,6 +139,12 @@ public class Placeholders extends PlaceholderExpansion {
         }
 
         return "";
+    }
+    
+    private int obtenerChatGamesWins(Player player) {
+        String uuid = player.getUniqueId().toString();
+        int wins = plugin.getConfig().getInt("players." + uuid + ".chatgames_wins");
+        return wins;
     }
     
     private String obtenerNombreGrupo(Player player) {
