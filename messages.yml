@@ -1,0 +1,137 @@
+messages:
+  noPermission: '&5TChat &e> &cYou do not have permission to execute this command.'
+  reloadSuccess: '&5TChat &e> &aThe TChat configuration has been successfully reloaded.'
+  reloadError: '&5TChat &e> &cError reloading TChat configuration. Check the files.'
+  clearChatMessage: '&5TChat &e> &cChat has been cleared.'
+  clearChatSuccess: '&5TChat &e> &aChat cleared successfully!'
+  onlyPlayer: '&5TChat &e> &cThis command can only be executed by a player.'
+  chatCooldownMessage: '&5TChat &e> &cYou must wait %time% seconds before sending another message.'
+  antiSpamBlocked: '&5TChat &e> &cYou cannot send messages with repeated letters.'
+  antiAdvertisingIPv4Blocked: '&5TChat &e> &cIPv4 addresses are not allowed in chat.'
+  antiAdvertisingDomainBlocked: '&5TChat &e> &cDomain names are not allowed in chat.'
+  antiAdvertisingLinkBlocked: '&5TChat &e> &cLinks are not allowed in chat.'
+  versionMessage: '&5TChat &e> &fPlugin version: &a{version}'
+  noPlayerOnline: '&5TChat &e> &cThe specified player is not online.'
+  incorrectUsage: '&5TChat &e> &cIncorrect use. You must use /msg <player> <message>'
+  playersOnly: '&5TChat &e> &cOnly players can use this command.'
+  noLastConversationalist: '&5TChat &e> &cYou have no recent conversations to reply to.'
+  antiUnicodeBlocked: '&5TChat &e> &cUnicode symbols are blocked.'
+  correct_answer_message: '&5TChat &e> &aCorrect answer! You receive a reward.'
+  chatColorIncorrectUsage: '&5TChat &e> &cIncorrect use. Use /chatcolor <color> <format>'
+  chatColorSuccess: '&5TChat &e> &aYour chat colour has been changed %color%%format%successfully&a!'
+  antiBotMessage: '&5TChat &e> &cYou have to move before you can get upset.'
+  chatColorInvalid: '&5TChat &e> &cInvalid colour. Valid colours are: black, darkblue, darkgreen, darkaqua, darkred, purple, gold, gray, darkgray, blue, green, aqua, red, pink, yellow, white.'
+  ping_message: '&5TChat &e> &fYour ping is: &a%ping%'
+  nickCommandUsage: '&5TChat &e> &cUsage: /nick <nick>'
+  cannotMessageIgnored: '&5TChat &e> You cannot send messages to %player% because you are ignoring it.'
+  ignoreAdd: '&5TChat &e> You are now ignoring %ignored%.'
+  ignoreRemove: '&5TChat &e> You have stopped ignoring %ignored%.'
+  helpopUsage: '&5TChat &e> &cUsage: /helpop <message>'
+  helpopFormatError: '&5TChat &e> &cError in helpop format.'
+  chatDisabledMessage: '&5TChat &e> &cChat is disabled in this world.'
+  incorrectUsagePlayer: '&5TChat &e> &cIncorrect use. You must use /player <player>'
+  incorrectUsageBannedCommands: '&5TChat &e> &cIncorrect use. You must /checkcommand <command>'
+  commandBanned: '&5TChat &e> &fThe command %command% is &cbanned.'
+  commandAllowed: '&5TChat &e> &fThe command %command% is &aallowed.'
+  calculateSecondArgument: '&5TChat &e> &fThe 2nd argument must be a +, -, * or /'
+  calculateThirdArgument: '&5TChat &e> &fYou have to put at least 3 arguments'
+  calculate: '&5TChat &e> &fCalculation: &a%arg1% &f%arg2% &a%arg3%'
+  calculateResult: '&5TChat &e> &fResult: &a%results%'
+  incorrectIgnoreUsage: '&5TChat &e> &cIncorrect use. You must use /ignore <player>'
+  pluginNotFound: '&5TChat &e> &cPlugin not found.'
+  fileNotFound: '&5TChat &e> &cFile not found.'
+  usagePlugin: '&5TChat &e> &cInvalid usage. Use /plugin <plugin_name>'
+  announcementUsage: '&5TChat &e> &cIncorrect usage. Use /announcement <message>'
+  warningUsage: '&5TChat &e> &cIncorrect usage. Use /warning <message>'
+  broadcastUsage: '&5TChat &e> &cIncorrect usage. Use /broadcast <message>'
+  meUsage: '&5TChat &e> &cIncorrect usage. Use /me <message>'
+  nick: '&5TChat &e> &fYour new nickname is: &a%nick%'
+  printUsage: '&5TChat &e> &cIncorrect usage. Use /print <message>'
+  
+Info:
+  - '&cJava: &f%java_version%'
+  - '&cServer Port: &f%port%'
+  - '&cServer Version: &f%version%'
+  - '&cOperating System: &f%os_name%'
+  - '&cOS Version: &f%os_version%'
+  - '&cTPS: &f%tps%'
+  - '&cCPU Family: &f%cpu_family%'
+  - '&cCPU Cores: &f%cpu_cores%'
+  - '&cMaximum Memory: &f%max_memory% MB'
+  - '&cTotal Memory: &f%total_memory% MB'
+  - '&cUsed Memory: &f%used_memory% MB'
+  - '&cFree Memory: &f%free_memory% MB'
+  - '&cPlugins: &f%plugins%'
+  - '&cWorlds: &f%worlds%'
+  
+Plugin:
+  - '&cPlugin: &f%plugin%'
+  - '&cRAM: &f%ram% MB'
+  - '&cVersion: &f%version%'
+  - '&cAuthor: &f%author%'
+  
+Player:
+  - '&cPlayer: %player%'
+  - '&cIP: &f%ip%'
+  - '&cUUID: &f%uuid%'
+  
+Rules:
+  - '&5Rule 1: &fNo cheating'
+  - '&5Rule 2: &fRespecting others'
+  - '&5Rule 3: &fRespect the personal space of others. Do not invade other players'' building or living space without their permission.'
+  
+Discord:
+  - '&7+------------------------------'
+  - '&5Discord: &fhttps://dc.tect.host/'
+  - '&7+------------------------------'
+  
+Store:
+  - '&7+------------------------------'
+  - '&5Discord: &fhttps://billing.tect.host/'
+  - '&7+------------------------------'
+  
+Website:
+  - '&7+------------------------------'
+  - '&5Website: &fhttps://tect.host/'
+  - '&7+------------------------------'
+  
+Facebook:
+  - '&7+------------------------------'
+  - '&5Discord: &fhttps://fb.tect.host/'
+  - '&7+------------------------------'
+  
+TeamSpeak:
+  - '&7+------------------------------'
+  - '&5Discord: &fhttps://tect.host/'
+  - '&7+------------------------------'
+  
+Twitter:
+  - '&7+------------------------------'
+  - '&5Discord: &fhttps://tw.tect.host/'
+  - '&7+------------------------------'
+  
+TikTok:
+  - '&7+------------------------------'
+  - '&5Discord: &fhttps://tk.tect.host/'
+  - '&7+------------------------------'
+  
+YouTube:
+  - '&7+------------------------------'
+  - '&5Youtube: &fhttps://yt.tect.host/'
+  - '&7+------------------------------'
+  
+Instagram:
+  - '&7+------------------------------'
+  - '&5Instagram: &fhttps://ig.tect.host/'
+  - '&7+------------------------------'
+  
+Help:
+  - '&7&m+---------+'
+  - '&fGet help in &bhttps://dc.tect.host/'
+  - '&7&m+---------+'
+  
+List:
+  header_format: '&7---- + Players online: &a%online%/%max% &7+ ----'
+  player_format: '&a%player%'
+  footer_format: '&7-------- + End of the list + --------'
+  

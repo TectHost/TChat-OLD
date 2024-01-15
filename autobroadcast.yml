@@ -1,0 +1,24 @@
+time: 60
+enabled: true
+broadcasts:
+  broadcast1:
+    messages:
+      - "&7+----------------------"
+      - "&aThis server is using TChat"
+      - "&7+----------------------"
+    title-enabled: true
+    title: "&6Welcome!"
+    sub-title: "&eEnjoy your stay!"
+    sound-enabled: true
+    sound: "entity.experience_orb.pickup"
+  broadcast2:
+    messages:
+      - "&7+----------------------"
+      - "&aThe best cheap hosting!"
+      - "&bhttps://tect.host/"
+      - "&7+----------------------"
+    title-enabled: true
+    title: "&6Welcome!"
+    sub-title: "&eEnjoy your stay!"
+    sound-enabled: false
+    sound: "block.note.harp"

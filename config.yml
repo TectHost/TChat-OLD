@@ -1,0 +1,53 @@
+Joins:
+  joinMessagesEnabled: true,
+  JoinMessage: '&5TChat &e> &7[&a+&7] &a%player% &7has entered the server'
+  quitMessagesEnabled: true,
+  QuitMessage: '&5TChat &e> &7[&c-&7] &c%player% &7has left the server'
+  
+Msg:
+  msgSent: '&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>'
+  msgReceived: '&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>'
+  
+Help:
+  helpopFormat: '&4[HelpOp] %tchat_prefix%<player>%tchat_suffix%: &c<message>'
+  
+Reply:
+  replySent: '&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>'
+  replyReceived: '&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>'
+    
+Announcements:
+  broadcastFormat: '&4[Broadcast] &a%s'
+  warningFormat: '&4[Warning] &a%s'
+  announcementFormat: '&4[Announcement] &a%s'
+  meFormat: '&5*&f%player% &7%s'
+  
+AntiAdvertising:
+  antiAdvertisingEnabled: true
+  ipv4_blocked: true
+  domain_blocked: true
+  link_blocked: true
+  
+Motd:
+  motdEnabled: true
+  motdMessage:
+  - '&aWelcome to &5Tect.host&a!'
+  - ''
+  - '&aGet help in &5https://tect.host/'
+  - '&5TChat &a- &5Tect.host'
+  
+Staff:
+  format: '&d[SC] &a%player% &e>> &f%message%'
+  staff_chat_join_message: '&5TChat &e> &aYou are now in the Staff channel.'
+  staff_chat_leave_message: '&5TChat &e> &cYou have left the Staff channel.'
+  
+Admin:
+  format: '&d[SC] &a%player% &e>> &f%message%'
+  admin_chat_join_message: '&5TChat &e> &aYou are now in the Admin channel.'
+  admin_chat_leave_message: '&5TChat &e> &cYou have left the Admin channel.'
+  
+Other:
+  antibotEnabled: true
+  chatCooldownSeconds: 3
+  antiSpamEnabled: true
+  anticap_enabled: true
+  anti_unicode: false

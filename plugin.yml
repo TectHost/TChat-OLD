@@ -1,5 +1,5 @@
 name: TChat
-version: 3.0.11
+version: 3.1.0
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -94,22 +94,37 @@ commands:
     description: Sends a message the player with some info
   discord:
     description: Sends a message the player with the discord link
+    aliases:
+      - dc
   instagram:
     description: Sends a message the player with the instagram link
+    aliases:
+      - ig
   youtube:
     description: Sends a message the player with the youtube link
+    aliases:
+      - yt
   tiktok:
     description: Sends a message the player with the tiktok link
+    aliases:
+      - tk
+      - tt
   facebook:
     description: Sends a message the player with the facebook link
+    aliases:
+      - fb
   website:
     description: Sends a message the player with the website link
     aliases:
       - web
   twitter:
     description: Sends a message the player with the twitter link
+    aliases:
+      - tw
   teamspeak:
     description: Sends a message the player with the teamspeak link
+    aliases:
+      - ts3
   player:
     description: Sends a message with information of the player
   store:

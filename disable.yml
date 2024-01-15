@@ -1,0 +1,6 @@
+disable:
+  disable_helpop: false
+  disable_nick: false
+  disable_ignore: false
+  disable_msg: false
+  disable_rules: false
