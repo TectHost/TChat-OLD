@@ -79,6 +79,8 @@ public class ChatListener implements Listener {
             String blockedMessage = bannedCommands.loadBlockedMessage();
             bannedCommands.sendTitle((Player) sender);
             bannedCommands.playSound((Player) sender);
+            bannedCommands.executeCommandsOnBlock((Player) sender, command);
+            plugin.getLogger().info("Executing commands for blocked command: " + command);
             player.sendMessage(blockedMessage);
         }
     }

@@ -1,5 +1,5 @@
 name: TChat
-version: 3.1.0
+version: 3.1.1
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -40,6 +40,7 @@ commands:
     description: Send a broadcast in the chat
     aliases:
       - bcast
+      - bc
     permission: tchat.broadcast
   warning:
     description: Send a warning in the chat

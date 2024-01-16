@@ -1,5 +1,6 @@
 package minealex.tchat.blocked;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,6 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -131,6 +133,21 @@ public class BannedCommands implements CommandExecutor {
             return true;
         }
         return false;
+    }
+    
+    public void executeCommandsOnBlock(CommandSender sender, String blockedCommand) {
+        List<String> commandsToRun = config.getStringList("commandsToRun");
+
+        for (String command : commandsToRun) {
+            // Reemplazar %executor% con el nombre del jugador que ejecutó el comando bloqueado
+            command = command.replace("%executor%", sender.getName());
+
+            // Reemplazar %blocked_command% con el comando bloqueado
+            command = command.replace("%blocked_command%", blockedCommand);
+
+            // Ejecutar el comando
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+        }
     }
 
     public boolean canBypassCommandBlocker(Player player) {
