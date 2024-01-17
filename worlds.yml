@@ -1,0 +1,17 @@
+world:
+  chatEnabled: true
+  perWorldChat: false
+  radiusChatEnabled: false
+  radiusChat: 10
+
+world_nether:
+  chatEnabled: true
+  perWorldChat: false
+  radiusChatEnabled: false
+  radiusChat: 10
+
+world_the_end:
+  chatEnabled: true
+  perWorldChat: false
+  radiusChatEnabled: false
+  radiusChat: 10

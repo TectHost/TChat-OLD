@@ -86,8 +86,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -653,14 +655,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 groups.put(groupName, new ChatGroup(prefix, suffix));
             }
 
-            messages.clear();
-            JsonObject messagesObject = jsonObject.getAsJsonObject("messages");
-            for (Entry<String, JsonElement> entry : messagesObject.entrySet()) {
-                String messageKey = entry.getKey();
-                String message = ChatColor.translateAlternateColorCodes('&', entry.getValue().getAsString());
-                messages.put(messageKey, message);
-            }
-
             unregisterChatListener();
             registerChatListener();
         } catch (IOException e) {
@@ -983,23 +977,28 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     public void reloadWorldsConfig() {
         File file = new File(getDataFolder(), "worlds.yml");
         if (file.exists()) {
-            try {
-                FileReader reader = new FileReader(file);
-                JSONParser jsonParser = new JSONParser();
-                JSONArray jsonArray = (JSONArray) jsonParser.parse(reader);
+            try (FileInputStream input = new FileInputStream(file)) {
+                Yaml yaml = new Yaml();
+                Iterable<Object> iterable = yaml.loadAll(input);
 
-                for (Object obj : jsonArray) {
-                    JSONObject worldObject = (JSONObject) obj;
+                for (Object obj : iterable) {
+                    if (obj instanceof Map) {
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> worldConfig = (Map<String, Object>) obj;
 
-                    String worldName = (String) worldObject.get("worldName");
-                    boolean chatEnabled = (Boolean) worldObject.get("chatEnabled");
-                    boolean perWorldChat = (Boolean) worldObject.get("perWorldChat");
-                    boolean radiusChatEnabled = (Boolean) worldObject.get("radiusChatEnabled");
-                    long radiusChat = (Long) worldObject.get("radiusChat");
+                        for (Map.Entry<String, Object> entry : worldConfig.entrySet()) {
+                            String worldName = entry.getKey();
+                            @SuppressWarnings("unchecked")
+							Map<String, Object> worldData = (Map<String, Object>) entry.getValue();
+
+                            boolean chatEnabled = worldData.get("chatEnabled") != null && (boolean) worldData.get("chatEnabled");
+                            boolean perWorldChat = worldData.get("perWorldChat") != null && (boolean) worldData.get("perWorldChat");
+                            boolean radiusChatEnabled = worldData.get("radiusChatEnabled") != null && (boolean) worldData.get("radiusChatEnabled");
+                            long radiusChat = worldData.get("radiusChat") != null ? (int) worldData.get("radiusChat") : 0;
+                        }
+                    }
                 }
-
-                reader.close();
-            } catch (IOException | ParseException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

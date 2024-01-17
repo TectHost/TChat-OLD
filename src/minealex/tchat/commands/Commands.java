@@ -28,20 +28,20 @@ public class Commands implements CommandExecutor {
                         plugin.reloadChatGamesConfig();
                         plugin.reloadChatBotConfig();
                         plugin.reloadAutoBroadcastConfig();
-                        String reloadSuccessMessage = plugin.getMessage("reloadSuccess");
+                        String reloadSuccessMessage = plugin.getMessagesYML("messages.reloadSuccess");
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', reloadSuccessMessage));
                     } else {
-                        String noPermissionMessage = plugin.getMessage("noPermission");
+                        String noPermissionMessage = plugin.getMessagesYML("messages.noPermission");
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermissionMessage));
                     }
                     return true;
                 } else if (args[0].equalsIgnoreCase("version")) {
                     if (!(sender instanceof Player) || sender.hasPermission("tchat.version")) {
-                        String versionMessage = plugin.getMessage("versionMessage");
+                        String versionMessage = plugin.getMessagesYML("messages.versionMessage");
                         versionMessage = versionMessage.replace("{version}", plugin.getVersion());
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', versionMessage));
                     } else {
-                        String noPermissionMessage = plugin.getMessage("noPermission");
+                        String noPermissionMessage = plugin.getMessagesYML("messages.noPermission");
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', noPermissionMessage));
                     }
                     return true;
