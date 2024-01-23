@@ -541,3 +541,7 @@ subtitle: "&7Please avoid using inappropriate language"
 
 soundEnabled: false
 sound: "ENTITY_ENDERMAN_TELEPORT"
+
+
+consoleCommands:
+  - "say %player% used a forbidden word."

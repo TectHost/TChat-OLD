@@ -12,6 +12,7 @@ import minealex.tchat.TChat;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -25,11 +26,14 @@ public class BannedWords {
     private String subtitle;
     private boolean soundEnabled;
     private String sound;
+    private List<String> consoleCommands;
+    private FileConfiguration config;
 
     public BannedWords(TChat plugin) {
         this.plugin = plugin;
         this.bannedWords = new HashSet<>();
         loadConfiguration();
+        consoleCommands = config.getStringList("consoleCommands");
     }
 
     private void loadConfiguration() {
@@ -38,7 +42,8 @@ public class BannedWords {
             plugin.saveResource("banned_words.yml", false);
         }
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+        // Usa la variable de instancia, no declares una nueva variable local
+        this.config = YamlConfiguration.loadConfiguration(configFile);
 
         bannedWords.clear();
         bannedWords.addAll(config.getStringList("bannedWords"));
@@ -51,6 +56,16 @@ public class BannedWords {
 
         soundEnabled = config.getBoolean("soundEnabled", false);
         sound = config.getString("sound", "ENTITY_ENDERMAN_TELEPORT");
+    }
+    
+    public void executeConsoleCommands(Player player) {
+        for (String command : consoleCommands) {
+            // Reemplaza las variables según sea necesario
+            command = command.replace("%player%", player.getName());
+
+            // Ejecuta el comando en la consola
+            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
+        }
     }
 
     private void playSound(Player player) {

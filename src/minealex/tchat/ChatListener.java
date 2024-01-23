@@ -80,7 +80,6 @@ public class ChatListener implements Listener {
             bannedCommands.sendTitle((Player) sender);
             bannedCommands.playSound((Player) sender);
             bannedCommands.executeCommandsOnBlock((Player) sender, command);
-            plugin.getLogger().info("Executing commands for blocked command: " + command);
             player.sendMessage(blockedMessage);
         }
     }
@@ -159,7 +158,8 @@ public class ChatListener implements Listener {
         String[] words = message.toLowerCase().split("[^a-zA-Z0-9_]");
         for (String word : words) {
             if (!word.isEmpty() && plugin.getBannedWords().isWordBanned(word)) {
-            	plugin.getBannedWords().sendBlockedMessage(player, message.toLowerCase());
+                plugin.getBannedWords().sendBlockedMessage(player, word);
+                plugin.getBannedWords().executeConsoleCommands(player);
                 event.setCancelled(true);
                 return;
             }
