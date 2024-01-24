@@ -19,3 +19,22 @@ messages:
   ENTITY_EXPLOSION: "&c%player% was blown up by %killer%."
   BLOCK_EXPLOSION: "&c%player% was blown up by a block."
   MAGIC: "&c%player% was killed by magic."
+  
+  
+mob_names:
+  SKELETON: "Skeleton"
+  SPIDER: "Spider"
+  ZOMBIE: "Zombie"
+  GHAST: "Ghast"
+  SLIME: "Slime"
+  CREEPER: "Creeper"
+  PIG_ZOMBIE: "Pigman"
+  ENDERMAN: "Enderman"
+  CAVE_SPIDER: "Cave Spider"
+  SILVERFISH: "Silverfish"
+  BLAZE: "Blaze"
+  MAGMA_CUBE: "Magma Cube"
+  WITCH: "Witch"
+  ENDERMITE: "Endermite"
+  GUARDIAN: "Guardian"
+  WOLF: "Wolf"

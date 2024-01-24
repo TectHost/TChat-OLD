@@ -47,9 +47,18 @@ public class DeathMessages implements Listener {
             return;
         }
 
+        // Cargar mensajes de muerte
         for (String deathType : config.getConfigurationSection("messages").getKeys(false)) {
             String message = ChatColor.translateAlternateColorCodes('&', config.getString("messages." + deathType));
             deathMessages.put(deathType, message);
+        }
+
+        // Cargar nombres personalizados de mobs
+        if (config.contains("mob_names")) {
+            for (String mobType : config.getConfigurationSection("mob_names").getKeys(false)) {
+                String customMobName = ChatColor.translateAlternateColorCodes('&', config.getString("mob_names." + mobType));
+                deathMessages.put("mob_names." + mobType, customMobName);
+            }
         }
     }
 
@@ -84,21 +93,14 @@ public class DeathMessages implements Listener {
                 return ((Player) damager).getName();
             } else if (damager instanceof LivingEntity) {
                 LivingEntity livingEntity = (LivingEntity) damager;
-                String customName = livingEntity.getCustomName();
+
+                // Obtener el nombre personalizado desde el mapa de nombres personalizados
+                String customName = getMobName(livingEntity.getType(), Bukkit.getVersion());
 
                 if (customName != null) {
                     return ChatColor.RESET + customName;
                 } else {
-                    // Si la entidad no tiene un nombre personalizado, puedes usar su tipo como fallback
-                    EntityType entityType = livingEntity.getType();
-                    String minecraftVersion = Bukkit.getVersion();
-                    String mobName = getMobName(entityType, minecraftVersion);
-
-                    if (mobName != null) {
-                        return ChatColor.RESET + mobName;
-                    } else {
-                        return "Unknown";
-                    }
+                    return "Unknown";
                 }
             }
         }
@@ -107,41 +109,47 @@ public class DeathMessages implements Listener {
     }
 
     private String getMobName(EntityType entityType, String minecraftVersion) {
-        switch (entityType) {
-            case SKELETON:
-                return "Skeleton";
-            case SPIDER:
-                return "Spider";
-            case ZOMBIE:
-                return "Zombie";
-            case GHAST:
-                return "Ghast";
-            case SLIME:
-                return "Slime";
-            case CREEPER:
-                return "Creeper";
-            case PIG_ZOMBIE:
-                return "Pigman";
-            case ENDERMAN:
-                return "Enderman";
-            case CAVE_SPIDER:
-                return "Cave Spider";
-            case SILVERFISH:
-                return "Silverfish";
-            case BLAZE:
-                return "Blaze";
-            case MAGMA_CUBE:
-                return "Magma Cube";
-            case WITCH:
-                return "Witch";
-            case ENDERMITE:
-                return "Endermite";
-            case GUARDIAN:
-                return "Guardian";
-            case WOLF:
-                return "Wolf";
-            default:
-                return null; // Devuelve null para indicar que no se encontró un nombre específico
+        String customMobName = deathMessages.get("mob_names." + entityType.name());
+
+        if (customMobName != null) {
+            return customMobName;
+        } else {
+            switch (entityType) {
+                case SKELETON:
+                    return "Skeleton";
+                case SPIDER:
+                    return "Spider";
+                case ZOMBIE:
+                    return "Zombie";
+                case GHAST:
+                    return "Ghast";
+                case SLIME:
+                    return "Slime";
+                case CREEPER:
+                    return "Creeper";
+                case PIG_ZOMBIE:
+                    return "Pigman";
+                case ENDERMAN:
+                    return "Enderman";
+                case CAVE_SPIDER:
+                    return "Cave Spider";
+                case SILVERFISH:
+                    return "Silverfish";
+                case BLAZE:
+                    return "Blaze";
+                case MAGMA_CUBE:
+                    return "Magma Cube";
+                case WITCH:
+                    return "Witch";
+                case ENDERMITE:
+                    return "Endermite";
+                case GUARDIAN:
+                    return "Guardian";
+                case WOLF:
+                    return "Wolf";
+                default:
+                    return null;
+            }
         }
     }
 
