@@ -13,6 +13,7 @@ import minealex.tchat.blocked.AntiAdvertising;
 import minealex.tchat.blocked.AntiUnicode;
 import minealex.tchat.blocked.BannedCommands;
 import minealex.tchat.blocked.BannedWords;
+import minealex.tchat.blocked.Replacer;
 import minealex.tchat.bot.AutoBroadcast;
 import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
@@ -53,6 +54,7 @@ import minealex.tchat.config.Config;
 import minealex.tchat.config.DeathConfig;
 import minealex.tchat.config.DisableConfig;
 import minealex.tchat.config.MessagesConfig;
+import minealex.tchat.config.ReplacerConfig;
 import minealex.tchat.listener.ChatEventListener;
 import minealex.tchat.listener.JoinListener;
 import minealex.tchat.listener.PlayerMoveListener;
@@ -139,6 +141,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private String blockedMessage;
 	private MessagesConfig messagesConfig;
 	private Config config;
+	private ReplacerConfig replacerConfig;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -292,6 +295,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         messagesConfig = new MessagesConfig(this);
         messagesConfig.createDefaultConfig();
         
+        replacerConfig = new ReplacerConfig(this);
+        replacerConfig.createDefaultConfig();
+        
         config = new Config(this);
         config.createDefaultConfig();
         
@@ -307,6 +313,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         antiUnicode = new AntiUnicode(isUnicodeBlocked);
         
         instance = this;
+        
+        FileConfiguration replacerConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "replacer.yml"));
+        Replacer replacerInstance = Replacer.getInstance(replacerConfig);
+        getServer().getPluginManager().registerEvents(replacerInstance, this);
         
         loadMessages();
 
@@ -423,6 +433,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     public void onDisable() {
         // Desregistrar el evento del chat al desactivar el plugin
         HandlerList.unregisterAll(chatListener);
+        super.onDisable();
     }
 
     private void loadConfigFile() {

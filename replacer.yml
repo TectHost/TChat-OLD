@@ -1,0 +1,14 @@
+# replacer.yml
+
+words:
+  example1:
+    original: "hello"
+    replacer_text: "hi"
+    
+  example2:
+    original: "world"
+    replacer_text: "universe"
+    
+  example3:
+    original: "apple"
+    replacer_text: "orange"
