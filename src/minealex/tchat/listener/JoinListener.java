@@ -5,6 +5,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.nio.charset.StandardCharsets;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -70,6 +73,7 @@ public class JoinListener implements Listener {
         if (joinMessage != null) {
             joinMessage = joinMessage.replace("%player%", playerName);
             joinMessage = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(playerName), joinMessage);
+            joinMessage = new String(joinMessage.getBytes(), StandardCharsets.UTF_8); // Asegurar la codificación
             return ChatColor.translateAlternateColorCodes('&', joinMessage);
         }
 
@@ -89,11 +93,13 @@ public class JoinListener implements Listener {
         if (quitMessage != null) {
             quitMessage = quitMessage.replace("%player%", playerName);
             quitMessage = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(playerName), quitMessage);
+            quitMessage = new String(quitMessage.getBytes(), StandardCharsets.UTF_8); // Asegurar la codificación
             return ChatColor.translateAlternateColorCodes('&', quitMessage);
         }
 
         return null;
     }
+
 
     private void sendMotdMessage(String playerName) {
         FileConfiguration config = plugin.getConfig();
