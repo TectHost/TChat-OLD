@@ -64,6 +64,7 @@ public class ChatListener implements Listener {
         this.chatGames = plugin.getChatGames();
         this.bannedCommands = new BannedCommands(plugin);
         this.perWorldChat = new PerWorldChat(plugin);
+        this.staffChatFormat = loadStaffChatFormatFromConfig();
     }
     
     @EventHandler
@@ -400,6 +401,20 @@ public class ChatListener implements Listener {
 	private void registerListeners() {
         plugin.getServer().getPluginManager().registerEvents(perWorldChat, plugin);
     }
+	
+	private String loadStaffChatFormatFromConfig() {
+	    File configFile = new File(plugin.getDataFolder(), "config.yml");
+	    FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+	    // Assuming the staffChatFormat is under the "Other" section of the config
+	    if (config.contains("Staff.format")) {
+	        return config.getString("Staff.format");
+	    } else {
+	        // Default format in case it's not specified in the config
+	        return "&d[SC] &a%player% &e>> &f%message%";
+	    }
+	}
+
 
 	// Agrega un método para verificar si el jugador se ha movido
     private boolean hasPlayerMoved(Player player) {
