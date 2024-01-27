@@ -90,6 +90,8 @@ public class BannedWords {
             Player player = (Player) sender;
             playSound(player);
         }
+        
+        plugin.getLogger().warning("Player " + sender.getName() + " attempted to send a message containing blocked word: " + blockedWord);
     }
 
     public boolean isWordBanned(String word) {

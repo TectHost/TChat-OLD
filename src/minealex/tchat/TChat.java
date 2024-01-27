@@ -985,6 +985,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         }
     }
     
+    @SuppressWarnings("unchecked")
     public void reloadWorldsConfig() {
         File file = new File(getDataFolder(), "worlds.yml");
         if (file.exists()) {
@@ -994,12 +995,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 
                 for (Object obj : iterable) {
                     if (obj instanceof Map) {
-                        @SuppressWarnings("unchecked")
                         Map<String, Object> worldConfig = (Map<String, Object>) obj;
 
                         for (Map.Entry<String, Object> entry : worldConfig.entrySet()) {
                             String worldName = entry.getKey();
-                            @SuppressWarnings("unchecked")
 							Map<String, Object> worldData = (Map<String, Object>) entry.getValue();
 
                             boolean chatEnabled = worldData.get("chatEnabled") != null && (boolean) worldData.get("chatEnabled");
