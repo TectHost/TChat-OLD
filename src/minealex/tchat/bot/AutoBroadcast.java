@@ -21,6 +21,7 @@ public class AutoBroadcast {
 
     private final JavaPlugin plugin;
     private final FileConfiguration autoBroadcastConfig;
+    private static final int MAX_LINE_LENGTH = 70;
 
     public AutoBroadcast(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -75,6 +76,12 @@ public class AutoBroadcast {
 
                 for (String message : messageList) {
                     message = ChatColor.translateAlternateColorCodes('&', message);
+                    
+                    if (message.contains("%center%")) {
+                        int messageLength = getVisibleLength(message.replace("%center%", ""));
+                        int padding = (MAX_LINE_LENGTH - messageLength) / 2;
+                        message = message.replace("%center%", repeat(" ", padding));
+                    }
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         String formattedMessage = PlaceholderAPI.setPlaceholders(player, message);
@@ -122,6 +129,14 @@ public class AutoBroadcast {
 
     public boolean isBroadcastsEnabled() {
         return autoBroadcastConfig.getBoolean("enabled", true);
+    }
+    
+    private int getVisibleLength(String input) {
+        return ChatColor.stripColor(input).length();
+    }
+
+    private String repeat(String str, int times) {
+        return new String(new char[times]).replace("\0", str);
     }
 
     public boolean isTitleEnabled() {

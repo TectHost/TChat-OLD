@@ -1,6 +1,12 @@
+# Options to disable other TChat functions not present in config.yml
 disable:
+  # Disables the HelpOp command
   disable_helpop: false
+  # Disables the Nick command
   disable_nick: false
+  # Disables the Ignore command
   disable_ignore: false
+  # Disables the Msg command
   disable_msg: false
+  # Disables the Rules command
   disable_rules: false

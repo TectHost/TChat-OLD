@@ -1,4 +1,6 @@
+# Option to disable death messages
 enabled: true
+# Death messages
 messages:
   PLAYER_KILLED: "&c%player% was slain by %killer%."
   PLAYER_SUICIDE: "&c%player% took their own life."
@@ -20,7 +22,7 @@ messages:
   BLOCK_EXPLOSION: "&c%player% was blown up by a block."
   MAGIC: "&c%player% was killed by magic."
   
-  
+# Mob names
 mob_names:
   SKELETON: "Skeleton"
   SPIDER: "Spider"

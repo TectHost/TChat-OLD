@@ -1,3 +1,4 @@
+# List of banned words
 bannedWords:
   - Arse
   - Ass
@@ -533,15 +534,21 @@ bannedWords:
   - xrated
   - xxx
 
+# Message displayed to players when they type a blocked word
 blockedMessage: "&5TChat &e> &cBlocked word: {word}"
 
+# Option to disable titles
 enableTitles: true
+# Titles
 title: "&cBlocked Word"
+# Subtitles
 subtitle: "&7Please avoid using inappropriate language"
 
+# Option to disable sounds
 soundEnabled: false
+# Sounds
 sound: "ENTITY_ENDERMAN_TELEPORT"
 
-
+# Commands executed when a player uses a blocked word
 consoleCommands:
   - "say %player% used a forbidden word."

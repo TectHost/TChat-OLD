@@ -1,7 +1,12 @@
+# Default world settings
 world:
+  # Toggle world chat
   chatEnabled: true
+  # Enable per-world chat in this world
   perWorldChat: false
+  # Enable radius chat
   radiusChatEnabled: false
+  # Radius for radius chat
   radiusChat: 10
 
 world_nether:
@@ -15,3 +20,11 @@ world_the_end:
   perWorldChat: false
   radiusChatEnabled: false
   radiusChat: 10
+  
+# You can create more worlds
+# Example:
+# Survival:
+#   chatEnabled: true
+#   perWorldChat: false
+#   radiusChatEnabled: false
+#   radiusChat: 10

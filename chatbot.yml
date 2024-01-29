@@ -1,2 +1,6 @@
+# List of chatbot conversations
+# 
+# Text1: "Response"
+# Text1 is the text that identifies the chatbot; when it detects that text, it sends the Response to the player
 Hi: "&aHi! How can I help you?"
 Hello: "&aHello! How can I help you?"

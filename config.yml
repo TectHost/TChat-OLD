@@ -1,53 +1,91 @@
+# Entry and exit messages
 Joins:
+  # Option to disable entry messages
   joinMessagesEnabled: true,
+  # Entry message
   JoinMessage: '&5TChat &e> &7[&a+&7] &a%player% &7has entered the server'
+  # Option to disable exit messages
   quitMessagesEnabled: true,
+  # Exit message
   QuitMessage: '&5TChat &e> &7[&c-&7] &c%player% &7has left the server'
   
+# Private message format
 Msg:
+  # Sent message
   msgSent: '&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>'
+  # Received message
   msgReceived: '&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>'
   
+# HelpOp command format
 Help:
   helpopFormat: '&4[HelpOp] %tchat_prefix%<player>%tchat_suffix%: &c<message>'
   
+# Reply message format
 Reply:
+  # Sent message
   replySent: '&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>'
+  # Received message
   replyReceived: '&5&l! &a<sender> &e&l> &a<recipient>&7: &f<message>'
-    
+  
+# Announcement formats
 Announcements:
+  # Broadcast format
   broadcastFormat: '&4[Broadcast] &a%s'
+  # Warning format
   warningFormat: '&4[Warning] &a%s'
+  # Announcement format
   announcementFormat: '&4[Announcement] &a%s'
+  # /me command format
   meFormat: '&5*&f%player% &7%s'
   
+# Anti-advertising configuration
 AntiAdvertising:
+  # Option to disable all 3 functions
   antiAdvertisingEnabled: true
+  # Blocks IPv4 addresses, for example, 192.168.1.50
   ipv4_blocked: true
+  # Blocks domains, for example, tect.host or google.com
   domain_blocked: true
+  # Blocks links, for example, https://tect.host/ or https://google.com (also blocks HTTP links)
   link_blocked: true
   
+# Message displayed to players when entering the server
 Motd:
+  # Option to disable this function
   motdEnabled: true
+  # Message
   motdMessage:
   - '&aWelcome to &5Tect.host&a!'
   - ''
   - '&aGet help in &5https://tect.host/'
   - '&5TChat &a- &5Tect.host'
   
+# StaffChat format
 Staff:
   format: '&d[SC] &a%player% &e>> &f%message%'
   staff_chat_join_message: '&5TChat &e> &aYou are now in the Staff channel.'
   staff_chat_leave_message: '&5TChat &e> &cYou have left the Staff channel.'
   
+# AdminChat format
 Admin:
   format: '&d[SC] &a%player% &e>> &f%message%'
   admin_chat_join_message: '&5TChat &e> &aYou are now in the Admin channel.'
   admin_chat_leave_message: '&5TChat &e> &cYou have left the Admin channel.'
   
+# Other options
 Other:
+  # Option to disable the antibot
+  # TChat's antibot prevents any player from sending messages until they move
   antibotEnabled: true
+  # Option to configure chat cooldown
+  # Time before a command can be typed again
   chatCooldownSeconds: 3
+  # Option to disable antispam
+  # Prevents sending identical or highly similar messages (over 75% similarity)
   antiSpamEnabled: true
+  # Option to disable anticap
+  # Converts uppercase letters to lowercase
   anticap_enabled: true
+  # Option to disable anti unicode
+  # Blocks all characters from basic Latin, including the '&' character
   anti_unicode: false

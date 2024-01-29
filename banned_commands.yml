@@ -1,3 +1,4 @@
+# List of banned commands
 bannedCommands:
   - pl
   - plugins
@@ -6,14 +7,24 @@ bannedCommands:
   - "?"
   - ver
 
+# Message displayed when someone executes a banned command
 blockedMessage: "&5TChat &e> &cYou are not allowed to use that command."
 
+# Option to disable titles
 titleEnabled: true
+# Titles
 title: "&4Banned Command"
+# Subtitle
 subtitle: "&cYou are not allowed to use this command."
+# Option to disable sounds
 soundEnabled: true
+# Sound
 sound: "entity.ender_dragon.growl"
 
+# Commands that are executed when a player uses a banned command
+# Placeholders:
+# - %executor%
+#
 commandsToRun:
   - 'give %executor% dirt 1'
   - 'bc %executor% typed the command: /%blocked_command%'

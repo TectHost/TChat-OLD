@@ -1,3 +1,4 @@
+# TChat Messages
 messages:
   noPermission: '&5TChat &e> &cYou do not have permission to execute this command.'
   reloadSuccess: '&5TChat &e> &aThe TChat configuration has been successfully reloaded.'
@@ -48,6 +49,7 @@ messages:
   nick: '&5TChat &e> &fYour new nickname is: &a%nick%'
   printUsage: '&5TChat &e> &cIncorrect usage. Use /print <message>'
   
+# /info command
 Info:
   - '&cJava: &f%java_version%'
   - '&cServer Port: &f%port%'
@@ -64,74 +66,87 @@ Info:
   - '&cPlugins: &f%plugins%'
   - '&cWorlds: &f%worlds%'
   
+# /plugin command
 Plugin:
   - '&cPlugin: &f%plugin%'
   - '&cRAM: &f%ram% MB'
   - '&cVersion: &f%version%'
   - '&cAuthor: &f%author%'
   
+# /player command
 Player:
   - '&cPlayer: %player%'
   - '&cIP: &f%ip%'
   - '&cUUID: &f%uuid%'
   
+# /rules command
 Rules:
   - '&5Rule 1: &fNo cheating'
   - '&5Rule 2: &fRespecting others'
   - '&5Rule 3: &fRespect the personal space of others. Do not invade other players'' building or living space without their permission.'
   
+# /discord command
 Discord:
   - '&7+------------------------------'
   - '&5Discord: &fhttps://dc.tect.host/'
   - '&7+------------------------------'
   
+# /store command
 Store:
   - '&7+------------------------------'
   - '&5Discord: &fhttps://billing.tect.host/'
   - '&7+------------------------------'
   
+# /website command
 Website:
   - '&7+------------------------------'
   - '&5Website: &fhttps://tect.host/'
   - '&7+------------------------------'
   
+# /facebook command
 Facebook:
   - '&7+------------------------------'
   - '&5Discord: &fhttps://fb.tect.host/'
   - '&7+------------------------------'
   
+# /teamspeak command
 TeamSpeak:
   - '&7+------------------------------'
   - '&5Discord: &fhttps://tect.host/'
   - '&7+------------------------------'
   
+# /twitter command
 Twitter:
   - '&7+------------------------------'
   - '&5Discord: &fhttps://tw.tect.host/'
   - '&7+------------------------------'
   
+# /tiktok command
 TikTok:
   - '&7+------------------------------'
   - '&5Discord: &fhttps://tk.tect.host/'
   - '&7+------------------------------'
   
+# /youtube command
 YouTube:
   - '&7+------------------------------'
   - '&5Youtube: &fhttps://yt.tect.host/'
   - '&7+------------------------------'
   
+# /instagram command
 Instagram:
   - '&7+------------------------------'
   - '&5Instagram: &fhttps://ig.tect.host/'
   - '&7+------------------------------'
   
+# /help command
 Help:
   - '&7&m+---------+'
   - '&fGet help in &bhttps://dc.tect.host/'
   - '&7&m+---------+'
   
+# /list command
 List:
   header_format: '&7---- + Players online: &a%online%/%max% &7+ ----'
   player_format: '&a%player%'
   footer_format: '&7-------- + End of the list + --------'
-  

@@ -1,22 +1,36 @@
+# Placeholders list:
+# - %center%
+#
+# Time is the interval between broadcasts
 time: 60
+# This option is to deactivate all autobroadcasts
 enabled: true
+# New broadcasts can be added, but the name cannot be changed; it has to be broadcast(number) and the numbers have to be consecutive, 1, 2, 3...
 broadcasts:
   broadcast1:
+    # Broadcast message
     messages:
-      - "&7+----------------------"
-      - "&aThis server is using TChat"
-      - "&7+----------------------"
+      - " "
+      - "%center%&c&lANNOUNCE"
+      - "%center%&7This server is using TChat"
+      - " "
+    # Option to deactivate titles
     title-enabled: true
+    # Titles
     title: "&6Welcome!"
+    # Subtitle
     sub-title: "&eEnjoy your stay!"
+    # Option to deactivate sound
     sound-enabled: true
+    # Sound
     sound: "entity.experience_orb.pickup"
   broadcast2:
     messages:
-      - "&7+----------------------"
-      - "&aThe best cheap hosting!"
-      - "&bhttps://tect.host/"
-      - "&7+----------------------"
+      - " "
+      - "%center%&c&lANNOUNCE"
+      - "%center%&aThe best cheap hosting!&m"
+      - "%center%&bhttps://tect.host/"
+      - " "
     title-enabled: true
     title: "&6Welcome!"
     sub-title: "&eEnjoy your stay!"
