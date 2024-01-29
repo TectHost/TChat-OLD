@@ -8,6 +8,16 @@ Joins:
   quitMessagesEnabled: true,
   # Exit message
   QuitMessage: '&5TChat &e> &7[&c-&7] &c%player% &7has left the server'
+  # Option to disable entry Commands
+  # Execute commands when someone logs on to the server
+  entryCommandsEnabled: true
+  entryCommands:
+    - "say Hi %player%! :)"
+  # Option to disable quit Commands
+  quitCommandsEnabled: true
+  # Execute commands when someone disconnects from the server
+  quitCommands:
+    - "broadcast Bye %player%! :("
   
 # Private message format
 Msg:

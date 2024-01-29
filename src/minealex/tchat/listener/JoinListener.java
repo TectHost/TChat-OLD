@@ -37,6 +37,7 @@ public class JoinListener implements Listener {
             if (joinMessage != null) {
                 event.setJoinMessage(joinMessage);
             }
+            executeEntryCommands(event.getPlayer().getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,6 +51,7 @@ public class JoinListener implements Listener {
             if (quitMessage != null) {
                 event.setQuitMessage(quitMessage);
             }
+            executeQuitCommands(event.getPlayer().getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,6 +60,36 @@ public class JoinListener implements Listener {
     private boolean isMotdEnabled() {
         FileConfiguration config = plugin.getConfig();
         return config.getBoolean("Motd.motdEnabled", true);
+    }
+    
+    @SuppressWarnings("deprecation")
+	private void executeEntryCommands(String playerName) {
+        FileConfiguration config = plugin.getConfig();
+        if (config.contains("Joins.entryCommandsEnabled") && config.getBoolean("Joins.entryCommandsEnabled")) {
+            if (config.contains("Joins.entryCommands")) {
+                for (String command : config.getStringList("Joins.entryCommands")) {
+                    // Ejecutar cada comando de la lista de comandos de entrada
+                    command = command.replace("%player%", playerName);
+                    command = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(playerName), command);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                }
+            }
+        }
+    }
+    
+    @SuppressWarnings("deprecation")
+	private void executeQuitCommands(String playerName) {
+        FileConfiguration config = plugin.getConfig();
+        if (config.contains("Joins.quitCommandsEnabled") && config.getBoolean("Joins.quitCommandsEnabled")) {
+            if (config.contains("Joins.quitCommands")) {
+                for (String command : config.getStringList("Joins.quitCommands")) {
+                    // Ejecutar cada comando de la lista de comandos de salida
+                    command = command.replace("%player%", playerName);
+                    command = PlaceholderAPI.setPlaceholders(Bukkit.getOfflinePlayer(playerName), command);
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                }
+            }
+        }
     }
 
     @SuppressWarnings("deprecation")
