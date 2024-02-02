@@ -20,7 +20,7 @@ messages:
   correct_answer_message: '&5TChat &e> &aCorrect answer! You receive a reward.'
   chatColorIncorrectUsage: '&5TChat &e> &cIncorrect use. Use /chatcolor <color> <format>'
   chatColorSuccess: '&5TChat &e> &aYour chat colour has been changed %color%%format%successfully&a!'
-  antiBotMessage: '&5TChat &e> &cYou have to move before you can get upset.'
+  antiBotMessage: '&5TChat &e> &cYou have to move before you can send messages.'
   chatColorInvalid: '&5TChat &e> &cInvalid colour. Valid colours are: black, darkblue, darkgreen, darkaqua, darkred, purple, gold, gray, darkgray, blue, green, aqua, red, pink, yellow, white.'
   ping_message: '&5TChat &e> &fYour ping is: &a%ping%'
   nickCommandUsage: '&5TChat &e> &cUsage: /nick <nick>'

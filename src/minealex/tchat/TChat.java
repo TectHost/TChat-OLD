@@ -23,6 +23,7 @@ import minealex.tchat.commands.BroadcastCommand;
 import minealex.tchat.commands.CalculateCommand;
 import minealex.tchat.commands.ChatColorCommand;
 import minealex.tchat.commands.ClearChatCommand;
+import minealex.tchat.commands.CommandManager;
 import minealex.tchat.commands.Commands;
 import minealex.tchat.commands.DiscordCommand;
 import minealex.tchat.commands.FacebookCommand;
@@ -51,6 +52,7 @@ import minealex.tchat.commands.WebsiteCommand;
 import minealex.tchat.commands.YoutubeCommand;
 import minealex.tchat.config.BannedCommandsConfig;
 import minealex.tchat.config.Config;
+import minealex.tchat.config.ConfigManager;
 import minealex.tchat.config.DeathConfig;
 import minealex.tchat.config.DisableConfig;
 import minealex.tchat.config.MessagesConfig;
@@ -142,6 +144,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private MessagesConfig messagesConfig;
 	private Config config;
 	private ReplacerConfig replacerConfig;
+	private ConfigManager configManager;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -278,6 +281,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         new SignColor(this);
         
+        CommandManager commandManager = new CommandManager(this);
+        
         chatListener = new ChatListener(this);
         perWorldChat = new PerWorldChat(this);
 
@@ -297,6 +302,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         
         replacerConfig = new ReplacerConfig(this);
         replacerConfig.createDefaultConfig();
+        
+        configManager = new ConfigManager(this);
+        configManager.loadConfig();
         
         config = new Config(this);
         config.createDefaultConfig();
@@ -434,6 +442,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         // Desregistrar el evento del chat al desactivar el plugin
         HandlerList.unregisterAll(chatListener);
         super.onDisable();
+        configManager.saveConfig();
     }
 
     private void loadConfigFile() {
@@ -797,6 +806,27 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             return "Default message"; // Mensaje por defecto si la clave no se encuentra
         }
     }
+    
+    public String getMessagesYML() {
+        File configFile = new File(getDataFolder(), "messages.yml");
+        if (!configFile.exists()) {
+            getLogger().warning("messages.yml not found. Default message will be used.");
+            return "Default message"; // Mensaje por defecto si el archivo no existe
+        }
+
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+        // Obtener el mensaje del archivo messages.yml
+        String defaultKey = "default"; // Puedes cambiar esto a la clave que desees usar como predeterminada
+
+        if (config.contains(defaultKey)) {
+            String message = config.getString(defaultKey);
+            return parseColors(message); // Traducir códigos de colores en el mensaje
+        } else {
+            getLogger().warning("Default message key '" + defaultKey + "' not found in messages.yml. Default message will be used.");
+            return "Default message"; // Mensaje por defecto si la clave predeterminada no se encuentra
+        }
+    }
 
     private String parseColors(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
@@ -860,6 +890,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             e.printStackTrace();
             return "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> <message>";
         }
+    }
+    
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 
     public void updateLastConversationalist(UUID sender, UUID recipient) {

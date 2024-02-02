@@ -1,0 +1,18 @@
+# Also try EChat! https://www.spigotmc.org/resources/echat-1-20x-best-chat-plugin.114302
+# Tags:
+# [MESSAGE] - Sends a message | - "[MESSAGE] &7Test message"
+# [TITLE] - Sends a title | - "[TITLE] &aTitle;&bSubtitle"
+# [PLAYER_COMMAND] - The player will automatically execute a command | - "[PLAYER_COMMAND] spawn {player}"
+# [CONSOLE_COMMAND] - The console will automatically execute a command | - "[CONSOLE_COMMAND] give {player} diamond 1"
+# [SOUND] - Executes a sound | - "[SOUND] AMBIENCE_CAVE"
+# [PARTICLE] - Executes a particle | - "[PARTICLE] SMOKE"
+# [TELEPORT] - Teleports the player to concrete coordinate | - "[TELEPORT] world;0;70;0"
+# [ACTION_BAR] - Executes a action bar | - "[ACTION_BAR] &eWelcome! Have a great time!"
+# [INVENTORY] - Adds/removes/changes the inventory of the player | - "[INVENTORY] ADD DIAMOND_SWORD 1" | - "[INVENTORY] REMOVE STONE_SWORD 1" | - "[INVENTORY] CHANGE DIAMOND_SWORD 1 APPLE 1"
+# [POTION_EFFECT] Adds potion effects to the player | - "[POTION_EFFECT] SPEED:120:1"
+commands:
+  test:
+    permission-required: false # tchat.customcommands.ndiscord
+    cooldown: 60
+    actions:
+      - "[MESSAGE] mensaje"
