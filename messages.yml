@@ -94,7 +94,7 @@ Discord:
 # /store command
 Store:
   - '&7+------------------------------'
-  - '&5Discord: &fhttps://billing.tect.host/'
+  - '&5Store: &fhttps://billing.tect.host/'
   - '&7+------------------------------'
   
 # /website command
@@ -106,25 +106,25 @@ Website:
 # /facebook command
 Facebook:
   - '&7+------------------------------'
-  - '&5Discord: &fhttps://fb.tect.host/'
+  - '&5Facebook: &fhttps://fb.tect.host/'
   - '&7+------------------------------'
   
 # /teamspeak command
 TeamSpeak:
   - '&7+------------------------------'
-  - '&5Discord: &fhttps://tect.host/'
+  - '&5TeamSpeak: &fhttps://tect.host/'
   - '&7+------------------------------'
   
 # /twitter command
 Twitter:
   - '&7+------------------------------'
-  - '&5Discord: &fhttps://tw.tect.host/'
+  - '&5Twitter: &fhttps://tw.tect.host/'
   - '&7+------------------------------'
   
 # /tiktok command
 TikTok:
   - '&7+------------------------------'
-  - '&5Discord: &fhttps://tk.tect.host/'
+  - '&5TikTok: &fhttps://tk.tect.host/'
   - '&7+------------------------------'
   
 # /youtube command
@@ -147,6 +147,6 @@ Help:
   
 # /list command
 List:
-  header_format: '&7---- + Players online: &a%online%/%max% &7+ ----'
+  header_format: '&7---- + Players online: &a%online%&7/%max% &7+ ----'
   player_format: '&a%player%'
-  footer_format: '&7-------- + End of the list + --------'
+  footer_format: '&7----- + End of the list + -----'

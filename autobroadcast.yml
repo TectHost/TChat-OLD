@@ -1,5 +1,6 @@
 # Placeholders list:
-# - %center%
+# - %center% (1.8.8)
+# - %newer_center% New versions
 #
 # Time is the interval between broadcasts
 time: 60
@@ -27,9 +28,9 @@ broadcasts:
   broadcast2:
     messages:
       - " "
-      - "%center%&c&lANNOUNCE"
-      - "%center%&aThe best cheap hosting!&m"
-      - "%center%&bhttps://tect.host/"
+      - "%newer_center%&c&lANNOUNCE"
+      - "%newer_center%&aThe best cheap hosting!&m"
+      - "%newer_center%&bhttps://tect.host/"
       - " "
     title-enabled: true
     title: "&6Welcome!"

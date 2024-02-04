@@ -1,37 +1,31 @@
 package minealex.tchat.commands;
 
-import java.io.File;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import minealex.tchat.TChat;
 
 public class BroadcastCommand implements CommandExecutor {
 
-    private final JavaPlugin plugin;
-    private File messagesFile;
-    private FileConfiguration messagesConfig;
+    private final TChat plugin;
 
-    public BroadcastCommand(JavaPlugin plugin) {
+    public BroadcastCommand(TChat plugin) {
         this.plugin = plugin;
-        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!sender.hasPermission("tchat.broadcast")) {
-            sender.sendMessage(getMessages("messages.noPermission"));
+            sender.sendMessage(plugin.getMessagesYML("messages.noPermission"));
             return true;
         }
 
         if (args.length == 0) {
-        	sender.sendMessage(getMessages("messages.broadcastUsage"));
+        	sender.sendMessage(plugin.getMessagesYML("messages.broadcastUsage"));
             return true;
         }
 
@@ -53,13 +47,5 @@ public class BroadcastCommand implements CommandExecutor {
         }
 
         return true;
-    }
-
-    private String getMessages(String formatKey) {
-        if (messagesConfig.contains(formatKey)) {
-            return ChatColor.translateAlternateColorCodes('&', messagesConfig.getString(formatKey));
-        } else {
-            return "Invalid03";
-        }
     }
 }

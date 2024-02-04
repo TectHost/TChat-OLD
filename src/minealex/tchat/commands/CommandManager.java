@@ -18,10 +18,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CommandManager implements Listener {
     private final TChat plugin;
     private Map<UUID, Long> commandCooldowns = new HashMap<>();
+    private PlayerCommandPreprocessEvent lastCommandEvent;
+    
     public CommandManager(TChat plugin) {
         this.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -31,11 +34,28 @@ public class CommandManager implements Listener {
     public void CustomCommand(PlayerCommandPreprocessEvent e) {
         Player player = e.getPlayer();
         String message = e.getMessage();
+        lastCommandEvent = e;
 
         if (message.startsWith("/")) {
-            String commandName = message.substring(1).toLowerCase();
+            String[] commandArgs = message.substring(1).split(" ");
+            String commandName = commandArgs[0].toLowerCase(); // Obtén el nombre del comando
+
             if (plugin.getConfigManager().getCommands().contains("commands." + commandName)) {
                 List<String> commandConfig = plugin.getConfigManager().getCommands().getStringList("commands." + commandName);
+                boolean allowArgs = plugin.getConfigManager().getCommands().getBoolean("custom-commands." + commandName + ".args");
+
+                if (allowArgs) {
+                    // Verifica si se proporcionaron suficientes argumentos
+                    if (commandArgs.length > 1) {
+                        String args = message.substring(commandArgs[0].length() + 1); // Incluye el espacio después del nombre del comando
+                        commandConfig = commandConfig.stream().map(action -> action.replace("{args}", args)).collect(Collectors.toList());
+                        plugin.getLogger().info("Arguments provided: " + args);
+                    } else {
+                        player.sendMessage(ChatColor.RED + "Formato incorrecto. Uso: /" + commandName + " <argumentos>");
+                        return;
+                    }
+                }
+                
                 if (commandConfig.contains("permission-required")) {
                     String permission = "tchat.customcommand." + commandName;
                     if (!player.hasPermission(permission)) {
@@ -54,11 +74,12 @@ public class CommandManager implements Listener {
 
                 List<String> actions = plugin.getConfigManager().getCommands().getStringList("commands." + commandName + ".actions");
                 for (String action : actions) {
-                    executeAction(player, action);
+                    executeAction(player, action, commandArgs);
                 }
 
                 if (cooldownSeconds > 0) {
                     setCooldown(player, commandName, cooldownSeconds);
+                    plugin.getLogger().info("Arguments for actions: " + commandArgs);
                 }
                 
                 e.setCancelled(true);
@@ -67,7 +88,8 @@ public class CommandManager implements Listener {
     }
 
     @SuppressWarnings("deprecation")
-	private void executeAction(Player player, String action) {
+	private void executeAction(Player player, String action, String[] args) {
+    	String message = lastCommandEvent.getMessage();
         switch (action.split(" ")[0]) {
             case "[MESSAGE]":
             	String rawMessage = action.replace("[MESSAGE] ", "");
@@ -87,8 +109,18 @@ public class CommandManager implements Listener {
                 break;
             case "[PLAYER_COMMAND]":
                 String playerCommand = action.replace("[PLAYER_COMMAND] ", "");
-                playerCommand = playerCommand.replace("{player}", player.getName());
-                player.performCommand(playerCommand);
+                String finalPlayerCommand;
+
+                if (args.length > 1) {
+                    String args1 = message.substring(args[0].length() + 1);
+                    finalPlayerCommand = playerCommand.replace("{player}", player.getName()) + " " + args1;
+                    plugin.getLogger().info("Arguments for [PLAYER_COMMAND]: " + args1);
+                } else {
+                    finalPlayerCommand = playerCommand.replace("{player}", player.getName());
+                }
+
+                player.performCommand(finalPlayerCommand);
+                plugin.getLogger().info("Executing [PLAYER_COMMAND] action with command: " + finalPlayerCommand);
                 break;
             case "[CONSOLE_COMMAND]":
                 String consoleCommand = action.replace("[CONSOLE_COMMAND] ", "");

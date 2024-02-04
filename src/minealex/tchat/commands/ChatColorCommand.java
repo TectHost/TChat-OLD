@@ -6,34 +6,30 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import me.clip.placeholderapi.PlaceholderAPI;
+import minealex.tchat.TChat;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 public class ChatColorCommand implements CommandExecutor {
-    private final Plugin plugin;
+    private final TChat plugin;
 
-    public ChatColorCommand(Plugin plugin) {
+    public ChatColorCommand(TChat plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(getMessages("onlyPlayer"));
+            sender.sendMessage(plugin.getMessagesYML("onlyPlayer"));
             return true;
         }
 
         Player player = (Player) sender;
 
         if (args.length != 2) {
-            player.sendMessage(getMessages("chatColorIncorrectUsage"));
+            player.sendMessage(plugin.getMessagesYML("chatColorIncorrectUsage"));
             return true;
         }
 
@@ -41,7 +37,7 @@ public class ChatColorCommand implements CommandExecutor {
         ChatColor chatColor = getColorFromString(colorName);
 
         if (chatColor == null) {
-            player.sendMessage(getMessages("chatColorInvalid"));
+            player.sendMessage(plugin.getMessagesYML("chatColorInvalid"));
             return true;
         }
 
@@ -49,12 +45,12 @@ public class ChatColorCommand implements CommandExecutor {
 
         // Verificar si el jugador tiene el permiso adecuado para el formato
         if (!player.hasPermission("tchat.chatcolor." + colorName + "." + format)) {
-            player.sendMessage(getMessages("noPermission"));
+            player.sendMessage(plugin.getMessagesYML("messages.noPermission"));
             return true;
         }
 
         // Aplicar el color y el formato al jugador
-        String chatColorSuccess = getMessages("chatColorSuccess");
+        String chatColorSuccess = plugin.getMessagesYML("messages.chatColorSuccess");
         chatColorSuccess = PlaceholderAPI.setPlaceholders(player, chatColorSuccess);
         chatColorSuccess = chatColorSuccess.replace("%color%", chatColor.toString());
         chatColorSuccess = chatColorSuccess.replace("%format%", format);
@@ -135,26 +131,6 @@ public class ChatColorCommand implements CommandExecutor {
                 return ChatColor.MAGIC;
             default:
                 return null;
-        }
-    }
-
-    private String getMessages(String formatKey) {
-        try {
-            String filePath = plugin.getDataFolder().getPath() + "/format_config.json";
-            JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader(filePath));
-            JSONObject jsonObject = (JSONObject) obj;
-
-            JSONObject messages = (JSONObject) jsonObject.get("messages");
-
-            if (messages.containsKey(formatKey)) {
-                return ChatColor.translateAlternateColorCodes('&', (String) messages.get(formatKey));
-            } else {
-                return "Error in format_config.json file"; // Puedes establecer un mensaje predeterminado aquí.
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Error in format_config.json file"; // Puedes establecer un mensaje predeterminado aquí.
         }
     }
 }

@@ -12,7 +12,127 @@
 # [POTION_EFFECT] Adds potion effects to the player | - "[POTION_EFFECT] SPEED:120:1"
 commands:
   test:
-    permission-required: false # tchat.customcommands.ndiscord
+    permission-required: false  # tchat.customcommands.test
     cooldown: 60
     actions:
-      - "[MESSAGE] mensaje"
+      - "[MESSAGE] &aTest message"
+  calc:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] calculate"
+  ts3:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] teamspeak"
+  tw:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] twitter"
+  web:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] website"
+  fb:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] facebook"
+  tt:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] tiktok"
+  yt:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] youtube"
+  ig:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] instagram"
+  dc:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] discord"
+  achat:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] adminchat"
+  sc:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] staffchat"
+  schat:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] staffchat"
+  ann:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] announcement"
+  bc:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] broadcast"
+  bcast:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] broadcast"
+  r:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] reply"
+  tell:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] msg"
+  whisper:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] msg"
+  ewhisper:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] msg"
+  pm:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] msg"
+  emsg:
+    permission-required: false
+    args: true
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] msg"
+  cc:
+    permission-required: false
+    cooldown: 0
+    actions:
+      - "[PLAYER_COMMAND] clearchat"

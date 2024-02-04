@@ -22,6 +22,7 @@ public class AutoBroadcast {
     private final JavaPlugin plugin;
     private final FileConfiguration autoBroadcastConfig;
     private static final int MAX_LINE_LENGTH = 70;
+    private static final int NEW_MAX_LINE_LENGTH = 60;
 
     public AutoBroadcast(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -81,6 +82,12 @@ public class AutoBroadcast {
                         int messageLength = getVisibleLength(message.replace("%center%", ""));
                         int padding = (MAX_LINE_LENGTH - messageLength) / 2;
                         message = message.replace("%center%", repeat(" ", padding));
+                    }
+                    
+                    if (message.contains("%newer_center%")) {
+                        int messageLength = getVisibleLength(message.replace("%newer_center%", ""));
+                        int padding = (NEW_MAX_LINE_LENGTH - messageLength) / 2;
+                        message = message.replace("%newer_center%", repeat(" ", padding));
                     }
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
