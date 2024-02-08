@@ -49,7 +49,6 @@ public class CommandManager implements Listener {
                     if (commandArgs.length > 1) {
                         String args = message.substring(commandArgs[0].length() + 1); // Incluye el espacio después del nombre del comando
                         commandConfig = commandConfig.stream().map(action -> action.replace("{args}", args)).collect(Collectors.toList());
-                        plugin.getLogger().info("Arguments provided: " + args);
                     } else {
                         player.sendMessage(ChatColor.RED + "Formato incorrecto. Uso: /" + commandName + " <argumentos>");
                         return;
@@ -79,7 +78,6 @@ public class CommandManager implements Listener {
 
                 if (cooldownSeconds > 0) {
                     setCooldown(player, commandName, cooldownSeconds);
-                    plugin.getLogger().info("Arguments for actions: " + commandArgs);
                 }
                 
                 e.setCancelled(true);
@@ -114,13 +112,11 @@ public class CommandManager implements Listener {
                 if (args.length > 1) {
                     String args1 = message.substring(args[0].length() + 1);
                     finalPlayerCommand = playerCommand.replace("{player}", player.getName()) + " " + args1;
-                    plugin.getLogger().info("Arguments for [PLAYER_COMMAND]: " + args1);
                 } else {
                     finalPlayerCommand = playerCommand.replace("{player}", player.getName());
                 }
 
                 player.performCommand(finalPlayerCommand);
-                plugin.getLogger().info("Executing [PLAYER_COMMAND] action with command: " + finalPlayerCommand);
                 break;
             case "[CONSOLE_COMMAND]":
                 String consoleCommand = action.replace("[CONSOLE_COMMAND] ", "");

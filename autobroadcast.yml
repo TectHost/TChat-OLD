@@ -16,13 +16,13 @@ broadcasts:
       - "%center%&7This server is using TChat"
       - " "
     # Option to deactivate titles
-    title-enabled: true
+    title-enabled: false
     # Titles
     title: "&6Welcome!"
     # Subtitle
     sub-title: "&eEnjoy your stay!"
     # Option to deactivate sound
-    sound-enabled: true
+    sound-enabled: false
     # Sound
     sound: "entity.experience_orb.pickup"
   broadcast2:
@@ -32,7 +32,7 @@ broadcasts:
       - "%newer_center%&aThe best cheap hosting!&m"
       - "%newer_center%&bhttps://tect.host/"
       - " "
-    title-enabled: true
+    title-enabled: false
     title: "&6Welcome!"
     sub-title: "&eEnjoy your stay!"
     sound-enabled: false

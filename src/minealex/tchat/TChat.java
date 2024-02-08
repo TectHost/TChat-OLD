@@ -567,7 +567,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         return true;
     }
 
-
     public String formatMessage(String message, CommandSender sender) {
         String prefix = defaultPrefix;
         String suffix = defaultSuffix;
@@ -884,11 +883,11 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
              if (messageValue != null) {
                 return messageValue;
             } else {
-                return "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> <message>";
+                return "%tchat_prefix% &f%tchat_nickname%%tchat_suffix% &e>> <message>";
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> <message>";
+            return "%tchat_prefix% &f%tchat_nickname%%tchat_suffix% &e>> <message>";
         }
     }
     
@@ -988,8 +987,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                     String response = config.getString(key);
                     responses.put(keyword, response);
                 }
-
-                // Haz lo que necesites con el mapa de respuestas
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1005,14 +1002,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
                 List<String> bannedCommands = config.getStringList("bannedCommands");
                 blockedMessage = config.getString("blockedMessage");
 
-                // Configuración adicional si es necesario
                 boolean titleEnabled = config.getBoolean("titleEnabled");
                 String title = config.getString("title");
                 String subtitle = config.getString("subtitle");
                 boolean soundEnabled = config.getBoolean("soundEnabled");
-                String sound = config.getString("sound");
-
-                // Haz lo que necesites con la lista de comandos prohibidos y otras configuraciones
             } catch (Exception e) {
                 e.printStackTrace();
             }

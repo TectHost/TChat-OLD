@@ -22,20 +22,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Hover implements Listener {
 
     private final TChat plugin;
-    private String playerNameFormat;
     private List<String> hoverText;
-    private Set<Player> processedPlayers;  // Para evitar el procesamiento duplicado
+    private String playerNameFormat;
 
     public Hover(TChat plugin) {
         this.plugin = plugin;
-        this.processedPlayers = new HashSet<>();
+        this.hoverText = new ArrayList<>();
         loadConfig();
     }
 
@@ -43,12 +40,8 @@ public class Hover implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        // Evitar el procesamiento duplicado
-        if (processedPlayers.contains(player)) {
-            return;
-        }
-
-        if (playerNameFormat != null && hoverText != null && !hoverText.isEmpty()) {
+        String playerNameFormat = getPlayerNameFormat(player);
+        if (playerNameFormat != null && !hoverText.isEmpty()) {
             playerNameFormat = PlaceholderAPI.setPlaceholders(player, playerNameFormat);
 
             String formattedName = ChatColor.translateAlternateColorCodes('&', playerNameFormat);
@@ -72,10 +65,15 @@ public class Hover implements Listener {
             // Envía el mensaje a la consola
             Bukkit.getServer().getConsoleSender().sendMessage(finalMessage.toLegacyText());
 
-            // Evita que el código se ejecute dos veces para el mismo evento
-            processedPlayers.add(player);
-            event.setCancelled(true);  // Cancela el evento para evitar que se procese nuevamente
+            event.setCancelled(true);
         }
+    }
+
+    private String getPlayerNameFormat(Player player) {
+        // Implementa lógica para obtener el formato de nombre del jugador según tu configuración
+        // Puedes usar PlaceholderAPI o cualquier otra lógica que necesites aquí
+        // Devuelve el formato de nombre específico del jugador
+        return playerNameFormat;
     }
 
     private String translateColorCodes(String input) {
@@ -95,7 +93,7 @@ public class Hover implements Listener {
 
             playerNameFormat = jsonObject.get("format").getAsString();
 
-            hoverText = new ArrayList<>();
+            hoverText.clear();
             if (jsonObject.has("Hover")) {
                 JsonArray hoverArray = jsonObject.getAsJsonArray("Hover");
                 for (JsonElement element : hoverArray) {
