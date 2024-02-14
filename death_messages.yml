@@ -40,3 +40,8 @@ mob_names:
   ENDERMITE: "Endermite"
   GUARDIAN: "Guardian"
   WOLF: "Wolf"
+  
+death_title:
+  enabled: true
+  title: "&cYou are dead!"
+  subtitle: "&7Coming back to life!"

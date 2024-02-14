@@ -66,7 +66,6 @@ import minealex.tchat.perworldchat.RadiusChat;
 import minealex.tchat.perworldchat.WorldsManager;
 import minealex.tchat.placeholders.Placeholders;
 import minealex.tchat.utils.DeathMessages;
-import minealex.tchat.utils.Hover;
 import minealex.tchat.utils.SignColor;
 
 import org.bukkit.Bukkit;
@@ -329,8 +328,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         loadMessages();
 
         loadBannedWordsList();
-        
-        getServer().getPluginManager().registerEvents(new Hover(this), this);
         
         anticapEnabled = isAnticapEnabled();
 
@@ -866,28 +863,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             fileWriter.write(games.toJSONString());
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-    
-    public String getConfiguredFormat(String formatKey) {
-        try {
-            String filePath = getDataFolder().getPath() + "/format_config.json";
-            JSONParser parser = new JSONParser();
-            Object obj = parser.parse(new FileReader(filePath));
-            JSONObject jsonObject = (JSONObject) obj;
-
-            JSONObject messagesObject = (JSONObject) jsonObject.get("messages");
-
-            String messageValue = (String) messagesObject.get(formatKey);
-
-             if (messageValue != null) {
-                return messageValue;
-            } else {
-                return "%tchat_prefix% &f%tchat_nickname%%tchat_suffix% &e>> <message>";
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "%tchat_prefix% &f%tchat_nickname%%tchat_suffix% &e>> <message>";
         }
     }
     

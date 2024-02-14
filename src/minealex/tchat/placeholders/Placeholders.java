@@ -145,6 +145,8 @@ public class Placeholders extends PlaceholderExpansion {
             } else {
                 return "No players found";
             }
+        } else if (identifier.equals("chatgames_top")) {
+            return obtenerChatGamesTop(player);
         }
         
 
@@ -185,6 +187,16 @@ public class Placeholders extends PlaceholderExpansion {
         }
 
         return playersAndWins;
+    }
+    
+    private String obtenerChatGamesTop(Player player) {
+        String uuid = player.getUniqueId().toString();
+        int playerWins = obtenerChatGamesWins(player);
+        long topPlayersCount = obtenerJugadoresYVictorias().entrySet().stream()
+                .filter(entry -> entry.getValue() > playerWins)
+                .count();
+
+        return String.valueOf(topPlayersCount + 1);
     }
     
     private String obtenerLuckPermsPrefix(Player player) {

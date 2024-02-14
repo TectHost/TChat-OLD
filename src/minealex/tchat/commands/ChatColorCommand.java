@@ -22,14 +22,14 @@ public class ChatColorCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(plugin.getMessagesYML("onlyPlayer"));
+            sender.sendMessage(plugin.getMessagesYML("messages.onlyPlayer"));
             return true;
         }
 
         Player player = (Player) sender;
 
         if (args.length != 2) {
-            player.sendMessage(plugin.getMessagesYML("chatColorIncorrectUsage"));
+            player.sendMessage(plugin.getMessagesYML("messages.chatColorIncorrectUsage"));
             return true;
         }
 
@@ -37,7 +37,7 @@ public class ChatColorCommand implements CommandExecutor {
         ChatColor chatColor = getColorFromString(colorName);
 
         if (chatColor == null) {
-            player.sendMessage(plugin.getMessagesYML("chatColorInvalid"));
+            player.sendMessage(plugin.getMessagesYML("messages.chatColorInvalid"));
             return true;
         }
 

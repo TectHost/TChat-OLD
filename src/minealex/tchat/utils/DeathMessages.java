@@ -22,14 +22,20 @@ import java.util.Map;
 
 public class DeathMessages implements Listener {
 
-    private final JavaPlugin plugin;
+	private final JavaPlugin plugin;
     private Map<String, String> deathMessages;
     private boolean deathMessagesEnabled;
+    private boolean deathTitleEnabled;
+    private String deathTitle;
+    private String deathSubtitle;
 
     public DeathMessages(JavaPlugin plugin) {
         this.plugin = plugin;
         this.deathMessages = new HashMap<>();
         this.deathMessagesEnabled = true;
+        this.deathTitleEnabled = true;
+        this.deathTitle = "&cYou have died!";
+        this.deathSubtitle = "&7Respawning in %time% seconds";
         loadDeathMessages();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -60,6 +66,11 @@ public class DeathMessages implements Listener {
                 deathMessages.put("mob_names." + mobType, customMobName);
             }
         }
+
+        // Cargar configuración de título y subtítulo
+        deathTitleEnabled = config.getBoolean("death_title.enabled", true);
+        deathTitle = ChatColor.translateAlternateColorCodes('&', config.getString("death_title.title", "&cYou have died!"));
+        deathSubtitle = ChatColor.translateAlternateColorCodes('&', config.getString("death_title.subtitle", "&7Respawning in %time% seconds"));
     }
 
     @EventHandler
@@ -78,6 +89,11 @@ public class DeathMessages implements Listener {
 
         // Si no se puede determinar el atacante o no se encuentra un mensaje personalizado, usa el manejo anterior
         handleDeathMessage(event, deathType, player.getName(), killerName);
+
+        // Muestra el título y subtítulo de la muerte
+        if (deathTitleEnabled) {
+            sendDeathTitle(player);
+        }
     }
 
     private String getKillerName(EntityDamageEvent damageEvent) {
@@ -108,6 +124,11 @@ public class DeathMessages implements Listener {
         return "Unknown";
     }
 
+    @SuppressWarnings("deprecation")
+    private void sendDeathTitle(Player player) {
+        player.sendTitle(deathTitle, deathSubtitle);
+    }
+    
     private String getMobName(EntityType entityType, String minecraftVersion) {
         String customMobName = deathMessages.get("mob_names." + entityType.name());
 
