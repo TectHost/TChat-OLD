@@ -1,5 +1,6 @@
 package minealex.tchat;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,6 +32,10 @@ import minealex.tchat.bot.ChatGames;
 import minealex.tchat.perworldchat.PerWorldChat;
 import minealex.tchat.perworldchat.WorldConfig;
 import minealex.tchat.perworldchat.WorldsManager;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.io.File;
 import java.io.FileReader;
@@ -56,6 +61,7 @@ public class ChatListener implements Listener {
 	private BannedCommands bannedCommands;
 	private String staffChatFormat;
 	private PerWorldChat perWorldChat;
+	private List<String> hoverText;
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
@@ -65,6 +71,8 @@ public class ChatListener implements Listener {
         this.bannedCommands = new BannedCommands(plugin);
         this.perWorldChat = new PerWorldChat(plugin);
         this.staffChatFormat = loadStaffChatFormatFromConfig();
+        this.hoverText = new ArrayList<>();
+        loadHoverTextFromConfig();
     }
     
     @EventHandler
@@ -297,6 +305,68 @@ public class ChatListener implements Listener {
             event.setFormat(format1);
             event.setMessage(correctedMessage);
         }
+        
+        String playerNameFormat = getPlayerNameFormat(player);
+        if (playerNameFormat != null && isHoverTextEnabled() && !hoverText.isEmpty()) {
+            playerNameFormat = PlaceholderAPI.setPlaceholders(player, playerNameFormat);
+
+            String formattedName = ChatColor.translateAlternateColorCodes('&', playerNameFormat);
+            TextComponent playerName = new TextComponent(formattedName);
+
+            TextComponent message1 = new TextComponent(event.getMessage());
+
+            playerName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + player.getName()));
+
+            String translatedHoverText = PlaceholderAPI.setPlaceholders(player, String.join("\n", hoverText));
+            playerName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                    new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', translatedHoverText))}));
+
+            TextComponent finalMessage = new TextComponent(playerName, message1);
+
+            // Envía el mensaje personalizado al jugador
+            player.spigot().sendMessage(finalMessage);
+
+            // Envía el mensaje a la consola
+            Bukkit.getServer().getConsoleSender().sendMessage(finalMessage.toLegacyText());
+
+            event.setCancelled(true);
+        }
+    }
+	
+	private void loadHoverTextFromConfig() {
+	    File configFile = new File(plugin.getDataFolder(), "config.yml");
+
+	    if (!configFile.exists()) {
+	        plugin.getLogger().warning("config.yml not found. Using default hover text.");
+	        return;
+	    }
+
+	    FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+	    if (config.contains("hover_text")) {
+	        hoverText = config.getStringList("hover_text");
+	    } else {
+	        plugin.getLogger().warning("hover_text not found in config.yml. Using default hover text.");
+	    }
+	}
+	
+	private boolean isHoverTextEnabled() {
+        File configFile = new File(plugin.getDataFolder(), "config.yml");
+
+        if (!configFile.exists()) {
+            plugin.getLogger().warning("config.yml not found. Hover text will be enabled by default.");
+            return true;
+        }
+
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+        // Obtener el valor de hover_text_enabled de config.yml
+        if (config.contains("hover_text_enabled")) {
+            return config.getBoolean("hover_text_enabled");
+        } else {
+            plugin.getLogger().warning("hover_text_enabled not found in config.yml. Hover text will be enabled by default.");
+            return true;
+        }
     }
 
 	private boolean isAntiAdvertisingEnabled() {
@@ -306,6 +376,37 @@ public class ChatListener implements Listener {
 	private boolean isDomainBlocked() {
 		return false;
 	}
+	
+	private String getPlayerNameFormat(Player player) {
+	    File configFile = new File(plugin.getDataFolder(), "format_config.json");
+
+	    if (!configFile.exists()) {
+	        plugin.getLogger().warning("format_config.json not found. Using default player name format.");
+	        return "&a%tchat_nickname%";
+	    }
+
+	    try {
+	        JSONParser parser = new JSONParser();
+	        Object obj = parser.parse(new FileReader(configFile));
+	        
+	        if (obj instanceof JSONObject) {
+	            JSONObject jsonConfig = (JSONObject) obj;
+
+	            if (jsonConfig.containsKey("format")) {
+	                return ChatColor.translateAlternateColorCodes('&', (String) jsonConfig.get("format"));
+	            } else {
+	                plugin.getLogger().warning("format not found in format_config.json. Using default player name format.");
+	                return "&a%tchat_nickname%";
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        plugin.getLogger().warning("Error reading format_config.json. Using default player name format.");
+	    }
+
+	    return "&a%tchat_nickname%";
+	}
+
 	
 	private boolean isAntiUnicodeEnabled() {
 	    File configFile = new File(plugin.getDataFolder(), "config.yml");

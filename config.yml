@@ -82,6 +82,17 @@ Admin:
   admin_chat_join_message: '&5TChat &e> &aYou are now in the Admin channel.'
   admin_chat_leave_message: '&5TChat &e> &cYou have left the Admin channel.'
   
+# Having this option causes several TChat functions such as nickname and chatcolor to not work.
+hover_text_enabled: true
+hover_text:
+  - "&5Nick: %tchat_nickname%"
+  - "&bMoney: %vault_eco_balance_formatted%"
+  - ""
+  - "&e&nClick here to send a private message"
+  
+# The mention sound
+mention_sound: ENTITY_EXPERIENCE_ORB_PICKUP
+  
 # Other options
 Other:
   # Option to disable the antibot

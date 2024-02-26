@@ -4,32 +4,26 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import minealex.tchat.TChat;
 
-import java.io.File;
 import java.util.UUID;
 
 public class ReplyCommand implements CommandExecutor {
     private final TChat plugin;
-    private File messagesFile;
-    private FileConfiguration messagesConfig;
 
     public ReplyCommand(TChat plugin) {
         this.plugin = plugin;
-        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if (sender.hasPermission("tchat.reply")) {
-                Player player = (Player) sender;
+            Player player = (Player) sender;
+            if (player.hasPermission("tchat.reply")) {
+                // Obtener el UUID del último remitente de mensajes desde la memoria
+                UUID lastMessageSender = plugin.getLastMessageSender(player.getUniqueId());
 
-                UUID lastMessageSender = plugin.getLastConversationalist(player.getUniqueId());
                 if (lastMessageSender != null) {
                     Player recipient = plugin.getServer().getPlayer(lastMessageSender);
 
@@ -53,28 +47,20 @@ public class ReplyCommand implements CommandExecutor {
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessageSent));
                             recipient.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessageReceived));
                         } else {
-                            player.sendMessage(getMessages("messages.incorrectUsage"));
+                            player.sendMessage(plugin.getMessagesYML("messages.incorrectUsage"));
                         }
                     } else {
-                        player.sendMessage(getMessages("messages.noPlayerOnline"));
+                        player.sendMessage(plugin.getMessagesYML("messages.noPlayerOnline"));
                     }
                 } else {
-                    player.sendMessage(getMessages("messages.noLastConversationalist"));
+                    player.sendMessage(plugin.getMessagesYML("messages.noLastConversationalist"));
                 }
             } else {
-                sender.sendMessage(getMessages("messages.noPermission"));
+                player.sendMessage(plugin.getMessagesYML("messages.noPermission"));
             }
         } else {
-            sender.sendMessage(getMessages("messages.playersOnly"));
+            sender.sendMessage(plugin.getMessagesYML("messages.playersOnly"));
         }
         return true;
-    }
-
-    private String getMessages(String formatKey) {
-        if (messagesConfig.contains(formatKey)) {
-            return ChatColor.translateAlternateColorCodes('&', messagesConfig.getString(formatKey));
-        } else {
-            return "<sender> whispers to <recipient>: <message>";
-        }
     }
 }

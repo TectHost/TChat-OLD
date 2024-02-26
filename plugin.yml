@@ -1,5 +1,5 @@
 name: TChat
-version: 3.3.3
+version: 3.3.4
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -93,6 +93,9 @@ commands:
   calculate:
     description: Calculate any math equation
     permission: tchat.calculate
+  mention:
+    description: Mention another player
+    permission: tchat.mention
 
 permissions:
   tchat.reload:
@@ -153,3 +156,5 @@ permissions:
     description: Permission to execute player
   tchat.calculate:
     description: Permission to execute calculate
+  tchat.mention:
+    description: Permission to execute mention

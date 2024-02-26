@@ -61,10 +61,12 @@ public class BannedWords {
     public void executeConsoleCommands(Player player) {
         for (String command : consoleCommands) {
             // Reemplaza las variables según sea necesario
-            command = command.replace("%player%", player.getName());
+            final String finalCommand = command.replace("%player%", player.getName());
 
-            // Ejecuta el comando en la consola
-            plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), command);
+            // Ejecuta el comando en el hilo principal
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), finalCommand);
+            });
         }
     }
 

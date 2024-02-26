@@ -1,7 +1,10 @@
 package minealex.tchat.commands;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,17 +19,13 @@ public class MsgCommand implements CommandExecutor {
     private TChat plugin;
     private File savesFile;
     private FileConfiguration savesConfig;
-    private File messagesFile;
-    private FileConfiguration messagesConfig;
+    private final Map<UUID, UUID> lastMessageSenders;
 
     public MsgCommand(TChat plugin) {
         this.plugin = plugin;
+        this.lastMessageSenders = new HashMap<>();
         savesFile = new File(plugin.getDataFolder(), "saves.yml");
         savesConfig = YamlConfiguration.loadConfiguration(savesFile);
-        
-        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
-        
     }
 
     @Override
@@ -39,11 +38,14 @@ public class MsgCommand implements CommandExecutor {
                     if (recipient != null) {
                         String message = String.join(" ", args).substring(args[0].length() + 1);
 
+                        // Actualizar el último remitente de mensajes para el jugador actual
+                        lastMessageSenders.put(recipient.getUniqueId(), player.getUniqueId());
+
                         // Access saves.yml configuration
                         List<String> ignoredPlayers = getSavesConfig().getStringList("ignore");
 
                         if (ignoredPlayers.contains(recipient.getName())) {
-                            String ignoredMessage = getMessages("messages.cannotMessageIgnored");
+                            String ignoredMessage = plugin.getMessagesYML("messages.cannotMessageIgnored");
                             ignoredMessage = ignoredMessage.replace("%player%", recipient.getName());
                             player.sendMessage(ChatColor.RED + ignoredMessage);
                             return true;
@@ -65,16 +67,16 @@ public class MsgCommand implements CommandExecutor {
                         sender.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessageSent));
                         recipient.sendMessage(ChatColor.translateAlternateColorCodes('&', formattedMessageReceived));
                     } else {
-                        sender.sendMessage(getMessages("messages.noPlayerOnline"));
+                        sender.sendMessage(plugin.getMessagesYML("messages.noPlayerOnline"));
                     }
                 } else {
-                    sender.sendMessage(getMessages("messages.incorrectUsage"));
+                    sender.sendMessage(plugin.getMessagesYML("messages.incorrectUsage"));
                 }
             } else {
-                sender.sendMessage(getMessages("messages.noPermission"));
+                sender.sendMessage(plugin.getMessagesYML("messages.noPermission"));
             }
         } else {
-            sender.sendMessage(getMessages("messages.playersOnly"));
+            sender.sendMessage(plugin.getMessagesYML("messages.playersOnly"));
         }
         return true;
     }
@@ -95,13 +97,5 @@ public class MsgCommand implements CommandExecutor {
 
     private FileConfiguration getSavesConfig() {
         return savesConfig;
-    }
-    
-    private String getMessages(String formatKey) {
-        if (messagesConfig.contains(formatKey)) {
-            return ChatColor.translateAlternateColorCodes('&', messagesConfig.getString(formatKey));
-        } else {
-            return "<sender> whispers to <recipient>: <message>";
-        }
     }
 }

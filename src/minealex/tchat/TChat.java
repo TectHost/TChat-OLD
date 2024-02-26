@@ -34,6 +34,7 @@ import minealex.tchat.commands.InfoCommand;
 import minealex.tchat.commands.InstagramCommand;
 import minealex.tchat.commands.ListCommand;
 import minealex.tchat.commands.MeCommand;
+import minealex.tchat.commands.MentionCommand;
 import minealex.tchat.commands.MsgCommand;
 import minealex.tchat.commands.NickCommand;
 import minealex.tchat.commands.PingCommand;
@@ -144,6 +145,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private Config config;
 	private ReplacerConfig replacerConfig;
 	private ConfigManager configManager;
+	private Map<UUID, UUID> lastMessageSenders;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -179,6 +181,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     @Override
     public void onEnable() {
         getCommand("chat").setExecutor(new Commands(this));
+        
+        this.lastMessageSenders = new HashMap<>();
         
         boolean isMsgEnabled = isMsgEnabled();
         
@@ -273,6 +277,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("info").setExecutor(new InfoCommand(this));
         
         getCommand("print").setExecutor(new PrintCommand(this));
+        
+        getCommand("mention").setExecutor(new MentionCommand(this));
         
         new TPSListener(this);
         
@@ -782,6 +788,10 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     public void handleBlockedLink(Player player) {
         String message = getMessagesYML("messages.antiAdvertisingLinkBlocked");
         player.sendMessage(message);
+    }
+    
+    public UUID getLastMessageSender(UUID playerId) {
+        return lastMessageSenders.get(playerId);
     }
 
     public String getMessagesYML(String key) {
