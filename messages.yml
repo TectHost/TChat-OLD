@@ -48,6 +48,10 @@ messages:
   meUsage: '&5TChat &e> &cIncorrect usage. Use /me <message>'
   nick: '&5TChat &e> &fYour new nickname is: &a%nick%'
   printUsage: '&5TChat &e> &cIncorrect usage. Use /print <message>'
+  incorrectUsageMention: '&5TChat &e> &cIncorrect usage. Use /mention <message>'
+  soundNotFound: '&5TChat &e> &cThe sound specified in the configuration is not valid.'
+  mention-sender-message: '&5TChat &e> &aYou mentioned %s!'
+  mention-target-message: '&5TChat &e> &aYou have been mentioned by %s!'
   
 # /info command
 Info:

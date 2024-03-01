@@ -1,0 +1,20 @@
+min_experience: 1
+max_experience: 7
+
+level1:
+  xp: 100
+  rewards:
+    - give %player% dirt 1
+    - eco give %player% 100
+
+level2:
+  xp: 200
+  rewards:
+    - give %player% stone 1
+    - eco give %player% 200
+
+level3:
+  xp: 300
+  rewards:
+    - give %player% iron_ingot 1
+    - eco give %player% 300
