@@ -18,6 +18,28 @@ Joins:
   # Execute commands when someone disconnects from the server
   quitCommands:
     - "broadcast Bye %player%! :("
+  Particles:
+    Join:
+      joinParticlesEnabled: true
+      # Particles:
+      # - FLAME
+      # - CLOUD
+      # You can suggest more particles in the discord server!
+      joinParticlesType: "FLAME"
+    Quit:
+      quitParticlesEnabled: true
+      # Particles:
+      # - FLAME
+      # - CLOUD
+      # You can suggest more particles in the discord server!
+      quitParticlesType: "CLOUD"
+  Sounds:
+    Join:
+      joinSoundEnabled: true
+      joinSoundType: "ENTITY_PLAYER_LEVELUP"
+    Quit:
+      quitSoundEnabled: true
+      quitSoundType: "ENTITY_GENERIC_EXPLODE"
   
 # Private message format
 Msg:

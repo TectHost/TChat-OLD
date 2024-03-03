@@ -10,6 +10,9 @@ import java.nio.charset.StandardCharsets;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -38,6 +41,10 @@ public class JoinListener implements Listener {
                 event.setJoinMessage(joinMessage);
             }
             executeEntryCommands(event.getPlayer().getName());
+
+            spawnParticles(event.getPlayer().getLocation(), "Join");
+            
+            playJoinSound(event.getPlayer().getLocation());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,6 +59,10 @@ public class JoinListener implements Listener {
                 event.setQuitMessage(quitMessage);
             }
             executeQuitCommands(event.getPlayer().getName());
+
+            spawnParticles(event.getPlayer().getLocation(), "Quit");
+            
+            playQuitSound(event.getPlayer().getLocation());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -143,6 +154,64 @@ public class JoinListener implements Listener {
                     Bukkit.getPlayer(playerName).sendMessage(formattedMessage);
                 }
             }
+        }
+    }
+    
+    @SuppressWarnings("deprecation")
+	private void spawnParticles(Location location, String eventType) {
+        FileConfiguration config = plugin.getConfig();
+        String particlesTypeKey = "Joins.Particles." + eventType.toLowerCase() + "ParticlesType";
+        String particlesEnabledKey = "Joins.Particles." + eventType.toLowerCase() + "ParticlesEnabled";
+
+        if (config.contains(particlesTypeKey) && config.getBoolean(particlesEnabledKey)) {
+            String particlesType = config.getString(particlesTypeKey);
+            int effectId = getEffectId(particlesType);
+            
+            if (effectId != -1) {
+                location.getWorld().playEffect(location, Effect.getById(effectId), 0);
+            }
+        }
+    }
+
+    private int getEffectId(String particlesType) {
+        switch (particlesType.toUpperCase()) {
+            case "FLAME":
+                return 2001;
+            case "CLOUD":
+                return 2004;
+            default:
+                return -1;
+        }
+    }
+    
+    private void playJoinSound(Location location) {
+        FileConfiguration config = plugin.getConfig();
+        String soundEnabledKey = "Joins.Sounds.Join.joinSoundEnabled";
+        String soundTypeKey = "Joins.Sounds.Join.joinSoundType";
+
+        if (config.contains(soundEnabledKey) && config.getBoolean(soundEnabledKey)) {
+            String soundType = config.getString(soundTypeKey);
+            playSound(location, soundType);
+        }
+    }
+
+    private void playQuitSound(Location location) {
+        FileConfiguration config = plugin.getConfig();
+        String soundEnabledKey = "Joins.Sounds.Quit.quitSoundEnabled";
+        String soundTypeKey = "Joins.Sounds.Quit.quitSoundType";
+
+        if (config.contains(soundEnabledKey) && config.getBoolean(soundEnabledKey)) {
+            String soundType = config.getString(soundTypeKey);
+            playSound(location, soundType);
+        }
+    }
+
+    private void playSound(Location location, String soundType) {
+        try {
+            Sound sound = Sound.valueOf(soundType.toUpperCase());
+            location.getWorld().playSound(location, sound, 1, 1);
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("Invalid sound type: " + soundType);
         }
     }
 }

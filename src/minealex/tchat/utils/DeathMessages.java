@@ -1,7 +1,8 @@
 package minealex.tchat.utils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -28,6 +29,8 @@ public class DeathMessages implements Listener {
     private boolean deathTitleEnabled;
     private String deathTitle;
     private String deathSubtitle;
+    private boolean particlesEnabled;
+    private String particlesType;
 
     public DeathMessages(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -37,6 +40,7 @@ public class DeathMessages implements Listener {
         this.deathTitle = "&cYou have died!";
         this.deathSubtitle = "&7Respawning in %time% seconds";
         loadDeathMessages();
+        loadParticlesConfig();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -68,9 +72,17 @@ public class DeathMessages implements Listener {
         }
 
         // Cargar configuración de título y subtítulo
-        deathTitleEnabled = config.getBoolean("death_title.enabled", true);
-        deathTitle = ChatColor.translateAlternateColorCodes('&', config.getString("death_title.title", "&cYou have died!"));
-        deathSubtitle = ChatColor.translateAlternateColorCodes('&', config.getString("death_title.subtitle", "&7Respawning in %time% seconds"));
+        deathTitleEnabled = config.getBoolean("death.title.enabled", true);
+        deathTitle = ChatColor.translateAlternateColorCodes('&', config.getString("death.title.title", "&cYou have died!"));
+        deathSubtitle = ChatColor.translateAlternateColorCodes('&', config.getString("death.title.subtitle", "&7Respawning in %time% seconds"));
+    }
+    
+    private void loadParticlesConfig() {
+        File configFile = new File(plugin.getDataFolder(), "death_messages.yml");
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+        particlesEnabled = config.getBoolean("death.particles.enabled", true);
+        particlesType = config.getString("death.particles.type", "FLAME");
     }
 
     @EventHandler
@@ -94,6 +106,10 @@ public class DeathMessages implements Listener {
         if (deathTitleEnabled) {
             sendDeathTitle(player);
         }
+        
+        if (particlesEnabled) {
+            spawnDeathParticles(player);
+        }
     }
 
     private String getKillerName(EntityDamageEvent damageEvent) {
@@ -111,7 +127,7 @@ public class DeathMessages implements Listener {
                 LivingEntity livingEntity = (LivingEntity) damager;
 
                 // Obtener el nombre personalizado desde el mapa de nombres personalizados
-                String customName = getMobName(livingEntity.getType(), Bukkit.getVersion());
+                String customName = getMobName(livingEntity.getType());
 
                 if (customName != null) {
                     return ChatColor.RESET + customName;
@@ -123,13 +139,26 @@ public class DeathMessages implements Listener {
 
         return "Unknown";
     }
+    
+    private void spawnDeathParticles(Player player) {
+        if (particlesEnabled) {
+            Location playerLocation = player.getLocation();
+
+            // En Spigot 1.8.8, la clase Particle no existe, así que usamos Effect
+            player.getWorld().playEffect(
+                playerLocation,
+                Effect.valueOf(particlesType),
+                0  // Este argumento es el dato adicional, pero es 0 para la mayoría de los efectos
+            );
+        }
+    }
 
     @SuppressWarnings("deprecation")
     private void sendDeathTitle(Player player) {
         player.sendTitle(deathTitle, deathSubtitle);
     }
     
-    private String getMobName(EntityType entityType, String minecraftVersion) {
+    private String getMobName(EntityType entityType) {
         String customMobName = deathMessages.get("mob_names." + entityType.name());
 
         if (customMobName != null) {

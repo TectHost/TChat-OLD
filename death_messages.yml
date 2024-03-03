@@ -41,7 +41,13 @@ mob_names:
   GUARDIAN: "Guardian"
   WOLF: "Wolf"
   
-death_title:
-  enabled: true
-  title: "&cYou are dead!"
-  subtitle: "&7Coming back to life!"
+# Death events
+death:
+  title:
+    enabled: true
+    title: "&cYou are dead!"
+    subtitle: "&7Coming back to life!"
+  particles:
+    enabled: true
+    # Type of particle, e.g. FLAME, HEART, etc...
+    type: "FLAME"
