@@ -3,6 +3,7 @@ package minealex.tchat.utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -31,6 +32,8 @@ public class DeathMessages implements Listener {
     private String deathSubtitle;
     private boolean particlesEnabled;
     private String particlesType;
+    private boolean deathSoundEnabled;
+    private String deathSoundType;
 
     public DeathMessages(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -41,6 +44,7 @@ public class DeathMessages implements Listener {
         this.deathSubtitle = "&7Respawning in %time% seconds";
         loadDeathMessages();
         loadParticlesConfig();
+        loadDeathSoundConfig();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -109,6 +113,10 @@ public class DeathMessages implements Listener {
         
         if (particlesEnabled) {
             spawnDeathParticles(player);
+        }
+        
+        if (deathSoundEnabled) {
+            playDeathSound(player);
         }
     }
 
@@ -211,6 +219,23 @@ public class DeathMessages implements Listener {
             event.setDeathMessage(customDeathMessage);
         } else {
             event.setDeathMessage(null);
+        }
+    }
+    
+    private void loadDeathSoundConfig() {
+        File configFile = new File(plugin.getDataFolder(), "death_messages.yml");
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+        deathSoundEnabled = config.getBoolean("death.sound.enabled", true);
+        deathSoundType = config.getString("death.sound.sound", "ENTITY_PLAYER_DEATH");
+    }
+    
+    private void playDeathSound(Player player) {
+        try {
+            Sound sound = Sound.valueOf(deathSoundType.toUpperCase());
+            player.playSound(player.getLocation(), sound, 1, 1);
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("Invalid death sound type: " + deathSoundType);
         }
     }
 

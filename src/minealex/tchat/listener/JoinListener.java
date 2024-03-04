@@ -1,10 +1,12 @@
 package minealex.tchat.listener;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.nio.charset.StandardCharsets;
 
@@ -45,6 +47,8 @@ public class JoinListener implements Listener {
             spawnParticles(event.getPlayer().getLocation(), "Join");
             
             playJoinSound(event.getPlayer().getLocation());
+            
+            sendJoinTitle(event.getPlayer());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -213,5 +217,33 @@ public class JoinListener implements Listener {
         } catch (IllegalArgumentException e) {
             plugin.getLogger().warning("Invalid sound type: " + soundType);
         }
+    }
+    
+    private void sendJoinTitle(Player player) {
+        FileConfiguration config = plugin.getConfig();
+        if (config.contains("Joins.Titles.enabled") && config.getBoolean("Joins.Titles.enabled")) {
+            String title = config.getString("Joins.Titles.title");
+            String subtitle = config.getString("Joins.Titles.subtitle");
+            boolean sendOnlyToJoiningPlayer = config.getBoolean("Joins.Titles.sendOnlyToJoiningPlayer");
+
+            if (sendOnlyToJoiningPlayer) {
+                sendTitle(player, title, subtitle);
+            } else {
+                // Send title and subtitle to all online players
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    sendTitle(onlinePlayer, title, subtitle);
+                }
+            }
+        }
+    }
+
+    private void sendTitle(Player player, String title, String subtitle) {
+        new BukkitRunnable() {
+            @SuppressWarnings("deprecation")
+			@Override
+            public void run() {
+                player.sendTitle(ChatColor.translateAlternateColorCodes('&', title), ChatColor.translateAlternateColorCodes('&', subtitle));
+            }
+        }.runTaskLater(plugin, 20); // Delayed by 1 second (20 ticks)
     }
 }

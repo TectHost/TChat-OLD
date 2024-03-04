@@ -40,6 +40,11 @@ Joins:
     Quit:
       quitSoundEnabled: true
       quitSoundType: "ENTITY_GENERIC_EXPLODE"
+  # Titles are only sent to the player who enters, not to all players
+  Titles:
+    enabled: true
+    title: "&5Welcome to the server!"
+    subtitle: "&5TChat &e- &5Tect.host"
   
 # Private message format
 Msg:

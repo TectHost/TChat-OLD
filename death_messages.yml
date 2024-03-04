@@ -51,3 +51,6 @@ death:
     enabled: true
     # Type of particle, e.g. FLAME, HEART, etc...
     type: "FLAME"
+  sound:
+    enabled: true
+    sound: "ENTITY_PLAYER_DEATH"
