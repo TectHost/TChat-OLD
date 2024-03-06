@@ -23,7 +23,7 @@ public class PerWorldChat implements Listener {
 
     public PerWorldChat(Plugin plugin) {
         this.worldsManager = new WorldsManager(new File(plugin.getDataFolder(), "worlds.yml"));
-        this.formatConfig = loadFormatConfig(new File(plugin.getDataFolder(), "format_config.yml"));
+        this.formatConfig = loadFormatConfig(new File(plugin.getDataFolder(), "format_config.json"));
         this.configFile = new File(plugin.getDataFolder(), "worlds.yml");
 
         if (!configFile.exists()) {

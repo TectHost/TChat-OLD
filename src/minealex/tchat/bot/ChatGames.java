@@ -23,33 +23,29 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import minealex.tchat.TChat;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class ChatGames {
     private TChat plugin;
     private JSONObject currentGame;
-    @SuppressWarnings("unused")
-	private int taskId;
     private boolean hasSentMessage = false;
-    private BukkitRunnable gameTimerTask;
-    @SuppressWarnings("unused")
-	private boolean isGameRunning;
-    private boolean isGameActive = false;
     private BukkitTask activeGameTask;
+    private boolean isGameActive = false;
     private boolean isGameInProgress = false;
     private String gameTitle;
     private String gameSubtitle;
-    @SuppressWarnings("unused")
-	private boolean isTitleEnabled;
     private String sound;
 
     public ChatGames(TChat plugin) {
-    	this.plugin = plugin;
-        this.isGameRunning = false;
+        this.plugin = plugin;
         this.currentGame = getRandomGame();
-        
+
         if (this.currentGame != null) {
-            this.isTitleEnabled = (boolean) this.currentGame.get("title-enabled");
             this.gameTitle = ChatColor.translateAlternateColorCodes('&', (String) this.currentGame.get("title"));
             this.gameSubtitle = ChatColor.translateAlternateColorCodes('&', (String) this.currentGame.get("subtitle"));
             this.sound = (String) this.currentGame.get("sound");
@@ -61,7 +57,7 @@ public class ChatGames {
 
     @SuppressWarnings("unchecked")
 	private JSONArray loadChatGamesConfig() {
-    	File configFile = new File(plugin.getDataFolder(), "chatgames.json");
+        File configFile = new File(plugin.getDataFolder(), "chatgames.json");
 
         if (!configFile.exists()) {
             plugin.saveResource("chatgames.json", false);
@@ -82,7 +78,7 @@ public class ChatGames {
         }
         return null;
     }
-    
+
     private void incrementarChatGamesWins(Player player) {
         String uuid = player.getUniqueId().toString();
         File savesFile = new File(plugin.getDataFolder(), "saves.yml");
@@ -97,7 +93,7 @@ public class ChatGames {
             e.printStackTrace();
         }
     }
-    
+
     private JSONObject getRandomGame() {
         JSONArray games = loadChatGamesConfig();
         if (games != null && !games.isEmpty()) {
@@ -120,15 +116,15 @@ public class ChatGames {
         }
         return null;
     }
-    
-    public void startGameTimer() {
+
+    @SuppressWarnings("unused")
+	public void startGameTimer() {
         if (currentGame == null || isGameActive) {
             return;
         }
 
         isGameActive = true;
-        @SuppressWarnings("unused")
-		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
+        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         long time = (Long) currentGame.get("time");
         int delay = (int) (time * 20);
 
@@ -144,11 +140,29 @@ public class ChatGames {
                     isGameActive = false;
                     hasSentMessage = false;
                     String newGameMessage = ChatColor.translateAlternateColorCodes('&', (String) currentGame.get("message"));
-                    Bukkit.broadcastMessage(newGameMessage);
 
                     // Mostrar el título solo si la opción title-enabled está habilitada
                     if ((boolean) currentGame.get("title-enabled")) {
                         broadcastTitle();
+                    }
+
+                    // Enviar el mensaje personalizado al jugador con hoverText
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        @SuppressWarnings("unchecked")
+                        String hoverText = String.join("\n", (JSONArray) currentGame.get("hoverText"));
+                        String translatedHoverText = PlaceholderAPI.setPlaceholders(player, hoverText);
+
+                        // Obtener el comando personalizado
+                        String clickCommand = (String) currentGame.get("click-command");
+
+                        // Reemplazar %player% con el nombre del jugador
+                        clickCommand = clickCommand.replace("%player%", player.getName());
+
+                        // Crear el mensaje con hoverText y clickEvent
+                        TextComponent finalMessage = createHoverTextMessage(newGameMessage, translatedHoverText, clickCommand);
+
+                        // Envía el mensaje personalizado al jugador
+                        player.spigot().sendMessage(finalMessage);
                     }
 
                     int responseTime = ((Long) currentGame.get("time")).intValue();
@@ -172,23 +186,17 @@ public class ChatGames {
         }.runTaskLater(plugin, delay);
     }
 
-    public void cancelGameTimer() {
-        if (gameTimerTask != null) {
-            gameTimerTask.cancel();
-        }
-    }
-    
     @SuppressWarnings("deprecation")
 	private void broadcastTitle() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendTitle(gameTitle, gameSubtitle);
-            
+
             if ((boolean) currentGame.get("sound-enabled")) {
                 playSound(player);
             }
         }
     }
-    
+
     private void playSound(Player player) {
         // Verificar si el sonido está habilitado
         if ((boolean) currentGame.get("sound-enabled")) {
@@ -216,7 +224,7 @@ public class ChatGames {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), formattedReward);
                     });
                 }
-                
+
                 incrementarChatGamesWins(player);
 
                 JSONObject formatConfig = loadFormatConfig();
@@ -250,6 +258,12 @@ public class ChatGames {
         }
     }
     
+    public void cancelGameTimer() {
+        if (activeGameTask != null) {
+            activeGameTask.cancel();
+        }
+    }
+
     private void showFirework(Player player) {
         boolean fireworkEnabled = (boolean) currentGame.get("firework-enabled");
         String fireworkColor = (String) currentGame.get("firework-color");
@@ -267,7 +281,7 @@ public class ChatGames {
             });
         }
     }
-    
+
     private int getRGBFromColorName(String colorName) {
         switch (colorName.toUpperCase()) {
             case "AQUA":
@@ -306,7 +320,7 @@ public class ChatGames {
                 return 0xFFFFFF;
         }
     }
-    
+
     private JSONObject loadFormatConfig() {
         File configFile = new File(plugin.getDataFolder(), "format_config.json");
 
@@ -324,5 +338,16 @@ public class ChatGames {
             }
         }
         return null;
+    }
+
+    private TextComponent createHoverTextMessage(String mainMessage, String hoverText, String clickCommand) {
+        TextComponent playerName = new TextComponent(mainMessage);
+        
+        playerName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand));
+
+        playerName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', hoverText))}));
+
+        return playerName;
     }
 }

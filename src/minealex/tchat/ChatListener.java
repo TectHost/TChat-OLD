@@ -188,10 +188,10 @@ public class ChatListener implements Listener {
             for (UUID staffMember : plugin.getStaffChatPlayers()) {
                 Player staffPlayer = plugin.getServer().getPlayer(staffMember);
                 if (staffPlayer != null) {
-                	staffPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', staffChatFormat
+                    staffPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&', staffChatFormat
                             .replace("%player%", player.getName())
                             .replace("%message%", message)
-                            ));
+                    ));
                 }
             }
         } else {
@@ -318,23 +318,32 @@ public class ChatListener implements Listener {
             String formattedName = ChatColor.translateAlternateColorCodes('&', playerNameFormat);
             TextComponent playerName = new TextComponent(formattedName);
 
-            TextComponent message1 = new TextComponent(event.getMessage());
+            // Añadimos una verificación adicional para desactivar el hovertext para jugadores en staffchat
+            if (!plugin.getStaffChatPlayers().contains(player.getUniqueId())) {
+                TextComponent message1 = new TextComponent(event.getMessage());
 
-            playerName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + player.getName()));
+                playerName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + player.getName()));
 
-            String translatedHoverText = PlaceholderAPI.setPlaceholders(player, String.join("\n", hoverText));
-            playerName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                    new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', translatedHoverText))}));
+                String translatedHoverText = PlaceholderAPI.setPlaceholders(player, String.join("\n", hoverText));
+                playerName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', translatedHoverText))}));
 
-            TextComponent finalMessage = new TextComponent(playerName, message1);
+                // Combina el nombre del jugador y el mensaje en un solo componente
+                TextComponent finalMessage = new TextComponent(playerName);
+                finalMessage.addExtra(" ");  // Añade un espacio entre el nombre del jugador y el mensaje
+                finalMessage.addExtra(message1);
 
-            // Envía el mensaje personalizado al jugador
-            player.spigot().sendMessage(finalMessage);
+                // Envía el mensaje personalizado al jugador y a la consola
+                Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
+                    if (!plugin.getStaffChatPlayers().contains(onlinePlayer.getUniqueId())) {
+                        onlinePlayer.spigot().sendMessage(finalMessage);
+                    }
+                });
 
-            // Envía el mensaje a la consola
-            Bukkit.getServer().getConsoleSender().sendMessage(finalMessage.toLegacyText());
+                Bukkit.getServer().getConsoleSender().sendMessage(finalMessage.toLegacyText());
 
-            event.setCancelled(true);
+                event.setCancelled(true);
+            }
         }
     }
 	

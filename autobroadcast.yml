@@ -1,6 +1,6 @@
 # Placeholders list:
 # - %center% (1.8.8)
-# - %newer_center% New versions
+# - %newer_center% (New versions)
 #
 # Time is the interval between broadcasts
 time: 60
@@ -15,6 +15,14 @@ broadcasts:
       - "%center%&c&lANNOUNCE"
       - "%center%&7This server is using TChat"
       - " "
+    # HoverText message
+    enableHoverText: true
+    # The autocomplete command on click
+    commandSuggestion: "/discord"
+    hoverText:
+      - "&5TChat"
+      - ""
+      - "&e&nClick here to autocomplete"
     # Option to deactivate titles
     title-enabled: false
     # Titles
@@ -32,6 +40,12 @@ broadcasts:
       - "%newer_center%&aThe best cheap hosting!&m"
       - "%newer_center%&bhttps://tect.host/"
       - " "
+    enableHoverText: true
+    commandSuggestion: "/discord"
+    hoverText:
+      - "&5TChat"
+      - ""
+      - "&e&nClick here to autocomplete"
     title-enabled: false
     title: "&6Welcome!"
     sub-title: "&eEnjoy your stay!"

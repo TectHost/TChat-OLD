@@ -12,6 +12,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -65,7 +69,8 @@ public class AutoBroadcast {
             int index = 0;
             List<String> broadcastKeys = new ArrayList<>(getBroadcasts().getKeys(false));
 
-            @Override
+            @SuppressWarnings("unused")
+			@Override
             public void run() {
                 if (index >= broadcastKeys.size()) {
                     index = 0;
@@ -75,24 +80,45 @@ public class AutoBroadcast {
                 ConfigurationSection broadcast = getBroadcasts().getConfigurationSection(broadcastKey);
                 List<String> messageList = broadcast.getStringList("messages");
 
-                for (String message : messageList) {
-                    message = ChatColor.translateAlternateColorCodes('&', message);
-                    
-                    if (message.contains("%center%")) {
-                        int messageLength = getVisibleLength(message.replace("%center%", ""));
-                        int padding = (MAX_LINE_LENGTH - messageLength) / 2;
-                        message = message.replace("%center%", repeat(" ", padding));
-                    }
-                    
-                    if (message.contains("%newer_center%")) {
-                        int messageLength = getVisibleLength(message.replace("%newer_center%", ""));
-                        int padding = (NEW_MAX_LINE_LENGTH - messageLength) / 2;
-                        message = message.replace("%newer_center%", repeat(" ", padding));
+                for (String originalMessage : messageList) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        String message = ChatColor.translateAlternateColorCodes('&', originalMessage);
+
+                        if (message.contains("%center%")) {
+                            int messageLength = getVisibleLength(message.replace("%center%", ""));
+                            int padding = (MAX_LINE_LENGTH - messageLength) / 2;
+                            message = message.replace("%center%", repeat(" ", padding));
+                        }
+
+                        if (message.contains("%newer_center%")) {
+                            int messageLength = getVisibleLength(message.replace("%newer_center%", ""));
+                            int padding = (NEW_MAX_LINE_LENGTH - messageLength) / 2;
+                            message = message.replace("%newer_center%", repeat(" ", padding));
+                        }
+
+                        String commandSuggestion = PlaceholderAPI.setPlaceholders(player, broadcast.getString("commandSuggestion"));
+
+                        TextComponent messageComponent = new TextComponent(ChatColor.translateAlternateColorCodes('&', message));
+
+                        // Check if hover text is enabled before creating hover event
+                        if (broadcast.getBoolean("enableHoverText", true)) {
+                            String translatedHoverText = PlaceholderAPI.setPlaceholders(player, String.join("\n", broadcast.getStringList("hoverText")));
+                            BaseComponent[] hoverEventComponents = new BaseComponent[]{
+                                    new TextComponent(ChatColor.translateAlternateColorCodes('&', translatedHoverText))
+                            };
+                            HoverEvent hoverEvent = new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverEventComponents);
+                            messageComponent.setHoverEvent(hoverEvent);
+                            
+                            messageComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, commandSuggestion));
+                        }
+
+                        // Send the message to the player's chat
+                        player.spigot().sendMessage(messageComponent);
                     }
 
+                    // Handle titles and sounds (outside of the player loop)
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        String formattedMessage = PlaceholderAPI.setPlaceholders(player, message);
-                        player.sendMessage(formattedMessage);
+                        String formattedMessage = PlaceholderAPI.setPlaceholders(player, originalMessage);
 
                         if (isTitleEnabled()) {
                             boolean titleEnabled = broadcast.getBoolean("title-enabled", true);
