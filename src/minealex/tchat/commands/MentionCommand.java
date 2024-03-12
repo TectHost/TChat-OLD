@@ -18,19 +18,19 @@ public class MentionCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-        	sender.sendMessage(plugin.getMessagesYML("onlyPlayer"));
+        	sender.sendMessage(plugin.getMessagesYML("messages.onlyPlayer"));
             return true;
         }
 
         if (args.length != 1) {
-        	sender.sendMessage(plugin.getMessagesYML("incorrectUsageMention"));
+        	sender.sendMessage(plugin.getMessagesYML("messages.incorrectUsageMention"));
             return true;
         }
 
         Player targetPlayer = plugin.getServer().getPlayer(args[0]);
 
         if (targetPlayer == null || !targetPlayer.isOnline()) {
-        	sender.sendMessage(plugin.getMessagesYML("noPlayerOnline"));
+        	sender.sendMessage(plugin.getMessagesYML("messages.noPlayerOnline"));
             return true;
         }
 
@@ -42,15 +42,15 @@ public class MentionCommand implements CommandExecutor {
         try {
             mentionSound = Sound.valueOf(soundPath);
         } catch (IllegalArgumentException e) {
-        	sender.sendMessage(plugin.getMessagesYML("soundNotFound"));
+        	sender.sendMessage(plugin.getMessagesYML("messages.soundNotFound"));
             return true;
         }
 
         // Ejemplo: reproducir el sonido
         targetPlayer.playSound(targetPlayer.getLocation(), mentionSound, 1f, 1f);
 
-        String mentionSenderMessage = plugin.getMessagesYML("mention-sender-message");
-        String mentionTargetMessage = plugin.getMessagesYML("mention-target-message");
+        String mentionSenderMessage = plugin.getMessagesYML("messages.mention-sender-message");
+        String mentionTargetMessage = plugin.getMessagesYML("messages.mention-target-message");
         
         sender.sendMessage(String.format(mentionSenderMessage, targetPlayer.getName()));
         targetPlayer.sendMessage(String.format(mentionTargetMessage, sender.getName()));

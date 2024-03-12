@@ -43,6 +43,7 @@ import minealex.tchat.commands.PluginCommand;
 import minealex.tchat.commands.PrintCommand;
 import minealex.tchat.commands.ReplyCommand;
 import minealex.tchat.commands.RulesCommand;
+import minealex.tchat.commands.SeenCommand;
 import minealex.tchat.commands.StaffChatCommand;
 import minealex.tchat.commands.StoreCommand;
 import minealex.tchat.commands.TeamSpeakCommand;
@@ -110,6 +111,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -243,6 +245,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         getCommand("staffchat").setExecutor(new StaffChatCommand(this));
         
         getCommand("adminchat").setExecutor(new AdminChatCommand(this));
+        
+        getCommand("seen").setExecutor(new SeenCommand(this));
         
         getCommand("calculate").setExecutor(new CalculateCommand(this));
         
@@ -510,13 +514,13 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         if (configFile.exists()) {
             try {
                 FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-                return !config.getBoolean(optionName, false);
+                return config.getBoolean(optionName, true); // Mantenemos el valor predeterminado en true
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         // En caso de error o si el archivo no existe, asumimos que la función está habilitada
-        return true;
+        return false;  // Cambiado a false para reflejar que la opción está deshabilitada por defecto
     }
 
     public String formatMessage(String message, CommandSender sender) {
@@ -787,6 +791,25 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         } else {
             getLogger().warning("Default message key '" + defaultKey + "' not found in messages.yml. Default message will be used.");
             return "Default message"; // Mensaje por defecto si la clave predeterminada no se encuentra
+        }
+    }
+    
+    public List<String> getMessagesYMLList(String key) {
+        File configFile = new File(getDataFolder(), "messages.yml");
+        if (!configFile.exists()) {
+            getLogger().warning("messages.yml not found. Default messages will be used.");
+            return Collections.singletonList("Default message"); // Lista con un mensaje por defecto si el archivo no existe
+        }
+
+        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+        // Obtener la lista de mensajes del archivo messages.yml
+        if (config.contains(key)) {
+            List<String> messages = config.getStringList(key);
+            return messages.stream().map(this::parseColors).collect(Collectors.toList()); // Traducir códigos de colores en cada mensaje
+        } else {
+            getLogger().warning("Message key '" + key + "' not found in messages.yml. Default messages will be used.");
+            return Collections.singletonList("Default message"); // Lista con un mensaje por defecto si la clave no se encuentra
         }
     }
 

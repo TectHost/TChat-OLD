@@ -1,5 +1,5 @@
 name: TChat
-version: 3.4.0
+version: 3.4.3
 main: minealex.tchat.TChat
 author: Mine_Alex
 
@@ -96,6 +96,9 @@ commands:
   mention:
     description: Mention another player
     permission: tchat.mention
+  seen:
+    description: Display some information of the player
+    permission: tchat.seen
 
 permissions:
   tchat.reload:
@@ -158,3 +161,9 @@ permissions:
     description: Permission to execute calculate
   tchat.mention:
     description: Permission to execute mention
+  tchat.seen:
+    description: Permission to execute seen
+  tchat.seen.full:
+    description: Permission to execute seen full
+  tchat.hover:
+    description: Permission for hover groups

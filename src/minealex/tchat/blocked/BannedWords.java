@@ -106,6 +106,7 @@ public class BannedWords {
     }
 
     public boolean canBypassBannedWords(Player player) {
-        return player.hasPermission("tchat.bypass.bannedwords");
+        // Verificar si el jugador tiene el permiso de bypass o es operador
+        return player.hasPermission("tchat.bypass.bannedwords") || player.isOp();
     }
 }

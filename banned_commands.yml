@@ -27,4 +27,4 @@ sound: "entity.ender_dragon.growl"
 #
 commandsToRun:
   - 'give %executor% dirt 1'
-  - 'bc %executor% typed the command: /%blocked_command%'
+  - 'broadcast %executor% typed the command: /%blocked_command%'

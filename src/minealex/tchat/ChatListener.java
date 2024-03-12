@@ -15,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.PermissionAttachment;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -33,6 +34,7 @@ import minealex.tchat.perworldchat.PerWorldChat;
 import minealex.tchat.perworldchat.WorldConfig;
 import minealex.tchat.perworldchat.WorldsManager;
 import minealex.tchat.utils.Levels;
+import minealex.tchat.utils.HoverGroup;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -64,6 +66,7 @@ public class ChatListener implements Listener {
 	private PerWorldChat perWorldChat;
 	private List<String> hoverText;
 	private Levels levels;
+	private Map<String, HoverGroup> hoverGroups;
 
     public ChatListener(TChat plugin) {
         this.plugin = plugin;
@@ -75,7 +78,7 @@ public class ChatListener implements Listener {
         this.staffChatFormat = loadStaffChatFormatFromConfig();
         this.hoverText = new ArrayList<>();
         this.levels = new Levels(plugin);
-        loadHoverTextFromConfig();
+        loadHoverGroupsFromConfig();
     }
     
     @EventHandler
@@ -85,6 +88,10 @@ public class ChatListener implements Listener {
 
         Player player = event.getPlayer();
 
+        if (bannedCommands.canBypassCommandBlocker(player)) {
+            return;
+        }
+        
         if (bannedCommands.isCommandBanned(command)) {
             event.setCancelled(true);
             Player sender = event.getPlayer();
@@ -171,13 +178,18 @@ public class ChatListener implements Listener {
             message = ChatColor.stripColor(message); // Elimina cualquier código de color
         }
         
-        String[] words = message.toLowerCase().split("[^a-zA-Z0-9_]");
+        String[] words = message.split("[^a-zA-Z0-9_]+");
         for (String word : words) {
-            if (!word.isEmpty() && plugin.getBannedWords().isWordBanned(word)) {
-                plugin.getBannedWords().sendBlockedMessage(player, word);
-                plugin.getBannedWords().executeConsoleCommands(player);
-                event.setCancelled(true);
-                return;
+            // Verificar si el jugador tiene el permiso de bypass o es operador
+            if (plugin.getBannedWords().canBypassBannedWords(player)) {
+                // No realizar ninguna acción adicional si el jugador puede bypass
+            } else {
+                if (!word.isEmpty() && plugin.getBannedWords().isWordBanned(word)) {
+                    plugin.getBannedWords().sendBlockedMessage(player, word);
+                    plugin.getBannedWords().executeConsoleCommands(player);
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
         
@@ -312,32 +324,28 @@ public class ChatListener implements Listener {
         }
         
         String playerNameFormat = getPlayerNameFormat(player);
-        if (playerNameFormat != null && isHoverTextEnabled() && !hoverText.isEmpty()) {
+        if (playerNameFormat != null && isHoverTextEnabled(player)) {
             playerNameFormat = PlaceholderAPI.setPlaceholders(player, playerNameFormat);
 
-            String formattedName = ChatColor.translateAlternateColorCodes('&', playerNameFormat);
-            TextComponent playerName = new TextComponent(formattedName);
+            String groupName = getPrimaryGroup(player);
+            HoverGroup hoverGroup = hoverGroups.get(groupName);
 
-            // Añadimos una verificación adicional para desactivar el hovertext para jugadores en staffchat
-            if (!plugin.getStaffChatPlayers().contains(player.getUniqueId())) {
+            if (hoverGroup != null && hoverGroup.isEnabled()) {
+                String formattedName = ChatColor.translateAlternateColorCodes('&', playerNameFormat);
+                TextComponent playerName = new TextComponent(formattedName);
+
                 TextComponent message1 = new TextComponent(event.getMessage());
 
-                playerName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/msg " + player.getName()));
+                playerName.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, hoverGroup.getSuggestCommand().replace("%player%", player.getName())));
+                playerName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', String.join("\n", hoverGroup.getHoverText())))}));
 
-                String translatedHoverText = PlaceholderAPI.setPlaceholders(player, String.join("\n", hoverText));
-                playerName.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        new BaseComponent[]{new TextComponent(ChatColor.translateAlternateColorCodes('&', translatedHoverText))}));
-
-                // Combina el nombre del jugador y el mensaje en un solo componente
                 TextComponent finalMessage = new TextComponent(playerName);
-                finalMessage.addExtra(" ");  // Añade un espacio entre el nombre del jugador y el mensaje
+                finalMessage.addExtra(" ");
                 finalMessage.addExtra(message1);
 
-                // Envía el mensaje personalizado al jugador y a la consola
                 Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
-                    if (!plugin.getStaffChatPlayers().contains(onlinePlayer.getUniqueId())) {
-                        onlinePlayer.spigot().sendMessage(finalMessage);
-                    }
+                    // ... Verifica si el jugador está en staffchat ...
+                    onlinePlayer.spigot().sendMessage(finalMessage);
                 });
 
                 Bukkit.getServer().getConsoleSender().sendMessage(finalMessage.toLegacyText());
@@ -347,41 +355,34 @@ public class ChatListener implements Listener {
         }
     }
 	
-	private void loadHoverTextFromConfig() {
-	    File configFile = new File(plugin.getDataFolder(), "config.yml");
-
-	    if (!configFile.exists()) {
-	        plugin.getLogger().warning("config.yml not found. Using default hover text.");
-	        return;
-	    }
-
-	    FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-
-	    if (config.contains("hover_text")) {
-	        hoverText = config.getStringList("hover_text");
+	private boolean isHoverTextEnabled(Player player) {
+	    String groupName = getPrimaryGroup(player);
+	    if (hoverGroups.containsKey(groupName) && hoverGroups.get(groupName).isEnabled()) {
+	        return true;
 	    } else {
-	        plugin.getLogger().warning("hover_text not found in config.yml. Using default hover text.");
+	        plugin.getLogger().info("No HoverGroup found for group: " + groupName);
+	        return false;
 	    }
 	}
 	
-	private boolean isHoverTextEnabled() {
-        File configFile = new File(plugin.getDataFolder(), "config.yml");
+	private String getPrimaryGroup(Player player) {
+	    PermissionAttachment attachment = player.addAttachment(plugin);
+	    String primaryGroup = null;
+	    
+	    if (player.isOp()) {
+	        return "op";
+	    }
 
-        if (!configFile.exists()) {
-            plugin.getLogger().warning("config.yml not found. Hover text will be enabled by default.");
-            return true;
-        }
+	    for (String groupName : hoverGroups.keySet()) {
+	        if (player.hasPermission("tchat.hover." + groupName)) {
+	            primaryGroup = groupName;
+	            break;
+	        }
+	    }
 
-        FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-
-        // Obtener el valor de hover_text_enabled de config.yml
-        if (config.contains("hover_text_enabled")) {
-            return config.getBoolean("hover_text_enabled");
-        } else {
-            plugin.getLogger().warning("hover_text_enabled not found in config.yml. Hover text will be enabled by default.");
-            return true;
-        }
-    }
+	    player.removeAttachment(attachment);
+	    return primaryGroup != null ? primaryGroup : "default";
+	}
 
 	private boolean isAntiAdvertisingEnabled() {
         return plugin.isAntiAdvertisingEnabled();
@@ -489,6 +490,23 @@ public class ChatListener implements Listener {
 
 	    return false;
 	}
+	
+	private void loadHoverGroupsFromConfig() {
+        // Cargar grupos de hover desde el archivo de configuración
+        hoverGroups = new HashMap<>();
+        FileConfiguration config = plugin.getConfig();
+
+        for (String groupName : config.getConfigurationSection("hover").getKeys(false)) {
+            ConfigurationSection groupConfig = config.getConfigurationSection("hover." + groupName);
+
+            boolean enabled = groupConfig.getBoolean("enabled");
+            List<String> hoverText = groupConfig.getStringList("hoverText");
+            String suggestCommand = groupConfig.getString("suggestCommand");
+
+            HoverGroup hoverGroup = new HoverGroup(enabled, hoverText, suggestCommand);
+            hoverGroups.put(groupName, hoverGroup);
+        }
+    }
 	
 	private boolean isPlayerIgnored(UUID senderUUID, UUID recipientUUID) {
 	    File configFile = new File(plugin.getDataFolder(), "saves.yml");

@@ -154,3 +154,51 @@ List:
   header_format: '&7---- + Players online: &a%online%&7/%max% &7+ ----'
   player_format: '&a%player%'
   footer_format: '&7----- + End of the list + -----'
+
+Seen:
+  seen-message:
+    - "&5%player%&f's last time logged in&f: &a%player_last_join_date%"
+    - "&5%player%&f's &ffirst entered in: &a%player_first_join_date%"
+  full-seen-message:
+    - "&5%player%&f's last time logged in&f: &a%player_last_join_date%"
+    - "&5%player%&f's &ffirst entered in: &a%player_first_join_date%"
+    - "&5%player%&f's IP: %player_ip%"
+    
+Chat-help:
+  message:
+    - "&5--------&6{ &5TChat &6}&5--------"
+    - "&5/adminchat &6- &bJoin admin chat"
+    - "&5/announcement &6- &bMake an announcement"
+    - "&5/broadcast &6- &bMake a broadcast"
+    - "&5/calculate &6- &bCalculate math operations"
+    - "&5/chatcolor &6- &bChange your color in the chat"
+    - "&5/clearchat &6- &bClears the chat"
+    - "&5/chat [reload|version] &6- &bDisplays this message, reload the config files, displays the version of TChat"
+    - "&5/discord &6- &bDisplays the server's discord"
+    - "&5/facebook &6- &bDisplays the server's facebook"
+    - "&5/help &6- &bDisplays some help"
+    - "&5/helpop &6- &bThis command sends a message to the administrators"
+    - "&5/ignore &6- &bIgnore other users"
+    - "&5/info &6- &bDisplays some info"
+    - "&5/instagram &6- &bDisplays the server's instagram"
+    - "&5/list &6- &bDisplays all the users on the server"
+    - "&5/me &6- &bChanges the player's format"
+    - "&5/mention &6- &bMention other players (plays a sound)"
+    - "&5/msg &6- &bTalk with other users in private"
+    - "&5/nick &6- &bChanges your nickname"
+    - "&5/ping &6- &bDisplays your ping"
+    - "&5/player &6- &bDisplays some info of the player"
+    - "&5/plugin &6- &bDisplays some info of the plugin"
+    - "&5/print &6- &bDisplays a clean message"
+    - "&5/reply &6- &bReply a private message from a user"
+    - "&5/rules &6- &bDisplays the server's rules"
+    - "&5/seen &6- &bDisplays some info of the player"
+    - "&5/staffchat &6- &bJoin the staff chat"
+    - "&5/store &6- &bDisplays the server's store"
+    - "&5/teamspeak &6- &bDisplays the server's teamspeak"
+    - "&5/tiktok &6- &bDisplays the server's tiktok"
+    - "&5/twitter &6- &bDisplays the server's twitter"
+    - "&5/warning &6- &bMakes an announcement"
+    - "&5/website &6- &bDisplays the server's website"
+    - "&5/youtube &6- &bDisplays the server's YouTube channel"
+  

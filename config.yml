@@ -110,12 +110,39 @@ Admin:
   admin_chat_leave_message: '&5TChat &e> &cYou have left the Admin channel.'
   
 # Having this option causes several TChat functions such as nickname and chatcolor to not work.
-hover_text_enabled: true
-hover_text:
-  - "&5Nick: %tchat_nickname%"
-  - "&bMoney: %vault_eco_balance_formatted%"
-  - ""
-  - "&e&nClick here to send a private message"
+hover:
+  op:
+    enabled: true # enable/disable the group
+    # The group hover text
+    hoverText:
+      - "&5TChat &e- &5OP"
+      - "&5Money %vault_eco_balance_formatted%"
+      - ""
+      - "&e&nClick here to send a private message"
+      # The suggest command (on click)
+    suggestCommand: "/msg %player% "
+  admin:
+    enabled: true
+      - "&5TChat &e- &5Admin"
+      - "&5Money %vault_eco_balance_formatted%"
+      - ""
+      - "&e&nClick here to send a private message"
+    suggestCommand: "/msg %player% "
+  vip:
+    enabled: true
+    hoverText:
+      - "&5TChat &e- &5VIP"
+      - "&5Money %vault_eco_balance_formatted%"
+      - ""
+      - "&e&nClick here to send a private message"
+    suggestCommand: "/msg %player% "
+  default:
+    enabled: true
+      - "&5TChat &e- &5Default"
+      - "&5Money %vault_eco_balance_formatted%"
+      - ""
+      - "&e&nClick here to send a private message"
+    suggestCommand: "/msg %player% "
   
 # The mention sound
 mention_sound: ENTITY_EXPERIENCE_ORB_PICKUP

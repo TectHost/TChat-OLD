@@ -150,7 +150,15 @@ public class BannedCommands implements CommandExecutor {
         }
     }
 
-    public boolean canBypassCommandBlocker(Player player) {
-        return player.hasPermission("tchat.bypass.commandblocker");
+    public boolean canBypassCommandBlocker(CommandSender sender) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+
+            // Verificar si el jugador es operador o tiene el permiso de bypass
+            return player.isOp() || player.hasPermission("tchat.bypass.commandblocker");
+        }
+
+        // Si el remitente no es un jugador, no se aplica el bypass
+        return false;
     }
 }

@@ -1,5 +1,7 @@
 package minealex.tchat.commands;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,8 +20,13 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (cmd.getName().equalsIgnoreCase("chat")) {
-            if (args.length > 0) {
-                if (args[0].equalsIgnoreCase("reload")) {
+        	if (args.length == 0) {
+            	List<String> customMessages = plugin.getMessagesYMLList("Chat-help.message");
+                for (String message : customMessages) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+                }
+                return true;
+            } else if (args[0].equalsIgnoreCase("reload")) {
                     if (!(sender instanceof Player) || sender.hasPermission("tchat.reload")) {
                         plugin.reloadFormatConfig();
                         plugin.getBannedWords().reloadBannedWordsList();
@@ -47,7 +54,6 @@ public class Commands implements CommandExecutor {
                     return true;
                 }
             }
-        }
         return false;
     }
 }
