@@ -1,5 +1,6 @@
 # replacer.yml
 # Original is the word detected by Replacer, when detected, it replaces it with Replacer_text
+replacer_enabled: true
 words:
   example1:
     original: "hello"

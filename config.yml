@@ -1,50 +1,63 @@
 # Entry and exit messages
 Joins:
-  # Option to disable entry messages
-  joinMessagesEnabled: true,
-  # Entry message
-  JoinMessage: '&5TChat &e> &7[&a+&7] &a%player% &7has entered the server'
-  # Option to disable exit messages
-  quitMessagesEnabled: true,
-  # Exit message
-  QuitMessage: '&5TChat &e> &7[&c-&7] &c%player% &7has left the server'
-  # Option to disable entry Commands
-  # Execute commands when someone logs on to the server
-  entryCommandsEnabled: true
-  entryCommands:
-    - "say Hi %player%! :)"
-  # Option to disable quit Commands
-  quitCommandsEnabled: true
-  # Execute commands when someone disconnects from the server
-  quitCommands:
-    - "broadcast Bye %player%! :("
-  Particles:
-    Join:
-      joinParticlesEnabled: true
-      # Particles:
-      # - FLAME
-      # - CLOUD
-      # You can suggest more particles in the discord server!
-      joinParticlesType: "FLAME"
-    Quit:
-      quitParticlesEnabled: true
-      # Particles:
-      # - FLAME
-      # - CLOUD
-      # You can suggest more particles in the discord server!
-      quitParticlesType: "CLOUD"
-  Sounds:
-    Join:
-      joinSoundEnabled: true
-      joinSoundType: "ENTITY_PLAYER_LEVELUP"
-    Quit:
-      quitSoundEnabled: true
-      quitSoundType: "ENTITY_GENERIC_EXPLODE"
-  # Titles are only sent to the player who enters, not to all players
-  Titles:
-    enabled: true
-    title: "&5Welcome to the server!"
-    subtitle: "&5TChat &e- &5Tect.host"
+  default:
+    joinMessagesEnabled: true
+    JoinMessage: '&5TChat &e> &7[&a+&7] &a%player% &7has entered the server'
+    quitMessagesEnabled: true
+    QuitMessage: '&5TChat &e> &7[&c-&7] &c%player% &7has left the server'
+    entryCommandsEnabled: true
+    entryCommands:
+      - "say Hi %player%! :)"
+    quitCommandsEnabled: true
+    quitCommands:
+      - "broadcast Bye %player%! :("
+    Particles:
+      Join:
+        joinParticlesEnabled: true
+        joinParticlesType: "FLAME"
+      Quit:
+        quitParticlesEnabled: true
+        quitParticlesType: "CLOUD"
+    Sounds:
+      Join:
+        joinSoundEnabled: true
+        joinSoundType: "ENTITY_PLAYER_LEVELUP"
+      Quit:
+        quitSoundEnabled: true
+        quitSoundType: "ENTITY_GENERIC_EXPLODE"
+    Titles:
+      enabled: true
+      title: "&5Welcome to the server!"
+      subtitle: "&5TChat &e- &5Tect.host"
+  op:
+    joinMessagesEnabled: true
+    JoinMessage: '&5TChat &e> &7[&a+&7] &a%player% &7has entered the server'
+    quitMessagesEnabled: true
+    QuitMessage: '&5TChat &e> &7[&c-&7] &c%player% &7has left the server'
+    entryCommandsEnabled: true
+    entryCommands:
+      - "say Hi %player%! :)"
+    quitCommandsEnabled: true
+    quitCommands:
+      - "broadcast Bye %player%! :("
+    Particles:
+      Join:
+        joinParticlesEnabled: true
+        joinParticlesType: "FLAME"
+      Quit:
+        quitParticlesEnabled: true
+        quitParticlesType: "CLOUD"
+    Sounds:
+      Join:
+        joinSoundEnabled: true
+        joinSoundType: "ENTITY_PLAYER_LEVELUP"
+      Quit:
+        quitSoundEnabled: true
+        quitSoundType: "ENTITY_GENERIC_EXPLODE"
+    Titles:
+      enabled: true
+      title: "&5Welcome to the server!"
+      subtitle: "&5TChat &e- &5Tect.host"
   
 # Private message format
 Msg:

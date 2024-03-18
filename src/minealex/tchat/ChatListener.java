@@ -227,16 +227,19 @@ public class ChatListener implements Listener {
             return;
         }
         
-        if (isAntispamEnabled() && AntiSpam.containsRepeatedLetters(message)) {
-            event.setCancelled(true);
-            AntiSpam.handleSpamMessage(player, message);
-            return;
-        }
+        if (!player.hasPermission("tchat.bypass.antispam")) {
+            if (isAntispamEnabled() && AntiSpam.containsRepeatedLetters(message)) {
+                event.setCancelled(true);
+                AntiSpam.handleSpamMessage(player, message);
+                return;
+            }
 
-        if (AntiSpam.containsRepeatedLetters(message)) {
-            event.setCancelled(true);
-            String antiSpamMessage = plugin.getMessagesYML("messages.antiSpamBlocked");
-            return;
+            if (AntiSpam.containsRepeatedLetters(message)) {
+                event.setCancelled(true);
+                String antiSpamMessage = plugin.getMessagesYML("messages.antiSpamBlocked");
+                player.sendMessage(antiSpamMessage);
+                return;
+            }
         }
         
         if (isAntiAdvertisingEnabled()) {
@@ -254,37 +257,39 @@ public class ChatListener implements Listener {
             }
         }
         
-        if (!antiFlood.canPlayerChat(player)) {
-            event.setCancelled(true);
-            int remainingTime = antiFlood.getRemainingTime(player);
-            String message1 = plugin.getMessagesYML("messages.chatCooldownMessage");
+        if (!player.hasPermission("tchat.bypass.antispam")) {
+        	if (!antiFlood.canPlayerChat(player)) {
+        		event.setCancelled(true);
+        		int remainingTime = antiFlood.getRemainingTime(player);
+        		String message1 = plugin.getMessagesYML("messages.chatCooldownMessage");
 
-            // Reemplaza el marcador de posición %time% con el tiempo restante
-            message1 = message1.replace("%time%", String.valueOf(remainingTime));
+        		// Reemplaza el marcador de posición %time% con el tiempo restante
+        		message1 = message1.replace("%time%", String.valueOf(remainingTime));
 
-            // Aplica colores y establece el mensaje personalizado
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message1));
-            return;
-        }
+        		// Aplica colores y establece el mensaje personalizado
+        		player.sendMessage(ChatColor.translateAlternateColorCodes('&', message1));
+        		return;
+        	}
 
-        // Restricción del tiempo entre mensajes
-        long currentTimeMillis = System.currentTimeMillis();
-        long lastChatMillis = lastChatTime.getOrDefault(player.getUniqueId(), 0L);
-        int chatCooldownSeconds = plugin.getChatCooldownSeconds();
-        String chatCooldownMessage = plugin.getMessagesYML("messages.chatCooldownMessage"); 
+        	// Restricción del tiempo entre mensajes
+        	long currentTimeMillis = System.currentTimeMillis();
+        	long lastChatMillis = lastChatTime.getOrDefault(player.getUniqueId(), 0L);
+        	int chatCooldownSeconds = plugin.getChatCooldownSeconds();
+        	String chatCooldownMessage = plugin.getMessagesYML("messages.chatCooldownMessage"); 
 
-        if (currentTimeMillis - lastChatMillis < chatCooldownSeconds * 1000) {
-            event.setCancelled(true);
-            int remainingTime = (int) (chatCooldownSeconds - (currentTimeMillis - lastChatMillis) / 1000);
-            String message1 = chatCooldownMessage.replace("%time%", String.valueOf(remainingTime));
+        	if (currentTimeMillis - lastChatMillis < chatCooldownSeconds * 1000) {
+        		event.setCancelled(true);
+        		int remainingTime = (int) (chatCooldownSeconds - (currentTimeMillis - lastChatMillis) / 1000);
+        		String message1 = chatCooldownMessage.replace("%time%", String.valueOf(remainingTime));
 
-            // Aplicar colores y enviar el mensaje personalizado
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', message1));
-            return;
-        }
+        		// Aplicar colores y enviar el mensaje personalizado
+        		player.sendMessage(ChatColor.translateAlternateColorCodes('&', message1));
+        		return;
+        	}
 
         // Actualizar el tiempo del último mensaje
         lastChatTime.put(player.getUniqueId(), currentTimeMillis);
+        }
         
         if (isAnticapEnabled()) {
             String correctedMessage = AntiCap.fixCaps(message);

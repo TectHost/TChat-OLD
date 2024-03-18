@@ -769,7 +769,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             return parseColors(message); // Traducir códigos de colores en el mensaje
         } else {
             getLogger().warning("Message key '" + key + "' not found in messages.yml. Default message will be used.");
-            return "Default message"; // Mensaje por defecto si la clave no se encuentra
+            return ChatColor.RED + "Error in getMessagesYML2. Support: https://tect.host/"; // Mensaje por defecto si la clave no se encuentra
         }
     }
     
@@ -790,7 +790,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             return parseColors(message); // Traducir códigos de colores en el mensaje
         } else {
             getLogger().warning("Default message key '" + defaultKey + "' not found in messages.yml. Default message will be used.");
-            return "Default message"; // Mensaje por defecto si la clave predeterminada no se encuentra
+            return ChatColor.RED + "Error in getMessagesYML2. Support: https://tect.host/"; // Mensaje por defecto si la clave predeterminada no se encuentra
         }
     }
     
@@ -798,7 +798,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         File configFile = new File(getDataFolder(), "messages.yml");
         if (!configFile.exists()) {
             getLogger().warning("messages.yml not found. Default messages will be used.");
-            return Collections.singletonList("Default message"); // Lista con un mensaje por defecto si el archivo no existe
+            return Collections.singletonList(ChatColor.RED + "Error in getMessagesYMLList. Support: https://tect.host/"); // Lista con un mensaje por defecto si el archivo no existe
         }
 
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
@@ -809,7 +809,7 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             return messages.stream().map(this::parseColors).collect(Collectors.toList()); // Traducir códigos de colores en cada mensaje
         } else {
             getLogger().warning("Message key '" + key + "' not found in messages.yml. Default messages will be used.");
-            return Collections.singletonList("Default message"); // Lista con un mensaje por defecto si la clave no se encuentra
+            return Collections.singletonList(ChatColor.RED + "Error in getMessagesYMLList2. Support: https://tect.host/"); // Lista con un mensaje por defecto si la clave no se encuentra
         }
     }
 

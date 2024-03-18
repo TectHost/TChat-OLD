@@ -226,18 +226,10 @@ public class ChatGames {
                 }
 
                 incrementarChatGamesWins(player);
-
-                JSONObject formatConfig = loadFormatConfig();
-                String correctAnswerMessage = "&5TChat &e> &aCorrect answer! You receive a reward.";
-
-                if (formatConfig != null && formatConfig.containsKey("messages")) {
-                    JSONObject messagesConfig = (JSONObject) formatConfig.get("messages");
-                    if (messagesConfig.containsKey("correct_answer_message")) {
-                        correctAnswerMessage = (String) messagesConfig.get("correct_answer_message");
-                    }
-                }
-
+                
+                String correctAnswerMessage = plugin.getMessagesYML("messages.correct_answer_message");
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', correctAnswerMessage));
+                
                 hasSentMessage = true;
                 isGameActive = false;
                 isGameInProgress = false;
@@ -319,25 +311,6 @@ public class ChatGames {
             default:
                 return 0xFFFFFF;
         }
-    }
-
-    private JSONObject loadFormatConfig() {
-        File configFile = new File(plugin.getDataFolder(), "format_config.json");
-
-        if (!configFile.exists()) {
-            plugin.saveResource("format_config.json", false);
-        } else {
-            try (FileReader reader = new FileReader(configFile)) {
-                JSONParser parser = new JSONParser();
-                Object parsedObject = parser.parse(reader);
-                if (parsedObject instanceof JSONObject) {
-                    return (JSONObject) parsedObject;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
     }
 
     private TextComponent createHoverTextMessage(String mainMessage, String hoverText, String clickCommand) {

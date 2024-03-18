@@ -11,13 +11,17 @@ public class Replacer implements Listener {
 
     private static Replacer instance;
     private final FileConfiguration config;
+    private boolean replacerEnabled;
 
     private Replacer(FileConfiguration config) {
         this.config = config;
+        this.replacerEnabled = config.getBoolean("replacer_enabled", true);
     }
 
     @EventHandler
     public void onPlayerChatEvent(AsyncPlayerChatEvent event) {
+    	if (!replacerEnabled) return;
+    	
         List<String> msg = Arrays.asList(event.getMessage().split(" "));
         for (String s : config.getConfigurationSection("words").getKeys(false)) {
             String original = config.getString("words." + s + ".original");
@@ -27,6 +31,14 @@ public class Replacer implements Listener {
             }
         }
         event.setMessage(String.join(" ", msg));
+    }
+    
+    public void setReplacerEnabled(boolean enabled) {
+        this.replacerEnabled = enabled;
+    }
+
+    public boolean isReplacerEnabled() {
+        return replacerEnabled;
     }
 
     public static Replacer getInstance(FileConfiguration config) {

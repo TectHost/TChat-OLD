@@ -1,10 +1,5 @@
 package minealex.tchat.blocked;
 
-import java.io.File;
-
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import minealex.tchat.ChatListener;
@@ -12,13 +7,9 @@ import minealex.tchat.TChat;
 
 public class AntiAdvertising {
     private TChat plugin;
-    private File messagesFile;
-    private FileConfiguration messagesConfig;
 
     public AntiAdvertising(TChat plugin) {
         this.plugin = plugin;
-        messagesFile = new File(plugin.getDataFolder(), "messages.yml");
-        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
     }
 
     public AntiAdvertising(ChatListener chatListener) {
@@ -53,25 +44,17 @@ public class AntiAdvertising {
     }
 
     public void handleBlockedIPv4(Player player) {
-        String message = getMessages("messages.antiAdvertisingIPv4Blocked");
+        String message = plugin.getMessagesYML("messages.antiAdvertisingIPv4Blocked");
         player.sendMessage(message);
     }
 
     public void handleBlockedDomain(Player player) {
-        String message = getMessages("messages.antiAdvertisingDomainBlocked");
+        String message = plugin.getMessagesYML("messages.antiAdvertisingDomainBlocked");
         player.sendMessage(message);
     }
 
     public void handleBlockedLink(Player player) {
-        String message = getMessages("messages.antiAdvertisingLinkBlocked");
+        String message = plugin.getMessagesYML("messages.antiAdvertisingLinkBlocked");
         player.sendMessage(message);
-    }
-    
-    private String getMessages(String formatKey) {
-        if (messagesConfig.contains(formatKey)) {
-            return ChatColor.translateAlternateColorCodes('&', messagesConfig.getString(formatKey));
-        } else {
-            return "Invalid06";
-        }
     }
 }
