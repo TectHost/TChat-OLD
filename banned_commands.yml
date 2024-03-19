@@ -21,6 +21,8 @@ soundEnabled: true
 # Sound
 sound: "entity.ender_dragon.growl"
 
+# Option to disable commands to run
+commandsToRunEnabled: true
 # Commands that are executed when a player uses a banned command
 # Placeholders:
 # - %executor%

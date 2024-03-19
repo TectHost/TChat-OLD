@@ -13,6 +13,9 @@ import org.bukkit.potion.PotionEffectType;
 import me.clip.placeholderapi.PlaceholderAPI;
 import minealex.tchat.TChat;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
@@ -138,6 +141,10 @@ public class CommandManager implements Listener {
                     e.printStackTrace();
                 }
                 break;
+            case "[BUNGEECORD]":
+                String serverName = action.replace("[BUNGEECORD] ", "");
+                sendPlayerToBungeeServer(player, serverName);
+                break;
             case "[TELEPORT]":
                 String teleportData = action.replace("[TELEPORT] ", "");
                 String[] teleportParts = teleportData.split(";");
@@ -250,6 +257,18 @@ public class CommandManager implements Listener {
             }
         }
         return 0;
+    }
+    
+    public void sendPlayerToBungeeServer(Player player, String serverName) {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(b);
+        try {
+            out.writeUTF("Connect");
+            out.writeUTF(serverName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        player.sendPluginMessage(plugin, "BungeeCord", b.toByteArray());
     }
 
     private boolean isOnCooldown(Player player, String commandName, int cooldownSeconds) {

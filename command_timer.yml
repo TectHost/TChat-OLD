@@ -1,0 +1,13 @@
+commands:
+  1:
+    enabled: true
+    command: "broadcast The commandtimer is enabled! Change this in command_timer.yml!"
+    time: 500
+  2:
+    enabled: false
+    command: "time set 2000"
+    time: 9
+  3:
+    enabled: false
+    command: "weather clear"
+    time: 15

@@ -1,4 +1,4 @@
-# Also try EChat! https://www.spigotmc.org/resources/echat-1-20x-best-chat-plugin.114302
+# Also try LogicalChat! https://www.spigotmc.org/resources/logicalchat-1-20x-best-chat-plugin.114302/
 # Tags:
 # [MESSAGE] - Sends a message | - "[MESSAGE] &7Test message"
 # [TITLE] - Sends a title | - "[TITLE] &aTitle;&bSubtitle"
@@ -9,7 +9,8 @@
 # [TELEPORT] - Teleports the player to concrete coordinate | - "[TELEPORT] world;0;70;0"
 # [ACTION_BAR] - Executes a action bar | - "[ACTION_BAR] &eWelcome! Have a great time!"
 # [INVENTORY] - Adds/removes/changes the inventory of the player | - "[INVENTORY] ADD DIAMOND_SWORD 1" | - "[INVENTORY] REMOVE STONE_SWORD 1" | - "[INVENTORY] CHANGE DIAMOND_SWORD 1 APPLE 1"
-# [POTION_EFFECT] Adds potion effects to the player | - "[POTION_EFFECT] SPEED:120:1"
+# [POTION_EFFECT] - Adds potion effects to the player | - "[POTION_EFFECT] SPEED:120:1"
+# [BUNGEECORD] - Moves the player to another server | - "[BUNGEECORD] survival"
 commands:
   test:
     permission-required: false  # tchat.customcommands.test

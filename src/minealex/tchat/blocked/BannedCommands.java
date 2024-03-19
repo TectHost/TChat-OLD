@@ -30,6 +30,7 @@ public class BannedCommands implements CommandExecutor {
     private String subtitle;
     private boolean soundEnabled;
     private String sound;
+    private boolean commandsToRunEnabled;
 
     public BannedCommands(TChat plugin) {
         this.plugin = plugin;
@@ -38,6 +39,7 @@ public class BannedCommands implements CommandExecutor {
         loadBannedCommands();
         this.blockedMessage = loadBlockedMessage();
         loadTitleOptions();
+        this.commandsToRunEnabled = config.getBoolean("commandsToRunEnabled", true);
     }
 
     private void loadBannedCommands() {
@@ -136,17 +138,19 @@ public class BannedCommands implements CommandExecutor {
     }
     
     public void executeCommandsOnBlock(CommandSender sender, String blockedCommand) {
-        List<String> commandsToRun = config.getStringList("commandsToRun");
+        if (commandsToRunEnabled) { // Check if the option is enabled
+            List<String> commandsToRun = config.getStringList("commandsToRun");
 
-        for (String command : commandsToRun) {
-            // Reemplazar %executor% con el nombre del jugador que ejecutó el comando bloqueado
-            command = command.replace("%executor%", sender.getName());
+            for (String command : commandsToRun) {
+                // Replace %executor% with the name of the player who executed the blocked command
+                command = command.replace("%executor%", sender.getName());
 
-            // Reemplazar %blocked_command% con el comando bloqueado
-            command = command.replace("%blocked_command%", blockedCommand);
+                // Replace %blocked_command% with the blocked command
+                command = command.replace("%blocked_command%", blockedCommand);
 
-            // Ejecutar el comando
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                // Execute the command
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            }
         }
     }
 

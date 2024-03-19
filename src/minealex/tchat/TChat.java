@@ -17,6 +17,7 @@ import minealex.tchat.blocked.Replacer;
 import minealex.tchat.bot.AutoBroadcast;
 import minealex.tchat.bot.ChatBot;
 import minealex.tchat.bot.ChatGames;
+import minealex.tchat.bot.CommandTimer;
 import minealex.tchat.commands.AdminChatCommand;
 import minealex.tchat.commands.AnnouncementCommand;
 import minealex.tchat.commands.BroadcastCommand;
@@ -53,6 +54,7 @@ import minealex.tchat.commands.WarningCommand;
 import minealex.tchat.commands.WebsiteCommand;
 import minealex.tchat.commands.YoutubeCommand;
 import minealex.tchat.config.BannedCommandsConfig;
+import minealex.tchat.config.CommandTimerConfig;
 import minealex.tchat.config.Config;
 import minealex.tchat.config.ConfigManager;
 import minealex.tchat.config.DeathConfig;
@@ -152,6 +154,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
 	private Map<UUID, UUID> lastMessageSenders;
 	private LevelsConfig levelsConfig;
 	private Levels levels;
+	private CommandTimerConfig commandTimerConfig;
+	private CommandTimer commandTimer;
 
     public Location getLastPlayerLocation(Player player) {
         return lastKnownLocations.get(player.getUniqueId());
@@ -187,6 +191,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
     @Override
     public void onEnable() {
         getCommand("chat").setExecutor(new Commands(this));
+        
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         
         this.lastMessageSenders = new HashMap<>();
         
@@ -254,10 +260,6 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
             this.getCommand("nick").setExecutor(new NickCommand(this));
         }
         
-        if (!isOptionEnabled("disable.ignore")) {
-        	getCommand("ignore").setExecutor(new IgnoreCommand(this));
-        }
-        
         if (!isOptionEnabled("disable.helpop")) {
         	getCommand("helpop").setExecutor(new HelpOpCommand(this));
         }
@@ -308,6 +310,9 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         deathConfig = new DeathConfig(this);
         deathConfig.createDefaultConfig();
         
+        commandTimerConfig = new CommandTimerConfig(this);
+        commandTimerConfig.createDefaultConfig();
+        
         levelsConfig = new LevelsConfig(this);
         levelsConfig.createDefaultConfig();
         
@@ -339,6 +344,8 @@ public class TChat extends JavaPlugin implements CommandExecutor, Listener {
         FileConfiguration replacerConfig = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "replacer.yml"));
         Replacer replacerInstance = Replacer.getInstance(replacerConfig);
         getServer().getPluginManager().registerEvents(replacerInstance, this);
+        
+        commandTimer = new CommandTimer(this);
         
         loadMessages();
 

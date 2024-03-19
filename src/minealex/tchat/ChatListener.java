@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -137,6 +138,33 @@ public class ChatListener implements Listener {
         chatBot.sendResponse(message, player);
         message = ChatColor.translateAlternateColorCodes('&', message);
         
+        String[] words = message.split(" ");
+
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].startsWith("@")) {
+                String mentionedPlayerName = words[i].substring(1); // Eliminar el carácter '@'
+                Player mentionedPlayer = Bukkit.getPlayer(mentionedPlayerName);
+
+                if (mentionedPlayer != null) {
+                    // Reemplazar la mención con el nombre del jugador en color morado
+                    words[i] = ChatColor.LIGHT_PURPLE + "@" + mentionedPlayer.getName() + ChatColor.RESET;
+                    
+                    // Reproducir el sonido para el jugador mencionado
+                    String soundPath = plugin.getConfig().getString("mention_sound");
+                    if (soundPath != null && !soundPath.isEmpty()) {
+                        Sound mentionSound = Sound.valueOf(soundPath);
+                        mentionedPlayer.playSound(mentionedPlayer.getLocation(), mentionSound, 1, 1);
+                    }
+                }
+            }
+        }
+
+        // Reconstruir el mensaje con las menciones en color morado
+        String modifiedMessage = ChatColor.translateAlternateColorCodes('&', String.join(" ", words));
+
+        // Enviar el mensaje modificado al chat
+        event.setMessage(modifiedMessage);
+        
         WorldsManager worldsManager = plugin.getWorldsManager();
         WorldConfig worldConfig = worldsManager.loadWorldConfig(worldName);
 
@@ -178,8 +206,8 @@ public class ChatListener implements Listener {
             message = ChatColor.stripColor(message); // Elimina cualquier código de color
         }
         
-        String[] words = message.split("[^a-zA-Z0-9_]+");
-        for (String word : words) {
+        String[] words1 = message.split("[^a-zA-Z0-9_]+");
+        for (String word : words1) {
             // Verificar si el jugador tiene el permiso de bypass o es operador
             if (plugin.getBannedWords().canBypassBannedWords(player)) {
                 // No realizar ninguna acción adicional si el jugador puede bypass
@@ -334,6 +362,12 @@ public class ChatListener implements Listener {
 
             String groupName = getPrimaryGroup(player);
             HoverGroup hoverGroup = hoverGroups.get(groupName);
+            
+            if (plugin.getStaffChatPlayers().contains(player.getUniqueId())) {
+                // Si está en el chat del staff, cancelar el evento y salir del método
+                event.setCancelled(true);
+                return;
+            }
 
             if (hoverGroup != null && hoverGroup.isEnabled()) {
                 String formattedName = ChatColor.translateAlternateColorCodes('&', playerNameFormat);

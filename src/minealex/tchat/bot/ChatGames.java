@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +18,8 @@ import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -40,6 +45,7 @@ public class ChatGames {
     private String gameTitle;
     private String gameSubtitle;
     private String sound;
+    private Set<UUID> movedPlayers = new HashSet<>();
 
     public ChatGames(TChat plugin) {
         this.plugin = plugin;
@@ -210,7 +216,7 @@ public class ChatGames {
         String keyword = (String) currentGame.get("keyword");
 
         if (message.equalsIgnoreCase(keyword)) {
-            if (!hasSentMessage) {
+        	if (!hasSentMessage && hasMoved(player)) {
                 JSONArray rewards = (JSONArray) currentGame.get("rewards");
                 for (Object rewardObj : rewards) {
                     String reward = (String) rewardObj;
@@ -272,6 +278,16 @@ public class ChatGames {
                 firework.setFireworkMeta(meta);
             });
         }
+    }
+    
+    private boolean hasMoved(Player player) {
+        return movedPlayers.contains(player.getUniqueId());
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        movedPlayers.add(player.getUniqueId());
     }
 
     private int getRGBFromColorName(String colorName) {

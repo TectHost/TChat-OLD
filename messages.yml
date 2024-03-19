@@ -52,6 +52,8 @@ messages:
   soundNotFound: '&5TChat &e> &cThe sound specified in the configuration is not valid.'
   mention-sender-message: '&5TChat &e> &aYou mentioned %s!'
   mention-target-message: '&5TChat &e> &aYou have been mentioned by %s!'
+  noPlayersIgnored: '&5TChat &e> &cYou are not ignoring anyone.'
+  ignoreListHeader: "&6Ignored players:&f"
   
 # /info command
 Info:
