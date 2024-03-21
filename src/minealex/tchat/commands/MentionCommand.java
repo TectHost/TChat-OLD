@@ -21,6 +21,13 @@ public class MentionCommand implements CommandExecutor {
         	sender.sendMessage(plugin.getMessagesYML("messages.onlyPlayer"));
             return true;
         }
+        
+        Player player = (Player) sender;
+        
+        if (!player.hasPermission("tchat.mention")) {
+            player.sendMessage(plugin.getMessagesYML("messages.noPermission"));
+            return true;
+        }
 
         if (args.length != 1) {
         	sender.sendMessage(plugin.getMessagesYML("messages.incorrectUsageMention"));

@@ -40,6 +40,10 @@ public class IgnoreCommand implements CommandExecutor {
         }
         
         if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
+        	if (!player.hasPermission("tchat.ignore.list")) {
+                player.sendMessage(plugin.getMessagesYML("messages.noPermissionList"));
+                return true;
+            }
             UUID playerUUID = player.getUniqueId();
             List<String> ignoredPlayers = savesConfig.getStringList("players." + playerUUID + ".ignore");
 

@@ -1,7 +1,7 @@
 {
   "defaultPrefix": "&a[Tect.host] ",
   "defaultSuffix": "",
-  "format": "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>>%tchat_chatcolor%",
+  "format": "%tchat_prefix%&f%tchat_nickname%%tchat_suffix% &e>> %tchat_chatcolor%",
   "groups": {
     "vip": {
       "prefix": "&3[VIP] ",

@@ -138,32 +138,31 @@ public class ChatListener implements Listener {
         chatBot.sendResponse(message, player);
         message = ChatColor.translateAlternateColorCodes('&', message);
         
-        String[] words = message.split(" ");
+        if (player.hasPermission("tchat.mention")) {
+        	String[] words = message.split(" ");
 
-        for (int i = 0; i < words.length; i++) {
-            if (words[i].startsWith("@")) {
-                String mentionedPlayerName = words[i].substring(1); // Eliminar el carácter '@'
-                Player mentionedPlayer = Bukkit.getPlayer(mentionedPlayerName);
+        	for (int i = 0; i < words.length; i++) {
+        		if (words[i].startsWith("@")) {
+        			String mentionedPlayerName = words[i].substring(1); // Eliminar el carácter '@'
+        			Player mentionedPlayer = Bukkit.getPlayer(mentionedPlayerName);
 
-                if (mentionedPlayer != null) {
-                    // Reemplazar la mención con el nombre del jugador en color morado
-                    words[i] = ChatColor.LIGHT_PURPLE + "@" + mentionedPlayer.getName() + ChatColor.RESET;
+        			if (mentionedPlayer != null) {
+        				// Reemplazar la mención con el nombre del jugador en color morado
+        				words[i] = ChatColor.LIGHT_PURPLE + "@" + mentionedPlayer.getName() + ChatColor.RESET;
                     
-                    // Reproducir el sonido para el jugador mencionado
-                    String soundPath = plugin.getConfig().getString("mention_sound");
-                    if (soundPath != null && !soundPath.isEmpty()) {
-                        Sound mentionSound = Sound.valueOf(soundPath);
-                        mentionedPlayer.playSound(mentionedPlayer.getLocation(), mentionSound, 1, 1);
+        				// Reproducir el sonido para el jugador mencionado
+        				String soundPath = plugin.getConfig().getString("mention_sound");
+        				if (soundPath != null && !soundPath.isEmpty()) {
+        					Sound mentionSound = Sound.valueOf(soundPath);
+        					mentionedPlayer.playSound(mentionedPlayer.getLocation(), mentionSound, 1, 1);
+        				}
                     }
                 }
             }
-        }
 
-        // Reconstruir el mensaje con las menciones en color morado
         String modifiedMessage = ChatColor.translateAlternateColorCodes('&', String.join(" ", words));
-
-        // Enviar el mensaje modificado al chat
         event.setMessage(modifiedMessage);
+        }
         
         WorldsManager worldsManager = plugin.getWorldsManager();
         WorldConfig worldConfig = worldsManager.loadWorldConfig(worldName);
@@ -265,6 +264,7 @@ public class ChatListener implements Listener {
             if (AntiSpam.containsRepeatedLetters(message)) {
                 event.setCancelled(true);
                 String antiSpamMessage = plugin.getMessagesYML("messages.antiSpamBlocked");
+                plugin.getLogger().warning("Spam detected for player: " + player.getName());
                 player.sendMessage(antiSpamMessage);
                 return;
             }
@@ -285,7 +285,7 @@ public class ChatListener implements Listener {
             }
         }
         
-        if (!player.hasPermission("tchat.bypass.antispam")) {
+        if (!player.hasPermission("tchat.bypass.antiflood")) {
         	if (!antiFlood.canPlayerChat(player)) {
         		event.setCancelled(true);
         		int remainingTime = antiFlood.getRemainingTime(player);
@@ -312,6 +312,7 @@ public class ChatListener implements Listener {
 
         		// Aplicar colores y enviar el mensaje personalizado
         		player.sendMessage(ChatColor.translateAlternateColorCodes('&', message1));
+        		plugin.getLogger().warning("Flood detected for player: " + player.getName());
         		return;
         	}
 

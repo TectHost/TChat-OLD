@@ -33,6 +33,10 @@ broadcasts:
     sound-enabled: false
     # Sound
     sound: "entity.experience_orb.pickup"
+    # Option to deactivate actionbar (only works in 1.8.8)
+    actionbar-enabled: false
+    # Actionbar (only works in 1.8.8)
+    actionbar-message: "&eThe server use TChat."
   broadcast2:
     messages:
       - " "
@@ -51,3 +55,5 @@ broadcasts:
     sub-title: "&eEnjoy your stay!"
     sound-enabled: false
     sound: "block.note.harp"
+    actionbar-enabled: false
+    actionbar-message: "&eThe server use TChat."

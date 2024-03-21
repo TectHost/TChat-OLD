@@ -18,6 +18,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,6 +132,11 @@ public class AutoBroadcast {
                                 }
                             }
                         }
+                        
+                        if (broadcast.contains("actionbar-enabled") && broadcast.getBoolean("actionbar-enabled")) {
+                            String actionBarMessage = PlaceholderAPI.setPlaceholders(player, broadcast.getString("actionbar-message"));
+                            sendActionBar(player, actionBarMessage);
+                        }
 
                         if (broadcast.contains("sound") && broadcast.getBoolean("sound-enabled", true)) {
                             String soundName = broadcast.getString("sound");
@@ -160,6 +166,41 @@ public class AutoBroadcast {
         return broadcastsSection;
     }
 
+    private void sendActionBar(Player player, String message) {
+        try {
+            Class<?> craftPlayerClass = Class.forName("org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer");
+            Object craftPlayer = craftPlayerClass.cast(player);
+
+            Class<?> packetPlayOutChatClass = Class.forName("net.minecraft.server.v1_8_R3.PacketPlayOutChat");
+            Class<?> iChatBaseComponentClass = Class.forName("net.minecraft.server.v1_8_R3.IChatBaseComponent");
+
+            Object chatComponentText = iChatBaseComponentClass.getDeclaredClasses()[0]
+                    .getMethod("a", String.class)
+                    .invoke(null, "{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', message) + "\"}");
+
+            Object packetPlayOutChat = packetPlayOutChatClass
+                    .getConstructor(iChatBaseComponentClass, byte.class)
+                    .newInstance(chatComponentText, (byte) 2);
+
+            // Get the player's handle and player connection
+            Object craftPlayerHandle = craftPlayerClass.getMethod("getHandle").invoke(craftPlayer);
+            Object playerConnection = craftPlayerHandle.getClass().getField("playerConnection").get(craftPlayerHandle);
+
+            // Find the sendPacket method with the correct parameter types
+            for (Method method : playerConnection.getClass().getMethods()) {
+                if (method.getName().equals("sendPacket")) {
+                    Class<?>[] parameterTypes = method.getParameterTypes();
+                    if (parameterTypes.length == 1 && parameterTypes[0].isAssignableFrom(packetPlayOutChatClass)) {
+                        method.invoke(playerConnection, packetPlayOutChat);
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public boolean isBroadcastsEnabled() {
         return autoBroadcastConfig.getBoolean("enabled", true);
     }

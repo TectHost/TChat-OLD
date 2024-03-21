@@ -4,12 +4,15 @@ replacer_enabled: true
 words:
   example1:
     original: "hello"
-    replacer_text: "hi"
+    replace: "hi"
+    permission-required: false # # tchat.replace.example1
     
   example2:
     original: "world"
-    replacer_text: "universe"
+    replace: "universe"
+    permission-required: true # tchat.replace.example2
     
   example3:
     original: "apple"
-    replacer_text: "orange"
+    replace: "orange"
+    permission-required: true # tchat.replace.example3

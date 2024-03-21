@@ -9,8 +9,6 @@ public class AntiSpam {
     }
 
     public static void handleSpamMessage(Player player, String spamMessage) {
-        // Aquí puedes implementar lo que desees hacer cuando se detecta un spam.
-        // Por ejemplo, enviar un mensaje al jugador y cancelar el evento de chat.
-        player.sendMessage("¡No puedes enviar mensajes con letras repetidas!");
+        player.sendMessage("You cannot send messages with repeated letters!");
     }
 }
